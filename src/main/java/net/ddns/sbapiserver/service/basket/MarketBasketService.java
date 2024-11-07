@@ -21,8 +21,9 @@ public class MarketBasketService {
     private final ProductsRepository productsRepository;
     private final ClientRepository clientRepository;
 
-    private List<MarketBasket> saveMarketBasket(List<MarketBasketDto.Create> creates){
+    public List<MarketBasketDto.Result> saveMarketBasket(List<MarketBasketDto.Create> creates){
         List<MarketBasket> marketBaskets = new ArrayList<>();
+        System.out.println(creates.get(0).toString());
 
         for(MarketBasketDto.Create create : creates){
             Clients clients = clientRepository.findById(create.getClientId()).get();
@@ -33,6 +34,7 @@ public class MarketBasketService {
 
             marketBaskets.add(marketBasket);
         }
-        return marketBasketRepository.saveAll(marketBaskets);
+        List<MarketBasket> marketbaksetList = marketBasketRepository.saveAll(marketBaskets);
+        return MarketBasketDto.Result.of(marketbaksetList);
     }
 }

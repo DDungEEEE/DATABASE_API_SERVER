@@ -6,7 +6,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.response.ResultResponse;
-import net.ddns.sbapiserver.domain.dto.comon.ProductDto;
+import net.ddns.sbapiserver.domain.dto.comon.ProductDto.Create;
+import net.ddns.sbapiserver.domain.dto.comon.ProductDto.Put;
 import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.service.product.ProductsService;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/client/products")
 public class ProductsController {
+
     private final ProductsService productsService;
 
     @Operation(summary = "상품 조회")
     @ApiResponse(responseCode = "200")
     @GetMapping
     ResultResponse<List<Products>> getProducts(){
-
         List<Products> allProductList = productsService.getAllProducts();
 
         return ResultResponse.<List<Products>>dataResponse()
@@ -36,7 +37,7 @@ public class ProductsController {
     @Operation(summary = "상품 추가")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    ResultResponse<Products> add(@RequestBody @Valid ProductDto.Create create){
+    ResultResponse<Products> add(@RequestBody @Valid Create create){
         Products products = productsService.addProduct(create);
         return ResultResponse.<Products>dataResponse()
                 .result(products)
@@ -57,7 +58,7 @@ public class ProductsController {
 
     @Operation(summary = "상품 수정")
     @PutMapping
-    ResultResponse<Products> updateProduct(@RequestBody ProductDto.Put put){
+    ResultResponse<Products> updateProduct(@RequestBody Put put){
         Products products = productsService.updateProducts(put);
         return ResultResponse.<Products>dataResponse()
                 .result(products)

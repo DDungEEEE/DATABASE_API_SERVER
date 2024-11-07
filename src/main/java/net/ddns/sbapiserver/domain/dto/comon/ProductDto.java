@@ -15,7 +15,7 @@ import java.util.function.Function;
 public interface ProductDto {
 
     @Data
-    @Builder
+    @Schema(name = "ProductCreateDto")
     @NoArgsConstructor
     @AllArgsConstructor
     class Create{

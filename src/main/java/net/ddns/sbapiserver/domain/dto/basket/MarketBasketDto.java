@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 public interface MarketBasketDto {
 
     @Data
+    @Schema(title = "MarketBasketCreate")
     @AllArgsConstructor
     @NoArgsConstructor
     class Create{
@@ -38,10 +39,11 @@ public interface MarketBasketDto {
     }
 
     @Data
+    @Schema(name = "MarketBasketResult")
     @Builder
     class Result{
 
-        @Schema(name = "market_bakset_id")
+        @Schema(name = "market_basket_id")
         private int marketBasketId;
 
         @Schema(name = "product_name")
