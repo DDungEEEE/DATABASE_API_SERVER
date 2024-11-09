@@ -9,9 +9,11 @@ import net.ddns.sbapiserver.repository.bakset.MarketBasketRepository;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,19 +24,27 @@ public class MarketBasketService {
     private final ClientRepository clientRepository;
 
     public List<MarketBasketDto.Result> saveMarketBasket(List<MarketBasketDto.Create> creates){
-        List<MarketBasket> marketBaskets = new ArrayList<>();
-        System.out.println(creates.get(0).toString());
 
-        for(MarketBasketDto.Create create : creates){
-            Clients clients = clientRepository.findById(create.getClientId()).get();
-            Products product = productsRepository.findByProductId(create.getProductId());
-            MarketBasket marketBasket = create.asEntity(init ->
-                    init.withClients(clients)
-                            .withProducts(product));
 
-            marketBaskets.add(marketBasket);
-        }
-        List<MarketBasket> marketbaksetList = marketBasketRepository.saveAll(marketBaskets);
-        return MarketBasketDto.Result.of(marketbaksetList);
+        List<MarketBasket> marketBasketList = creates.stream()
+                .map(create -> {
+                    Clients clients = clientRepository.findById(create.getClientId()).get();
+                    Products products = productsRepository.findByProductId(create.getProductId());
+                    return create.asEntity(marketBasket ->
+                            marketBasket.withProducts(products).withClients(clients));
+                }).collect(Collectors.toList());
+
+        List<MarketBasket> savedMarketbaksetList = marketBasketRepository.saveAll(marketBasketList);
+        return MarketBasketDto.Result.of(savedMarketbaksetList);
+    }
+
+    public List<MarketBasketDto.Result> getMarketBasketList(int clientId){
+        List<MarketBasket> marketBaskets = marketBasketRepository.findMarketBasketsByClientsClientId(clientId);
+        return MarketBasketDto.Result.of(marketBaskets);
+    }
+
+    @Transactional
+    public void deleteByClientId(int clientId){
+        marketBasketRepository.deleteByClientsClientId(clientId);
     }
 }

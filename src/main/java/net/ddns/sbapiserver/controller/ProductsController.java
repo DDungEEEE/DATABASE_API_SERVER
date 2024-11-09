@@ -37,7 +37,7 @@ public class ProductsController {
     @Operation(summary = "상품 추가")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    ResultResponse<Products> add(@RequestBody @Valid Create create){
+    ResultResponse<Products> create(@RequestBody @Valid Create create){
         Products products = productsService.addProduct(create);
         return ResultResponse.<Products>dataResponse()
                 .result(products)

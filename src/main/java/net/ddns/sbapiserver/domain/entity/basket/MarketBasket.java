@@ -21,11 +21,11 @@ public class MarketBasket {
 
     @With
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Clients clients;
 
     @With
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Products products;
 }
