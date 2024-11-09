@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.response.ResultResponse;
+import net.ddns.sbapiserver.domain.dto.comon.ProductDto;
 import net.ddns.sbapiserver.domain.dto.comon.ProductDto.Create;
 import net.ddns.sbapiserver.domain.dto.comon.ProductDto.Put;
 import net.ddns.sbapiserver.domain.entity.common.Products;
@@ -25,11 +26,11 @@ public class ProductsController {
     @Operation(summary = "상품 조회")
     @ApiResponse(responseCode = "200")
     @GetMapping
-    ResultResponse<List<Products>> getProducts(){
+    ResultResponse<List<ProductDto.Result>> getProducts(){
         List<Products> allProductList = productsService.getAllProducts();
 
-        return ResultResponse.<List<Products>>dataResponse()
-                .result(allProductList)
+        return ResultResponse.<List<ProductDto.Result>>dataResponse()
+                .result(ProductDto.Result.of(allProductList))
                 .resultCode(HttpStatus.OK)
                 .build();
     }
