@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public interface ProductDto {
 
     @Data
-    @Schema(name = "ProductCreateDto")
+    @Schema(name = "ProductCreate")
     @NoArgsConstructor
     @AllArgsConstructor
     class Create{
@@ -67,6 +67,7 @@ public interface ProductDto {
 
     @Data
     @Builder
+    @Schema(name = "productPut")
     @NoArgsConstructor
     @AllArgsConstructor
     class Put{

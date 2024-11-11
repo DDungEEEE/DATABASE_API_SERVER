@@ -15,28 +15,22 @@ import java.sql.Timestamp;
 @Table(name = "products")
 public class Products {
 
-    @Schema(name = "product_id")
     @Id @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
 
-    @Schema(name = "product_name")
     @Column(name = "product_name")
     private String productName;
 
-    @Schema(name = "product_price")
     @Column(name = "product_price")
     private int productPrice;
 
-    @Schema(name = "product_status")
     @Column(name = "product_status")
     private String productStatus;
 
-    @Schema(name="product_img")
     @Column(name="product_img")
     private String productImg;
 
-    @Schema(name="product_type")
     @Column(name="product_type")
     private String productType;
 
@@ -50,11 +44,9 @@ public class Products {
     @ManyToOne
     private Staffs staffs;
 
-    @Schema(name="product_enroll_date")
     @Column(name = "product_enroll_date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp productEnrollDate;
 
-    @Schema(name="product_modify_date")
     @Column(name="product_modify_date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Timestamp productModifyDate;
 

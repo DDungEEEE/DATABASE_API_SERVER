@@ -1,10 +1,7 @@
 package net.ddns.sbapiserver.domain.entity.order;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 
 import java.time.LocalDateTime;
@@ -12,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 @Entity
-@Getter
+@Getter @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders")
