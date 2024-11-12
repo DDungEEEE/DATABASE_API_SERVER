@@ -19,28 +19,32 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
 
-    @Column(name = "order_date")
+    @Column(name = "order_date", nullable = false, updatable = false)
     private String orderDate;
 
     @Column(name = "order_request", columnDefinition = "TEXT")
     private String orderRequest;
 
-    @Column(name = "order_print_ck")
+    @Column(name = "order_print_ck", nullable = false)
     private int orderPrintCk;
 
     @Column(name = "order_status")
     private String orderStatus;
 
+    @With
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     @ManyToOne
     private Clients clients;
 
     @PrePersist
-    protected void setOrderDate(){
+    protected void checkOrderEntity(){
 
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         this.orderDate = now.format(dateTimeFormatter);
+
+        this.orderPrintCk = 0;
+        this.orderStatus = "관리자 승인 대기중";
     }
 }
