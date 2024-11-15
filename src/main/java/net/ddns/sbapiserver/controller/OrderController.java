@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.controller;
 
 import lombok.RequiredArgsConstructor;
+import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.order.OrderDto;
 import net.ddns.sbapiserver.service.order.OrderService;
@@ -22,21 +23,29 @@ public class OrderController {
     @PostMapping
     public ResultResponse<OrderDto.Result> createOrder(@RequestBody OrderDto.Create orderCreate){
         OrderDto.Result orderResult = orderService.saveOrder(orderCreate);
-        return ResultResponse.<OrderDto.Result>dataResponse()
+        return ResultResponse.<OrderDto.Result>successResponse()
                 .result(orderResult)
-                .resultCode(HttpStatus.CREATED)
+                .successCode(SuccessCode.INSERT_SUCCESS)
                 .build();
     }
 
     @GetMapping("{client_id}/{start_date}/{end_date}")
     public ResultResponse<List<OrderDto.Result>> getOrder(@PathVariable("client_id") int clientId, @PathVariable("start_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
+    @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate, @PathVariable("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
 
-        List<OrderDto.Result> orderData = orderService.getOrderData(clientId);
+        List<OrderDto.Result> orderResultList = orderService.getOrderResultList(clientId, startDate, endDate);
 
-        return ResultResponse.<List<OrderDto.Result>>dataResponse()
-                .result(orderData)
-                .resultCode(HttpStatus.OK)
+        return ResultResponse.<List<OrderDto.Result>>successResponse()
+                .result(orderResultList)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
+
+    @DeleteMapping("{order_id}")
+    public ResultResponse<Void> deleteOrder( @PathVariable("order_id") int orderId){
+        orderService.deleteOrder(orderId);
+        return ResultResponse.<Void>successResponse()
+                .successCode(SuccessCode.DELETE_SUCCESS)
                 .build();
     }
 }

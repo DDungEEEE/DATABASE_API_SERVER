@@ -3,6 +3,7 @@ package net.ddns.sbapiserver.domain.entity.order;
 import jakarta.persistence.*;
 import lombok.*;
 import net.ddns.sbapiserver.domain.entity.common.Products;
+import org.hibernate.annotations.Fetch;
 
 @Table(name = "order_contents")
 @Entity
@@ -13,7 +14,8 @@ public class OrderContents {
 
     @Id @Column(name = "order_content_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderContentId;
+    private Integer orderContentId;
+
 
     @ManyToOne @With
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")

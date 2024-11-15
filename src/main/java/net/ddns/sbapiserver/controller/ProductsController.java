@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.comon.ProductDto;
 import net.ddns.sbapiserver.domain.dto.comon.ProductDto.Create;
@@ -29,9 +30,9 @@ public class ProductsController {
     ResultResponse<List<ProductDto.Result>> getProducts(){
         List<Products> allProductList = productsService.getAllProducts();
 
-        return ResultResponse.<List<ProductDto.Result>>dataResponse()
+        return ResultResponse.<List<ProductDto.Result>>successResponse()
                 .result(ProductDto.Result.of(allProductList))
-                .resultCode(HttpStatus.OK)
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 
@@ -40,9 +41,9 @@ public class ProductsController {
     @PostMapping
     ResultResponse<Products> create(@RequestBody @Valid Create create){
         Products products = productsService.addProduct(create);
-        return ResultResponse.<Products>dataResponse()
+        return ResultResponse.<Products>successResponse()
                 .result(products)
-                .resultCode(HttpStatus.CREATED)
+                .successCode(SuccessCode.INSERT_SUCCESS)
                 .build();
     }
 
@@ -52,8 +53,9 @@ public class ProductsController {
     ResultResponse<List<Products>> find(@PathVariable("manufacturer_id") int manufacturerId){
         List<Products> productsByManufacturersId = productsService.findProductsByManufacturersId(manufacturerId);
 
-        return ResultResponse.<List<Products>>dataResponse()
+        return ResultResponse.<List<Products>>successResponse()
                 .result(productsByManufacturersId)
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 
@@ -61,8 +63,9 @@ public class ProductsController {
     @PutMapping
     ResultResponse<Products> updateProduct(@RequestBody Put put){
         Products products = productsService.updateProducts(put);
-        return ResultResponse.<Products>dataResponse()
+        return ResultResponse.<Products>successResponse()
                 .result(products)
+                .successCode(SuccessCode.UPDATE_SUCCESS)
                 .build();
     }
 
@@ -70,9 +73,8 @@ public class ProductsController {
     @DeleteMapping("/{product_id}")
     ResultResponse<Void> delete(@PathVariable("product_id") int productId){
         productsService.deleteProduct(productId);
-        return ResultResponse.<Void>dataResponse()
-                .resultCode(HttpStatus.NO_CONTENT)
-                .resultMessage("삭제 완료되었습니다.")
+        return ResultResponse.<Void>successResponse()
+                .successCode(SuccessCode.DELETE_SUCCESS)
                 .build();
     }
 

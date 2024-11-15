@@ -18,7 +18,7 @@ public class Clients {
 
     @Id @Column(name = "client_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int clientId;
+    private Integer clientId;
 
     @Column(name = "client_name") @NotBlank
     private String clientName;
@@ -50,10 +50,10 @@ public class Clients {
     @Column(name = "client_refresh_token")
     private String clientRefreshToken;
 
-    @Column(name = "client_created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "client_created_at", nullable = false)
     private Timestamp clientCreatedAt;
 
-    @Column(name = "client_updated_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "client_updated_at", nullable = false, updatable = false)
     private Timestamp clientUpdatedAt;
 
 }

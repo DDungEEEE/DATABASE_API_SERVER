@@ -19,14 +19,8 @@ public class ResultResponse<T> implements Serializable {
     // API 응답 메시지
     private String resultMessage;
 
-    @Builder(builderMethodName = "dataResponse")
-    public ResultResponse(final T result, final int resultCode, final String resultMessage){
-        this.result = result;
-        this.resultCode = resultCode;
-        this.resultMessage = resultMessage;
-    }
 
-    @Builder(builderMethodName = "successBuilder")
+    @Builder(builderMethodName = "successResponse")
     public ResultResponse(final T result, final SuccessCode successCode){
         this.result = result;
         this.resultCode = successCode.getStatus();

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -19,13 +20,13 @@ public class Notice {
     @Id
     @Column(name = "notice_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int noticeId;
+    private Integer noticeId;
 
     @Column(name = "notice_content", columnDefinition = "TEXT")
     private String noticeContent;
 
     @Column(name = "notice_date")
-    private String noticeDate;
+    private Timestamp noticeDate;
 
     @Column(name = "notice_status")
     private String noticeStatus;
@@ -39,9 +40,10 @@ public class Notice {
 
     @PrePersist
     protected void setNoticeDate(){
-        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+//        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
 
-        this.noticeDate = now.format(dateTimeFormatter);
+//        this.noticeDate = now.format(dateTimeFormatter);
+        this.noticeDate = new Timestamp(System.currentTimeMillis());
     }
 }

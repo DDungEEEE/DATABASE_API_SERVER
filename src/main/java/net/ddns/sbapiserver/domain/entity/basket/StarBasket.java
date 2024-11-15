@@ -17,7 +17,7 @@ public class StarBasket {
 
     @Id @Column(name = "star_basket_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int starBasketId;
+    private Integer starBasketId;
 
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     @ManyToOne

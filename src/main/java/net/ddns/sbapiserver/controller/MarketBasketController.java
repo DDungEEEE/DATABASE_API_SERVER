@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.basket.MarketBasketDto;
 import net.ddns.sbapiserver.domain.entity.basket.MarketBasket;
@@ -24,9 +25,9 @@ public class MarketBasketController {
     @PostMapping
     public ResultResponse<List<MarketBasketDto.Result>> create(@RequestBody @Valid List<MarketBasketDto.Create> create){
         List<MarketBasketDto.Result> results = marketBasketService.saveMarketBasket(create);
-        return ResultResponse.<List<MarketBasketDto.Result>>dataResponse()
+        return ResultResponse.<List<MarketBasketDto.Result>>successResponse()
                 .result(results)
-                .resultCode
+                .successCode(SuccessCode.INSERT_SUCCESS)
                 .build();
     }
 
@@ -35,8 +36,9 @@ public class MarketBasketController {
     @GetMapping("{client_id}")
     public ResultResponse<List<MarketBasketDto.Result>> getMarketBaskets(@PathVariable("client_id") int clientId){
         marketBasketService.getMarketBasketList(clientId);
-        return ResultResponse.<List<MarketBasketDto.Result>>dataResponse()
+        return ResultResponse.<List<MarketBasketDto.Result>>successResponse()
                 .result(marketBasketService.getMarketBasketList(clientId))
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 
@@ -45,8 +47,8 @@ public class MarketBasketController {
     @DeleteMapping("{client_id}")
     public ResultResponse<Void> delete(@PathVariable("client_id") int clientId){
         marketBasketService.deleteByClientId(clientId);
-        return ResultResponse.<Void>dataResponse()
-                .resultCode(HttpStatus.NO_CONTENT)
+        return ResultResponse.<Void>successResponse()
+                .successCode(SuccessCode.DELETE_SUCCESS)
                 .build();
     }
 }

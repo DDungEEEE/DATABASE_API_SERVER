@@ -39,10 +39,20 @@ public class Staffs {
     @Column(name = "staff_gender")
     private StaffGender staffGender;
 
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createAt;
 
-    @Column(name = "updated_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "updated_at", nullable = false, updatable = false)
     private Timestamp updateAt;
 
+    @PrePersist
+    protected void setNoticeTime(){
+        createAt = new Timestamp(System.currentTimeMillis());
+        updateAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    @PreUpdate
+    protected void updateNoticeTime(){
+        updateAt = new Timestamp(System.currentTimeMillis());
+    }
 }

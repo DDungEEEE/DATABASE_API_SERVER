@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import net.ddns.sbapiserver.domain.entity.order.OrderContents;
 import net.ddns.sbapiserver.domain.entity.order.Orders;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -54,7 +55,7 @@ public interface OrderDto {
         private int orderId;
 
         @Schema(name = "order_date")
-        private String orderDate;
+        private Timestamp orderDate;
 
         @Schema(name = "order_print_ck")
         private int orderPrintCk;

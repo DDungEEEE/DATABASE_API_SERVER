@@ -14,7 +14,7 @@ public class MarketBasket {
 
     @Id @Column(name = "market_basket_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int marketBasketId;
+    private Integer marketBasketId;
 
     @Column(name = "product_cnt")
     private int productCnt;

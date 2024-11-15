@@ -14,7 +14,7 @@ public enum SuccessCode {
 
     UPDATE_SUCCESS(200, "200", "UPDATE_SUCCESS");
 
-    private int  status;
+    private final int  status;
 
     private final String code;
 

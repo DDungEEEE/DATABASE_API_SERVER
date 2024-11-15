@@ -14,7 +14,7 @@ public class ClientAlertToken {
 
     @Id @Column(name = "client_alert_token_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int clientAlertTokenId;
+    private Integer clientAlertTokenId;
 
     @Column(name = "alert_token")
     private String alertToken;

@@ -15,7 +15,7 @@ public class StaffAlertToken {
 
     @Id @Column(name = "staff_alert_token_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int staffAlertTokenId;
+    private Integer staffAlertTokenId;
 
     @Column(name = "alert_token")
     private String alertToken;
@@ -23,8 +23,8 @@ public class StaffAlertToken {
     @Column(name = "device_info")
     private String deviceInfo;
 
-    @Column(name = "tokenNumber")
-    private String token_number;
+    @Column(name = "token_number")
+    private String tokenNumber;
 
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @OneToOne

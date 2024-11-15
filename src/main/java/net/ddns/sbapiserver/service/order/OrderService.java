@@ -8,13 +8,12 @@ import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.domain.entity.order.OrderContents;
 import net.ddns.sbapiserver.domain.entity.order.Orders;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
-import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
-import net.ddns.sbapiserver.repository.common.OrderContentsRepository;
-import net.ddns.sbapiserver.repository.common.OrderRepository;
-import net.ddns.sbapiserver.repository.common.ProductsRepository;
+import net.ddns.sbapiserver.repository.common.*;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -26,7 +25,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderContentsRepository orderContentsRepository;
     private final ClientRepository clientRepository;
-    private final ManufacturersRepository manufacturersRepository;
+    private final CustomOrderRepository customOrderRepository;
     private final ProductsRepository productsRepository;
 
     @Transactional
@@ -79,5 +78,24 @@ public class OrderService {
         }
 
         return orderResponseResult;
+    }
+
+    public List<OrderDto.Result> getOrderResultList(int clientId, LocalDate startDate, LocalDate endDate){
+
+        List<Orders> ordersList = customOrderRepository.findOrder(clientId, startDate, endDate);
+        List<OrderDto.Result> orderResultList = ordersList.stream()
+                .map(order ->
+                {
+                    List<OrderContents> orderContents = customOrderRepository.findOrderContent(order.getOrderId());
+
+                    List<OrderContentDto.Result> orderContentResult = OrderContentDto.Result.of(orderContents);
+
+                    return OrderDto.Result.of(order, orderContentResult);
+                }).collect(Collectors.toList());
+        return  orderResultList;
+    }
+
+    public void deleteOrder(int orderId){
+        customOrderRepository.deleteOrderContent(orderId);
     }
 }

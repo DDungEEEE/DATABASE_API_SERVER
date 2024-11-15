@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -17,10 +18,10 @@ public class Orders {
 
     @Id @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private Integer orderId;
 
     @Column(name = "order_date", nullable = false, updatable = false)
-    private String orderDate;
+    private Timestamp orderDate;
 
     @Column(name = "order_request", columnDefinition = "TEXT")
     private String orderRequest;
@@ -39,12 +40,11 @@ public class Orders {
     @PrePersist
     protected void checkOrderEntity(){
 
-        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        now.setNanos(0);
 
-        this.orderDate = now.format(dateTimeFormatter);
-
-        this.orderPrintCk = 0;
-        this.orderStatus = "관리자 승인 대기중";
+        orderDate = now;
+        orderPrintCk = 0;
+        orderStatus = "관리자 승인 대기중";
     }
 }
