@@ -26,7 +26,7 @@ public class MarketBasketController {
         List<MarketBasketDto.Result> results = marketBasketService.saveMarketBasket(create);
         return ResultResponse.<List<MarketBasketDto.Result>>dataResponse()
                 .result(results)
-                .resultCode(HttpStatus.CREATED)
+                .resultCode
                 .build();
     }
 
