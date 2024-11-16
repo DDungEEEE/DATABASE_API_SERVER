@@ -35,6 +35,7 @@ public class CustomOrderRepository {
         System.out.println("endTimestamp = " + endTimestamp + "adas = :" + startTimestamp);
 
         List<Orders> orderList = jpaQueryFactory.select(orders)
+                .from(orders)
                 .where(orders.clients.clientId.eq(clientId))
                 .where(orders.orderDate.between(startTimestamp, endTimestamp))
                 .fetch();
@@ -48,6 +49,7 @@ public class CustomOrderRepository {
         QOrderContents qOrderContents = QOrderContents.orderContents;
 
         List<OrderContents> orderContentsList = jpaQueryFactory.select(qOrderContents)
+                .from(qOrderContents)
                 .where(qOrderContents.orders.orderId.eq(orderId))
                 .fetch();
 

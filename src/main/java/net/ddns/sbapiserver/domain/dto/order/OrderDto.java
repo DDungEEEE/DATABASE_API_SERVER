@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.domain.dto.order;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.criteria.Order;
 import lombok.AllArgsConstructor;
@@ -54,6 +55,7 @@ public interface OrderDto {
         @Schema(name = "order_id")
         private int orderId;
 
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "order_date")
         private Timestamp orderDate;
 

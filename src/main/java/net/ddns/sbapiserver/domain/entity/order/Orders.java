@@ -33,7 +33,7 @@ public class Orders {
     private String orderStatus;
 
     @With
-    @JoinColumn(name = "client_id", referencedColumnName = "client_id")
+    @JoinColumn(name = "client_id")
     @ManyToOne
     private Clients clients;
 
