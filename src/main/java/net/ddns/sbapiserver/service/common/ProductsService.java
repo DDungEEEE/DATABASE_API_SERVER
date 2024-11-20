@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.service.product;
+package net.ddns.sbapiserver.service.common;
 
 import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;

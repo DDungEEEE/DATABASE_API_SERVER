@@ -1,4 +1,11 @@
 package net.ddns.sbapiserver.repository.helper;
 
-public class RepositoryHelper {
+import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Component;
+
+@Component
+public record RepositoryHelper(EntityManager em) {
+
+
+
 }

@@ -4,17 +4,14 @@ import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.order.OrderDto;
-import net.ddns.sbapiserver.service.order.OrderService;
-import org.aspectj.weaver.ast.Or;
+import net.ddns.sbapiserver.service.common.OrderService;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@RequestMapping("/api/client/order")
+@RequestMapping("/api/order")
 @RestController
 @RequiredArgsConstructor
 public class OrderController {

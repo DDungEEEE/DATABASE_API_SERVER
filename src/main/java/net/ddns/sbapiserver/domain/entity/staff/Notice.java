@@ -1,10 +1,7 @@
 package net.ddns.sbapiserver.domain.entity.staff;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -12,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 @Entity @Getter
+@Builder @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "notice")
@@ -25,25 +23,23 @@ public class Notice {
     @Column(name = "notice_content", columnDefinition = "TEXT")
     private String noticeContent;
 
+
     @Column(name = "notice_date")
-    private Timestamp noticeDate;
+    private LocalDateTime noticeDate;
 
     @Column(name = "notice_status")
     private String noticeStatus;
 
     @Column(name = "notice_title")
-    private String notice_title;
+    private String noticeTitle;
 
+    @With
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @ManyToOne
     private Staffs staffs;
 
     @PrePersist
     protected void setNoticeDate(){
-//        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
-//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
-
-//        this.noticeDate = now.format(dateTimeFormatter);
-        this.noticeDate = new Timestamp(System.currentTimeMillis());
+        noticeDate = LocalDateTime.now().withSecond(0).withNano(0);
     }
 }

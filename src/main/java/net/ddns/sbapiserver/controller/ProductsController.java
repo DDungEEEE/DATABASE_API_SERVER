@@ -1,7 +1,6 @@
 package net.ddns.sbapiserver.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,7 @@ import net.ddns.sbapiserver.domain.dto.comon.ProductDto;
 import net.ddns.sbapiserver.domain.dto.comon.ProductDto.Create;
 import net.ddns.sbapiserver.domain.dto.comon.ProductDto.Put;
 import net.ddns.sbapiserver.domain.entity.common.Products;
-import net.ddns.sbapiserver.service.product.ProductsService;
+import net.ddns.sbapiserver.service.common.ProductsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/client/products")
+@RequestMapping("/api/products")
 public class ProductsController {
 
     private final ProductsService productsService;

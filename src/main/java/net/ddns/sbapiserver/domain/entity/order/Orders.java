@@ -3,6 +3,7 @@ package net.ddns.sbapiserver.domain.entity.order;
 import jakarta.persistence.*;
 import lombok.*;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -20,8 +21,9 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId;
 
+    @DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
     @Column(name = "order_date", nullable = false, updatable = false)
-    private Timestamp orderDate;
+    private LocalDateTime orderDate;
 
     @Column(name = "order_request", columnDefinition = "TEXT")
     private String orderRequest;
@@ -40,10 +42,8 @@ public class Orders {
     @PrePersist
     protected void checkOrderEntity(){
 
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        now.setNanos(0);
 
-        orderDate = now;
+        orderDate = LocalDateTime.now().withSecond(0).withNano(0);
         orderPrintCk = 0;
         orderStatus = "관리자 승인 대기중";
     }

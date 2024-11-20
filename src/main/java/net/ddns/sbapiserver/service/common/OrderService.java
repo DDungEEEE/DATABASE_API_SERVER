@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.service.order;
+package net.ddns.sbapiserver.service.common;
 
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.domain.dto.order.OrderContentDto;

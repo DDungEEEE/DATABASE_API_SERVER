@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/client/marketbasket")
+@RequestMapping("/api/marketbasket")
 public class MarketBasketController {
 
     private final MarketBasketService marketBasketService;

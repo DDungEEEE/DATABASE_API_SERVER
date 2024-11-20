@@ -1,13 +1,11 @@
 package net.ddns.sbapiserver.domain.entity.staff;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 @Entity @Getter
+@Builder @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "staffs")
@@ -46,13 +44,13 @@ public class Staffs {
     private Timestamp updateAt;
 
     @PrePersist
-    protected void setNoticeTime(){
+    protected void setStaffTime(){
         createAt = new Timestamp(System.currentTimeMillis());
         updateAt = new Timestamp(System.currentTimeMillis());
     }
 
     @PreUpdate
-    protected void updateNoticeTime(){
+    protected void updateStaffTime(){
         updateAt = new Timestamp(System.currentTimeMillis());
     }
 }

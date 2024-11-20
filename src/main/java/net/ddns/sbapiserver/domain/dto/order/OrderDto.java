@@ -11,6 +11,7 @@ import net.ddns.sbapiserver.domain.entity.order.OrderContents;
 import net.ddns.sbapiserver.domain.entity.order.Orders;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -55,9 +56,9 @@ public interface OrderDto {
         @Schema(name = "order_id")
         private int orderId;
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "order_date")
-        private Timestamp orderDate;
+        private LocalDateTime orderDate;
 
         @Schema(name = "order_print_ck")
         private int orderPrintCk;

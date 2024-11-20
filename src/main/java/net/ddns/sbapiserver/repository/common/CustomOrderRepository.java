@@ -29,15 +29,11 @@ public class CustomOrderRepository {
     public List<Orders> findOrder(int clientId, LocalDate startDate, LocalDate endDate){
         QOrders orders = QOrders.orders;
 
-        Timestamp startTimestamp = parsingToTimestamp(startDate);
-        Timestamp endTimestamp = parsingToTimestamp(endDate);
-
-        System.out.println("endTimestamp = " + endTimestamp + "adas = :" + startTimestamp);
 
         List<Orders> orderList = jpaQueryFactory.select(orders)
                 .from(orders)
                 .where(orders.clients.clientId.eq(clientId))
-                .where(orders.orderDate.between(startTimestamp, endTimestamp))
+                .where(orders.orderDate.between(parsingToLocalDateTime(startDate), parsingToLocalDateTime(endDate)))
                 .fetch();
 
 
@@ -56,9 +52,8 @@ public class CustomOrderRepository {
         return orderContentsList;
     }
 
-    private Timestamp parsingToTimestamp(LocalDate localDate){
-        LocalDateTime localDateTime = localDate.atStartOfDay();
-        return Timestamp.valueOf(localDateTime);
+    private LocalDateTime parsingToLocalDateTime(LocalDate localDate){
+        return localDate.atStartOfDay();
     }
 
     @Transactional
