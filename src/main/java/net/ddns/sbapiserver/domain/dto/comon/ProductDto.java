@@ -134,7 +134,6 @@ public interface ProductDto {
         @Schema(name="product_type")
         private String productType;
 
-
         @Schema(name = "product_manufacturer_id")
         private Integer productManufacturerId;
 

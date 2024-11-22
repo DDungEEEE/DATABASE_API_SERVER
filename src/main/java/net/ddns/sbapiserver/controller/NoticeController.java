@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "공지사항 컨트롤러")
 @RequiredArgsConstructor
 @RequestMapping("/api/notice")
 @RestController

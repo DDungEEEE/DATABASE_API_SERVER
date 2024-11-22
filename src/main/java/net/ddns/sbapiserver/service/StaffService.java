@@ -4,15 +4,20 @@ import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.domain.dto.staff.StaffDto;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class StaffService {
     private final StaffRepository staffRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public StaffDto.Result createStaff(StaffDto.Create create){
         Staffs createStaff = create.asEntity();
+
+        createStaff.setStaffPassword(passwordEncoder.encode(create.getStaffPassword()));
+
         Staffs saveStaff = staffRepository.save(createStaff);
         return StaffDto.Result.of(saveStaff);
     }

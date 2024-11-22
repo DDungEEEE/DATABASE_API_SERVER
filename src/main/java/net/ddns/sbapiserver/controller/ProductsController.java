@@ -2,6 +2,7 @@ package net.ddns.sbapiserver.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "상품 컨트롤러",description = "상품 조회, 삭제, 수정, 추가")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
