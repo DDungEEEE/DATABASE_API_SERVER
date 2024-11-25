@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.exception.admin;
+package net.ddns.sbapiserver.repository.staff;
 
 import net.ddns.sbapiserver.domain.entity.staff.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -5,9 +5,12 @@ import net.ddns.sbapiserver.domain.dto.basket.MarketBasketDto;
 import net.ddns.sbapiserver.domain.entity.basket.MarketBasket;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.domain.entity.common.Products;
+import net.ddns.sbapiserver.exception.custom.BusinessException;
+import net.ddns.sbapiserver.exception.error.ErrorCode;
 import net.ddns.sbapiserver.repository.bakset.MarketBasketRepository;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
+import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,16 +23,15 @@ import java.util.stream.Collectors;
 public class MarketBasketService {
 
     private final MarketBasketRepository marketBasketRepository;
-    private final ProductsRepository productsRepository;
-    private final ClientRepository clientRepository;
+    private final ServiceErrorHelper serviceErrorHelper;
 
     public List<MarketBasketDto.Result> saveMarketBasket(List<MarketBasketDto.Create> creates){
 
 
         List<MarketBasket> marketBasketList = creates.stream()
                 .map(create -> {
-                    Clients clients = clientRepository.findById(create.getClientId()).get();
-                    Products products = productsRepository.findByProductId(create.getProductId());
+                    Clients clients = serviceErrorHelper.findClientsOrElseThrow404(create.getClientId());
+                    Products products = serviceErrorHelper.findProductsOrElseThrow404(create.getProductId());
                     return create.asEntity(marketBasket ->
                             marketBasket.withProducts(products).withClients(clients));
                 }).collect(Collectors.toList());
@@ -39,12 +41,16 @@ public class MarketBasketService {
     }
 
     public List<MarketBasketDto.Result> getMarketBasketList(int clientId){
+        serviceErrorHelper.findClientsOrElseThrow404(clientId);
+
         List<MarketBasket> marketBaskets = marketBasketRepository.findMarketBasketsByClientsClientId(clientId);
         return MarketBasketDto.Result.of(marketBaskets);
     }
 
     @Transactional
     public void deleteByClientId(int clientId){
+        serviceErrorHelper.findClientsOrElseThrow404(clientId);
+
         marketBasketRepository.deleteByClientsClientId(clientId);
     }
 }

@@ -25,7 +25,7 @@ public interface StaffDto {
         private String staffUserId;
 
         @Schema(name = "staff_password")
-        @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?\":{}|<>])[a-zA-Z!@#$%^&*(),.?\":{}|<>]{1,16}$", message = "15자 이하의 영 대문자, 특수문자를 조합해주세요")
+        @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?\":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?\":{}|<>]{1,16}$", message = "15자 이하의 영 대문자, 특수문자를 조합해주세요")
         private String staffPassword;
 
         @Schema(name = "staff_name")
@@ -38,6 +38,7 @@ public interface StaffDto {
         private String staffDepartment;
 
         @Schema(name = "staff_phone_number")
+        @Pattern(regexp = "^010-\\d{4}-\\d{4}$", message = "휴대폰 번호는 010-XXXX-XXXX 형식이어야 합니다.")
         private String staffPhoneNumber;
 
         @Schema(name = "staff_gender")

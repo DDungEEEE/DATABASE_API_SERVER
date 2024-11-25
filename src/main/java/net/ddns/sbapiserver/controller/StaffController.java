@@ -22,6 +22,7 @@ public class StaffController {
 
     @PostMapping
     ResultResponse<StaffDto.Result> add(@RequestBody @Valid StaffDto.Create create){
+
         StaffDto.Result staff = staffService.createStaff(create);
         return ResultResponse.<StaffDto.Result>successResponse()
                 .successCode(SuccessCode.INSERT_SUCCESS)

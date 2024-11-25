@@ -15,7 +15,8 @@ public class Staffs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int staffId;
 
-    @Column(name = "staff_user_id")
+
+    @Column(name = "staff_user_id", unique = true)
     private String staffUserId;
 
     @Column(name = "staff_password")

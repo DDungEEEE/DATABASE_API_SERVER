@@ -9,6 +9,7 @@ import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
+import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ProductsService {
     private final ProductsRepository productsRepository;
     private final StaffRepository staffRepository;
     private final ManufacturersRepository manufacturersRepository;
+    private final ServiceErrorHelper serviceErrorHelper;
 
     public Products addProduct(ProductDto.Create create){
 
@@ -30,6 +32,7 @@ public class ProductsService {
     }
 
     public void deleteProduct(int productId){
+        serviceErrorHelper.findProductsOrElseThrow404(productId);
         productsRepository.deleteById(productId);
     }
 

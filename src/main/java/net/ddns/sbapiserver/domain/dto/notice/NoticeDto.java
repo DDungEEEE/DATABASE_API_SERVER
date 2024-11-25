@@ -1,8 +1,10 @@
 package net.ddns.sbapiserver.domain.dto.notice;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.ddns.sbapiserver.domain.entity.staff.Notice;
 
 import java.time.LocalDateTime;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
 public interface NoticeDto {
 
     @Data
-    @Builder
+    @NoArgsConstructor
     @Schema(name = "NoticeCreate")
     class Create{
 

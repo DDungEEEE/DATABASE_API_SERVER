@@ -9,6 +9,7 @@ import net.ddns.sbapiserver.domain.entity.order.OrderContents;
 import net.ddns.sbapiserver.domain.entity.order.Orders;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.common.*;
+import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +25,13 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderContentsRepository orderContentsRepository;
-    private final ClientRepository clientRepository;
     private final CustomOrderRepository customOrderRepository;
-    private final ProductsRepository productsRepository;
+    private final ServiceErrorHelper serviceErrorHelper;
 
     @Transactional
     public OrderDto.Result saveOrder(OrderDto.Create orderCreate){
 
-        Clients clients = clientRepository.findById(orderCreate.getClientId()).get();
+        Clients clients = serviceErrorHelper.findClientsOrElseThrow404(orderCreate.getClientId());
 
         Orders order = orderCreate.asEntity(
                 orders -> orders.withClients(clients)
@@ -52,32 +52,12 @@ public class OrderService {
                 .map(orderCreate -> orderCreate.asEntity(orderContents ->
                         orderContents
                                 .withOrders(orders)
-                                .withProducts(productsRepository.findByProductId(orderCreate.getProductId())))
+                                .withProducts(serviceErrorHelper.findProductsOrElseThrow404(orderContents.getProducts().getProductId())))
                 ).collect(Collectors.toList());
 
         List<OrderContents> orderContents = orderContentsRepository.saveAll(collectOrderContents);
 
         return OrderContentDto.Result.of(orderContents);
-    }
-
-    public List<OrderDto.Result> getOrderData(int clientId){
-        List<Orders> orders = orderRepository.findOrdersByClientsClientId(clientId);
-
-        List<OrderDto.Result> orderResponseResult = new ArrayList<>();
-
-        for(int i = 0; i < orders.size(); i++){
-            int orderId = orders.get(i).getOrderId();
-
-            List<OrderContents> orderContents = orderContentsRepository.findOrderContentsByOrdersOrderId(orderId);
-
-            List<OrderContentDto.Result> orderContentResult = OrderContentDto.Result.of(orderContents);
-
-            OrderDto.Result orderResult = OrderDto.Result.of(orders.get(i), orderContentResult);
-
-            orderResponseResult.add(orderResult);
-        }
-
-        return orderResponseResult;
     }
 
     public List<OrderDto.Result> getOrderResultList(int clientId, LocalDate startDate, LocalDate endDate){
