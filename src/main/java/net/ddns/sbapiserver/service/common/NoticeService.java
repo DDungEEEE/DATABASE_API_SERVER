@@ -1,11 +1,10 @@
 package net.ddns.sbapiserver.service.common;
 
 import lombok.RequiredArgsConstructor;
-import net.ddns.sbapiserver.domain.dto.notice.NoticeDto;
+import net.ddns.sbapiserver.domain.dto.staff.NoticeDto;
 import net.ddns.sbapiserver.domain.entity.staff.Notice;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.repository.staff.NoticeRepository;
-import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

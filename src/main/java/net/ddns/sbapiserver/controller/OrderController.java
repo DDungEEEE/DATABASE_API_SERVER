@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
@@ -20,6 +21,7 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
+    @ApiResponse(responseCode = "201", description = "주문 추가")
     @Operation(summary = "주문 추가")
     @PostMapping
     public ResultResponse<OrderDto.Result> createOrder(@RequestBody OrderDto.Create orderCreate){
@@ -30,6 +32,7 @@ public class OrderController {
                 .build();
     }
 
+    @ApiResponse(responseCode = "200")
     @Operation(summary = "주문내역 조회")
     @GetMapping("{client_id}/{start_date}/{end_date}")
     public ResultResponse<List<OrderDto.Result>> getOrder(@PathVariable("client_id") int clientId, @PathVariable("start_date")

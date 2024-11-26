@@ -3,6 +3,8 @@ package net.ddns.sbapiserver.domain.entity.client;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
@@ -47,10 +49,16 @@ public class Clients {
     @Column(name = "client_refresh_token")
     private String clientRefreshToken;
 
-    @Column(name = "client_created_at", nullable = false)
+    @CreationTimestamp
+    @Column(name = "client_created_at",updatable = false, nullable = false)
     private Timestamp clientCreatedAt;
 
-    @Column(name = "client_updated_at", nullable = false, updatable = false)
+    @UpdateTimestamp
+    @Column(name = "client_updated_at", nullable = false)
     private Timestamp clientUpdatedAt;
 
+    @PrePersist
+    private void setClientUpdatedAt(){
+        clientUpdatedAt = new Timestamp(System.currentTimeMillis());
+    }
 }

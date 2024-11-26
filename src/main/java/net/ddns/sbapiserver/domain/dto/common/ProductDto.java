@@ -1,5 +1,6 @@
-package net.ddns.sbapiserver.domain.dto.comon;
+package net.ddns.sbapiserver.domain.dto.common;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
@@ -8,14 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
 import net.ddns.sbapiserver.domain.entity.common.Products;
-import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -141,9 +139,11 @@ public interface ProductDto {
         @Schema(name = "staff_id")
         private Integer staffId;
 
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "product_enroll_date")
         private Timestamp productEnrollDate;
 
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "product_modify_date")
         private Timestamp productModifyDate;
 

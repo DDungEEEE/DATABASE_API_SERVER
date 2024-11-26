@@ -1,14 +1,12 @@
 package net.ddns.sbapiserver.service.common;
 
-import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
-import net.ddns.sbapiserver.domain.dto.comon.ProductDto;
+import net.ddns.sbapiserver.domain.dto.common.ProductDto;
 import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
 import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
-import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
 

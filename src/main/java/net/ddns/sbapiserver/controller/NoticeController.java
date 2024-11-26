@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
-import net.ddns.sbapiserver.domain.dto.notice.NoticeDto;
+import net.ddns.sbapiserver.domain.dto.staff.NoticeDto;
 import net.ddns.sbapiserver.service.common.NoticeService;
 import org.springframework.web.bind.annotation.*;
 

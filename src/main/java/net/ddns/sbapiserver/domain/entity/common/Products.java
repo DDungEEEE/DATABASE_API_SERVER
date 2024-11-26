@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -45,24 +47,20 @@ public class Products {
     @ManyToOne
     private Staffs staffs;
 
-    @Column(name = "product_enroll_date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @CreationTimestamp
+    @Column(name = "product_enroll_date", nullable = false, updatable = false)
     private Timestamp productEnrollDate;
 
-    @Column(name="product_modify_date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @UpdateTimestamp
+    @Column(name="product_modify_date", nullable = false, updatable = false)
     private Timestamp productModifyDate;
 
     @PrePersist
-    protected void setProductDate(){
-            productEnrollDate = new Timestamp(System.currentTimeMillis());
-            productModifyDate = new Timestamp(System.currentTimeMillis());
+    protected void setDefaultProductPriceAndModifyDate(){
             if(productPrice == null){
-                productPrice = new BigDecimal(0.00);
+                productPrice = new BigDecimal("0.00");
             }
-
+            productModifyDate = new Timestamp(System.currentTimeMillis());
     }
 
-    @PreUpdate
-    protected void updateProductModifyDate(){
-        productModifyDate = new Timestamp(System.currentTimeMillis());
-    }
 }

@@ -1,5 +1,6 @@
-package net.ddns.sbapiserver.domain.dto.comon;
+package net.ddns.sbapiserver.domain.dto.common;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -7,12 +8,12 @@ import lombok.Builder;
 import lombok.Data;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
-@Schema(name = "ClientDto")
+
 public interface ClientsDto {
 
+    @Schema(name = "ClientCreate")
     @Data
     @Builder
     class Create{
@@ -62,6 +63,7 @@ public interface ClientsDto {
         }
     }
 
+    @Schema(name = "clientResult")
     @Data
     @Builder
     class Result{
@@ -98,9 +100,11 @@ public interface ClientsDto {
         @Schema(name = "client_refresh_token")
         private String clientRefreshToken;
 
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "client_created_at")
         private Timestamp clientCreatedAt;
 
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "client_updated_at")
         private Timestamp clientUpdatedAt;
 

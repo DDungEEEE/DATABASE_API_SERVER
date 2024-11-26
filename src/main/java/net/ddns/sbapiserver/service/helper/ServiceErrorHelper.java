@@ -1,11 +1,14 @@
 package net.ddns.sbapiserver.service.helper;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
+import net.ddns.sbapiserver.domain.entity.client.QClients;
 import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
 import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.domain.entity.order.Orders;
 import net.ddns.sbapiserver.domain.entity.staff.Notice;
+import net.ddns.sbapiserver.domain.entity.staff.QStaffs;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.exception.custom.BusinessException;
 import net.ddns.sbapiserver.common.code.ErrorCode;
@@ -26,6 +29,7 @@ public class ServiceErrorHelper {
     private final NoticeRepository noticeRepository;
     private final OrderRepository orderRepository;
     private final ManufacturersRepository manufacturersRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     public Clients findClientsOrElseThrow404(int clientId){
         ErrorCode clientNotFoundError = ErrorCode.CLIENT_NOT_FOUND_ERROR;
@@ -67,6 +71,20 @@ public class ServiceErrorHelper {
         return manufacturersRepository.findById(manufacturerId).orElseThrow(
                 () -> new BusinessException(manufacturerNotFoundError, manufacturerNotFoundError.getReason())
         );
+    }
+
+    public boolean isUserIdDuplicated(String userId){
+        QClients clients = QClients.clients;
+        QStaffs staffs = QStaffs.staffs;
+        Clients findClient = jpaQueryFactory.selectFrom(clients)
+                .where(clients.clientName.eq(userId))
+                .fetchOne();
+
+        Staffs findStaff = jpaQueryFactory.selectFrom(staffs)
+                .where(staffs.staffUserId.eq(userId))
+                .fetchOne();
+
+        return findClient != null || findStaff != null;
     }
 
 }

@@ -2,6 +2,8 @@ package net.ddns.sbapiserver.domain.entity.staff;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 @Entity @Getter
@@ -38,20 +40,17 @@ public class Staffs {
     @Column(name = "staff_gender")
     private StaffGender staffGender;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at", nullable = false, updatable = false)
     private Timestamp updateAt;
 
     @PrePersist
     protected void setStaffTime(){
-        createAt = new Timestamp(System.currentTimeMillis());
         updateAt = new Timestamp(System.currentTimeMillis());
     }
 
-    @PreUpdate
-    protected void updateStaffTime(){
-        updateAt = new Timestamp(System.currentTimeMillis());
-    }
 }
