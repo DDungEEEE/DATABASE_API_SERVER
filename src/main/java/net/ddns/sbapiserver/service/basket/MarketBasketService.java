@@ -5,16 +5,11 @@ import net.ddns.sbapiserver.domain.dto.basket.MarketBasketDto;
 import net.ddns.sbapiserver.domain.entity.basket.MarketBasket;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.domain.entity.common.Products;
-import net.ddns.sbapiserver.exception.custom.BusinessException;
-import net.ddns.sbapiserver.exception.error.ErrorCode;
 import net.ddns.sbapiserver.repository.bakset.MarketBasketRepository;
-import net.ddns.sbapiserver.repository.client.ClientRepository;
-import net.ddns.sbapiserver.repository.common.ProductsRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

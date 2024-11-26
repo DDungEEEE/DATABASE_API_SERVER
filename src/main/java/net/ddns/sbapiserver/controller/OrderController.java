@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
@@ -19,6 +20,7 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
+    @Operation(summary = "주문 추가")
     @PostMapping
     public ResultResponse<OrderDto.Result> createOrder(@RequestBody OrderDto.Create orderCreate){
         OrderDto.Result orderResult = orderService.saveOrder(orderCreate);
@@ -28,6 +30,7 @@ public class OrderController {
                 .build();
     }
 
+    @Operation(summary = "주문내역 조회")
     @GetMapping("{client_id}/{start_date}/{end_date}")
     public ResultResponse<List<OrderDto.Result>> getOrder(@PathVariable("client_id") int clientId, @PathVariable("start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate, @PathVariable("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
@@ -40,6 +43,7 @@ public class OrderController {
                 .build();
     }
 
+    @Operation(summary = "주문내역 삭제")
     @DeleteMapping("{order_id}")
     public ResultResponse<Void> deleteOrder( @PathVariable("order_id") int orderId){
         orderService.deleteOrder(orderId);

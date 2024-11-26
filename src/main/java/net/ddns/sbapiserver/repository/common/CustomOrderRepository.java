@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,11 +30,13 @@ public class CustomOrderRepository {
     public List<Orders> findOrder(int clientId, LocalDate startDate, LocalDate endDate){
         QOrders orders = QOrders.orders;
 
+        LocalDateTime startLocalDate = parsingToStartLocalDateTime(startDate);
+        LocalDateTime endLocalDate = parsingToEndLocalDateTime(endDate);
 
-        List<Orders> orderList = jpaQueryFactory.select(orders)
-                .from(orders)
-                .where(orders.clients.clientId.eq(clientId))
-                .where(orders.orderDate.between(parsingToLocalDateTime(startDate), parsingToLocalDateTime(endDate)))
+
+        List<Orders> orderList = jpaQueryFactory.selectFrom(orders)
+                .where(orders.clients.clientId.eq(clientId)
+                        .and(orders.orderDate.between(startLocalDate, endLocalDate)))
                 .fetch();
 
 
@@ -52,8 +55,12 @@ public class CustomOrderRepository {
         return orderContentsList;
     }
 
-    private LocalDateTime parsingToLocalDateTime(LocalDate localDate){
+    protected LocalDateTime parsingToStartLocalDateTime(LocalDate localDate){
         return localDate.atStartOfDay();
+    }
+
+    protected LocalDateTime parsingToEndLocalDateTime(LocalDate localDate){
+        return localDate.atTime(LocalTime.MAX);
     }
 
     @Transactional

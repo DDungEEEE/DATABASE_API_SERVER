@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
@@ -17,6 +18,7 @@ import java.util.List;
 public class NoticeController {
     private final NoticeService noticeService;
 
+    @Operation(summary = "공지사항 조회")
     @GetMapping
     public ResultResponse<List<NoticeDto.Result>> get(){
         List<NoticeDto.Result> noticeList = noticeService.getNoticeList();
@@ -26,6 +28,7 @@ public class NoticeController {
                 .build();
     }
 
+    @Operation(summary = "공지사항 등록")
     @PostMapping
     public ResultResponse<NoticeDto.Result> add(@RequestBody NoticeDto.Create create){
         NoticeDto.Result notice = noticeService.createNotice(create);

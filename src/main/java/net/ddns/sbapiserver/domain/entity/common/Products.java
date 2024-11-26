@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity  @Getter
@@ -22,8 +23,8 @@ public class Products {
     @Column(name = "product_name")
     private String productName;
 
-    @Column(name = "product_price")
-    private int productPrice;
+    @Column(name = "product_price", precision = 10, scale = 2, nullable = false)
+    private BigDecimal productPrice;
 
     @Column(name = "product_status")
     private String productStatus;
@@ -52,12 +53,12 @@ public class Products {
 
     @PrePersist
     protected void setProductDate(){
-        if(productEnrollDate == null){
             productEnrollDate = new Timestamp(System.currentTimeMillis());
-        }
-        if(productModifyDate == null){
             productModifyDate = new Timestamp(System.currentTimeMillis());
-        }
+            if(productPrice == null){
+                productPrice = new BigDecimal(0.00);
+            }
+
     }
 
     @PreUpdate

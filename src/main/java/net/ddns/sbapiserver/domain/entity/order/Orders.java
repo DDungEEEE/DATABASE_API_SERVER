@@ -41,8 +41,6 @@ public class Orders {
 
     @PrePersist
     protected void checkOrderEntity(){
-
-
         orderDate = LocalDateTime.now().withSecond(0).withNano(0);
         orderPrintCk = 0;
         orderStatus = "관리자 승인 대기중";

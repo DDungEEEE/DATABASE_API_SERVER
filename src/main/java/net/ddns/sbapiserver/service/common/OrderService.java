@@ -61,6 +61,7 @@ public class OrderService {
     }
 
     public List<OrderDto.Result> getOrderResultList(int clientId, LocalDate startDate, LocalDate endDate){
+        serviceErrorHelper.findClientsOrElseThrow404(clientId);
 
         List<Orders> ordersList = customOrderRepository.findOrder(clientId, startDate, endDate);
         List<OrderDto.Result> orderResultList = ordersList.stream()
@@ -76,6 +77,7 @@ public class OrderService {
     }
 
     public void deleteOrder(int orderId){
+        serviceErrorHelper.findOrderOrElseThrow404(orderId);
         customOrderRepository.deleteOrderContent(orderId);
     }
 }

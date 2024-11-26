@@ -23,6 +23,7 @@ public class MarketBasketController {
 
     private final MarketBasketService marketBasketService;
 
+    @ApiResponse(responseCode = "200")
     @Operation(summary = "장바구니 추가")
     @PostMapping
     public ResultResponse<List<MarketBasketDto.Result>> create(@RequestBody @Valid List<MarketBasketDto.Create> create){
@@ -45,7 +46,7 @@ public class MarketBasketController {
     }
 
     @Operation(summary = "장바구니 삭제")
-    @ApiResponse(responseCode = "204")
+    @ApiResponse(responseCode = "200")
     @DeleteMapping("{client_id}")
     public ResultResponse<Void> delete(@PathVariable("client_id") int clientId){
         marketBasketService.deleteByClientId(clientId);

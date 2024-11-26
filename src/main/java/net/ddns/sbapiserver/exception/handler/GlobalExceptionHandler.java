@@ -1,14 +1,12 @@
 package net.ddns.sbapiserver.exception.handler;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.extern.slf4j.Slf4j;
 import net.ddns.sbapiserver.exception.custom.BusinessException;
-import net.ddns.sbapiserver.exception.error.ErrorCode;
+import net.ddns.sbapiserver.common.code.ErrorCode;
 import net.ddns.sbapiserver.exception.error.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

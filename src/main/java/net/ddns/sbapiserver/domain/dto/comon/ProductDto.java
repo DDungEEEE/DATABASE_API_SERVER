@@ -12,6 +12,7 @@ import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
 import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public interface ProductDto {
         @NotNull(message = "상품 가격을 입력해주세요.")
         @Digits(integer = 10, fraction = 2, message = "가격은 최대 10자리 숫자와 소수점 이하 2자리여야 합니다.")
         @DecimalMin(value = "0.00", message = "가격은 0.00 이상이어야 합니다.")
-        private int productPrice;
+        private BigDecimal productPrice;
 
         @Schema(name = "product_status")
         private String productStatus;
@@ -83,7 +84,7 @@ public interface ProductDto {
         @NotNull(message = "상품 가격을 입력해주세요.")
         @Digits(integer = 10, fraction = 2, message = "가격은 최대 10자리 숫자와 소수점 이하 2자리여야 합니다.")
         @DecimalMin(value = "0.00", message = "가격은 0.00 이상이어야 합니다.")
-        private int productPrice;
+        private BigDecimal productPrice;
 
         @Schema(name = "product_status")
         private String productStatus;
@@ -114,7 +115,7 @@ public interface ProductDto {
     @Data
     @Schema(name = "ProductResult")
     @Builder
-    class Result{
+    class Result {
 
         @Schema(name = "product_id")
         private int productId;
@@ -123,15 +124,15 @@ public interface ProductDto {
         private String productName;
 
         @Schema(name = "product_price")
-        private int productPrice;
+        private BigDecimal productPrice;
 
         @Schema(name = "product_status")
         private String productStatus;
 
-        @Schema(name="product_img")
+        @Schema(name = "product_img")
         private String productImg;
 
-        @Schema(name="product_type")
+        @Schema(name = "product_type")
         private String productType;
 
         @Schema(name = "product_manufacturer_id")
@@ -146,7 +147,7 @@ public interface ProductDto {
         @Schema(name = "product_modify_date")
         private Timestamp productModifyDate;
 
-        public static Result of(Products products){
+        public static Result of(Products products) {
             return Result.builder()
                     .productName(products.getProductName())
                     .productId(products.getProductId())
@@ -154,31 +155,18 @@ public interface ProductDto {
                     .productPrice(products.getProductPrice())
                     .productStatus(products.getProductStatus())
                     .productType(products.getProductType())
-                    .productManufacturerId(checkManufacturerIsNull(products.getManufacturers()))
-                    .staffId(checkStaffIsNull(products.getStaffs()))
+                    .productManufacturerId(products.getManufacturers().getManufacturerId())
+                    .staffId(products.getStaffs().getStaffId())
                     .productEnrollDate(products.getProductEnrollDate())
                     .productModifyDate(products.getProductModifyDate())
                     .build();
         }
 
-        public static List<Result> of(List<Products> products){
-           return products.stream().map(Result::of)
+        public static List<Result> of(List<Products> products) {
+            return products.stream().map(Result::of)
                     .collect(Collectors.toList());
         }
 
-        protected static Integer checkStaffIsNull(Staffs staffs){
-            if(staffs == null){
-                return null;
-            }
-            return staffs.getStaffId();
-        }
-
-        protected static Integer checkManufacturerIsNull(Manufacturers manufacturers){
-            if(manufacturers == null){
-                return null;
-            }
-            return manufacturers.getManufacturerId();
-        }
     }
 
 }

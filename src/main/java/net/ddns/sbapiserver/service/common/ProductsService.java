@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductsService {
     private final ProductsRepository productsRepository;
-    private final StaffRepository staffRepository;
     private final ManufacturersRepository manufacturersRepository;
     private final ServiceErrorHelper serviceErrorHelper;
 
@@ -26,7 +25,7 @@ public class ProductsService {
 
         Products productEntity = create.asEntity(products ->
                 products.withManufacturers(manufacturersRepository.findById(create.getProductManufacturerId()).get())
-                        .withStaffs(staffRepository.findById(create.getStaffId()).orElse(null)));
+                        .withStaffs(serviceErrorHelper.findStaffOrElseThrow404(create.getStaffId())));
 
         return productsRepository.save(productEntity);
     }
@@ -41,9 +40,11 @@ public class ProductsService {
     }
 
     public Products updateProducts(ProductDto.Put put){
-        Products findProduct = productsRepository.findByProductId(put.getProductId());
+        Products findProduct = serviceErrorHelper.findProductsOrElseThrow404(put.getProductId());
+        Staffs findStaff = serviceErrorHelper.findStaffOrElseThrow404(put.getStaffId());
+        Manufacturers findManufacturer = serviceErrorHelper.findManufacturerOrElseThrow404(put.getProductManufacturerId());
 
-        Products updatedProduct = put.asPutEntity(findProduct);
+        Products updatedProduct = put.asPutEntity(findProduct.withManufacturers(findManufacturer).withStaffs(findStaff));
         return productsRepository.save(updatedProduct);
     }
 

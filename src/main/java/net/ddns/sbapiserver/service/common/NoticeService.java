@@ -21,6 +21,7 @@ public class NoticeService {
     @Transactional
     public NoticeDto.Result createNotice(NoticeDto.Create create){
         Staffs staffs = serviceErrorHelper.findStaffOrElseThrow404(create.getStaffId());
+
         Notice requestNotice = create.asEntity(notice -> notice.withStaffs(staffs));
         Notice createNotice = noticeRepository.save(requestNotice);
         return NoticeDto.Result.of(createNotice);

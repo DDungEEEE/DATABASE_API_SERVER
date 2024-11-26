@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.domain.dto.staff;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,18 +13,21 @@ import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import java.sql.Timestamp;
 import java.util.function.Function;
 
-@Schema(name = "StaffDto")
+
 public interface StaffDto {
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
+    @Schema(name = "StaffCreate")
     class Create{
 
+        @NotBlank(message = "아이디는 공백일 수 없습니다.")
         @Schema(name = "staff_user_id")
         private String staffUserId;
 
+        @NotBlank(message = "비밀번호는 공백일 수 없습니다.")
         @Schema(name = "staff_password")
         @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?\":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?\":{}|<>]{1,16}$", message = "15자 이하의 영 대문자, 특수문자를 조합해주세요")
         private String staffPassword;
@@ -59,6 +63,7 @@ public interface StaffDto {
 
     @Data
     @Builder
+    @Schema(name = "StaffResult")
     class Result{
 
         @Schema(name = "staff_id")

@@ -1,5 +1,7 @@
 package net.ddns.sbapiserver.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ public class StaffController {
 
     private final StaffService staffService;
 
+    @Operation(summary = "관리자 회원가입")
+    @ApiResponse(responseCode = "200")
     @PostMapping
     ResultResponse<StaffDto.Result> add(@RequestBody @Valid StaffDto.Create create){
 

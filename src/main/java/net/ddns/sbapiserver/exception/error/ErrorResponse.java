@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.exception.error;
 
 import lombok.*;
+import net.ddns.sbapiserver.common.code.ErrorCode;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 

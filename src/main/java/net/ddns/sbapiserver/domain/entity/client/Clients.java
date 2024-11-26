@@ -2,15 +2,12 @@ package net.ddns.sbapiserver.domain.entity.client;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 
 @Entity
-@Getter
+@Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "clients")
@@ -20,7 +17,7 @@ public class Clients {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer clientId;
 
-    @Column(name = "client_name") @NotBlank
+    @Column(name = "client_name")
     private String clientName;
 
     @Column(name = "client_password")
