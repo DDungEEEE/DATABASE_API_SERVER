@@ -42,7 +42,8 @@ public class SwaggerConfig{
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
                                 .bearerFormat("JWT")))
-                .servers(List.of(new Server().url("https://sbtechapiserver.ddns.net")));
+                .servers(List.of(new Server().url("http://localhost:33080"),
+                        new Server().url("https://sbtechapiserver.ddns.net")));
     }
 
     private Parameter createHeader(String name){

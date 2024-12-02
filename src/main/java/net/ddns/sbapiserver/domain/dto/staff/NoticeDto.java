@@ -27,7 +27,7 @@ public interface NoticeDto {
         @Schema(name = "notice_status")
         private String noticeStatus;
 
-        @Schema(name = "notice_name")
+        @Schema(name = "notice_title")
         private String noticeTitle;
 
         @Schema(name = "staff_id")
@@ -92,6 +92,7 @@ public interface NoticeDto {
                     .noticeDate(notice.getNoticeDate())
                     .noticeStatus(notice.getNoticeStatus())
                     .staff_id(notice.getStaffs().getStaffId())
+                    .noticeTitle(notice.getNoticeTitle())
                     .build();
         }
 

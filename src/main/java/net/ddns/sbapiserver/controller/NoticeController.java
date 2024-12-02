@@ -7,8 +7,10 @@ import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.staff.NoticeDto;
 import net.ddns.sbapiserver.service.common.NoticeService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Tag(name = "공지사항 컨트롤러")
@@ -25,6 +27,17 @@ public class NoticeController {
         return ResultResponse.<List<NoticeDto.Result>>successResponse()
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .result(noticeList)
+                .build();
+    }
+
+    @Operation(summary = "공지사항 검색")
+    @GetMapping("/{start_date}/{end_date}")
+    public ResultResponse<List<NoticeDto.Result>> search(@PathVariable("start_date") @DateTimeFormat(pattern = "yy-MM-dd") LocalDate startDate,
+                                                         @PathVariable("end_date") @DateTimeFormat(pattern = "yy-MM-dd") LocalDate endDate){
+        List<NoticeDto.Result> searchNotice = noticeService.searchNotice(startDate, endDate);
+        return ResultResponse.<List<NoticeDto.Result>>successResponse()
+                .result(searchNotice)
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 
