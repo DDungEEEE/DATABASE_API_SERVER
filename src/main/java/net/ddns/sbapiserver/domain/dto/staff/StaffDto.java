@@ -50,17 +50,54 @@ public interface StaffDto {
 
         public Staffs asEntity(){
             return Staffs.builder()
-                    .staffUserId(this.staffUserId)
-                    .staffDepartment(this.staffDepartment)
-                    .staffName(this.staffName)
-                    .staffPassword(this.staffPassword)
-                    .staffGender(this.staffGender)
-                    .staffPhoneNumber(this.staffPhoneNumber)
-                    .staffPosition(this.staffPosition)
+                    .staffUserId(staffUserId)
+                    .staffDepartment(staffDepartment)
+                    .staffName(staffName)
+                    .staffPassword(staffPassword)
+                    .staffGender(staffGender)
+                    .staffPhoneNumber(staffPhoneNumber)
+                    .staffPosition(staffPosition)
                     .build();
         }
     }
+    @Data
+    @Builder
+    @Schema(name = "StaffUpdate")
+    class Put{
+        @Schema(name = "staff_id")
+        private int staffId;
 
+        @NotBlank(message = "비밀번호는 공백일 수 없습니다.")
+        @Schema(name = "staff_password")
+        @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?\":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?\":{}|<>]{1,16}$", message = "15자 이하의 영 대문자, 특수문자를 조합해주세요")
+        private String staffPassword;
+
+        @Schema(name = "staff_name")
+        private String staffName;
+
+        @Schema(name = "staff_position")
+        private String staffPosition;
+
+        @Schema(name = "staff_department")
+        private String staffDepartment;
+
+        @Schema(name = "staff_phone_number")
+        @Pattern(regexp = "^010-\\d{4}-\\d{4}$", message = "휴대폰 번호는 010-XXXX-XXXX 형식이어야 합니다.")
+        private String staffPhoneNumber;
+
+        @Schema(name = "staff_gender")
+        private StaffGender staffGender;
+
+        public Staffs asPutEntity(Staffs staffs){
+            staffs.setStaffPassword(staffPassword);
+            staffs.setStaffName(staffName);
+            staffs.setStaffPosition(staffPosition);
+            staffs.setStaffDepartment(staffDepartment);
+            staffs.setStaffPhoneNumber(staffPhoneNumber);
+            staffs.setStaffGender(staffGender);
+            return staffs;
+        }
+    }
     @Data
     @Builder
     @Schema(name = "StaffResult")

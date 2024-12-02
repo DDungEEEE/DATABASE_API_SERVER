@@ -9,6 +9,8 @@ import lombok.Data;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public interface ClientsDto {
@@ -60,6 +62,54 @@ public interface ClientsDto {
                     .clientPhNum(clientPhNum)
                     .clientStatus(clientStatus)
                     .build();
+        }
+    }
+
+    @Schema(name = "ClientPut")
+    @Data
+    @Builder
+    class Put{
+        @Schema(name = "client_id")
+        private int clientId;
+
+        @NotBlank(message = "비밀번호는 공백일 수 없습니다.")
+        @Schema(name = "client_password")
+        private String clientPassword;
+
+        @Schema(name = "client_store_name")
+        private String clientStoreName;
+
+        @NotBlank(message = "고객 이름은 공백일 수 없습니다.")
+        @Schema(name = "client_ceo_name")
+        private String clientCeoName;
+
+        @Schema(name = "client_addr")
+        private String clientAddr;
+
+        @Schema(name = "client_business_number")
+        private String clientBusinessNumber;
+
+        @Schema(name = "client_margin_ratio")
+        private String clientMarginRatio;
+
+        @Pattern(regexp = "^010-\\d{4}-\\d{4}$", message = "휴대폰 번호는 010-XXXX-XXXX 형식이어야 합니다.")
+        @Schema(name = "client_ph_num")
+        private String clientPhNum;
+
+        @Schema(name = "client_status")
+        private String clientStatus;
+
+        public Clients asPutEntity(Clients clients){
+
+            clients.setClientStoreName(clientStoreName);
+            clients.setClientCeoName(clientCeoName);
+            clients.setClientAddr(clientAddr);
+            clients.setClientBusinessNumber(clientBusinessNumber);
+            clients.setClientMarginRatio(clientMarginRatio);
+            clients.setClientPhNum(clientPhNum);
+            clients.setClientStatus(clientStatus);
+
+            return clients;
         }
     }
 
@@ -122,6 +172,10 @@ public interface ClientsDto {
                     .clientCreatedAt(clients.getClientCreatedAt())
                     .clientUpdatedAt(clients.getClientUpdatedAt())
                     .build();
+        }
+
+        public static List<Result> of(List<Clients> clients){
+            return clients.stream().map(Result::of).collect(Collectors.toList());
         }
     }
 }

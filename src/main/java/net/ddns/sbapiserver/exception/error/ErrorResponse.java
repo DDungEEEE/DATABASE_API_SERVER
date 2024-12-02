@@ -10,10 +10,11 @@ import java.util.stream.Collectors;
 
 @Data
 public class ErrorResponse {
-    private List<ValidationError> errors;
-    private String reason;
-    private String divisionCode;
-    private int status;
+    private List<ValidationError> errors; // Validation 검증 오류
+    private String reason; // ErrorCode 이유
+    private String divisionCode; // ErrorCode 구분 코드
+    private int status; // Error 상태 코드
+    private String reasonMsg; // ErrorCode 상세화 -> 구체적인 이유
 
     public ErrorResponse(final ErrorCode errorCode) {
         this.reason = errorCode.getReason();
@@ -21,6 +22,13 @@ public class ErrorResponse {
         this.status = errorCode.getStatus();
     }
 
+    @Builder
+    public ErrorResponse(final ErrorCode errorCode, String reasonMsg){
+        this.reason = errorCode.getReason();
+        this.status = errorCode.getStatus();
+        this.divisionCode = errorCode.getDivisionCode();
+        this.reasonMsg = reasonMsg;
+    }
     @Builder
     public ErrorResponse(List<ValidationError> errors) {
         this.errors = errors;

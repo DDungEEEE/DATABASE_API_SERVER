@@ -39,4 +39,10 @@ public class NoticeService {
         return NoticeDto.Result.of(noticeRepository.save(putEntity));
 
     }
+
+    @Transactional
+    public void deleteNotice(int noticeId){
+        serviceErrorHelper.findNoticeOrElseThrow404(noticeId);
+        noticeRepository.deleteById(noticeId);
+    }
 }

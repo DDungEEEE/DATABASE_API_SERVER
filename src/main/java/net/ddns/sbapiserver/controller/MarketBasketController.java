@@ -45,10 +45,20 @@ public class MarketBasketController {
                 .build();
     }
 
-    @Operation(summary = "장바구니 삭제")
+    @Operation(summary = "장바구니 단일건 삭제")
+    @ApiResponse(responseCode = "200")
+    @DeleteMapping("{market_basket_id}")
+    public ResultResponse<Void> deleteOne(@PathVariable("market_basket_id") int marketBasketId){
+        marketBasketService.deleteByMarketBasketId(marketBasketId);
+        return ResultResponse.<Void>successResponse()
+                .successCode(SuccessCode.DELETE_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "장바구니 전체 삭제")
     @ApiResponse(responseCode = "200")
     @DeleteMapping("{client_id}")
-    public ResultResponse<Void> delete(@PathVariable("client_id") int clientId){
+    public ResultResponse<Void> deleteAll(@PathVariable("client_id") int clientId){
         marketBasketService.deleteByClientId(clientId);
         return ResultResponse.<Void>successResponse()
                 .successCode(SuccessCode.DELETE_SUCCESS)

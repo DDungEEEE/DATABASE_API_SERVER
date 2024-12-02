@@ -9,7 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
 import net.ddns.sbapiserver.domain.entity.common.Products;
+import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -155,8 +157,8 @@ public interface ProductDto {
                     .productPrice(products.getProductPrice())
                     .productStatus(products.getProductStatus())
                     .productType(products.getProductType())
-                    .productManufacturerId(products.getManufacturers().getManufacturerId())
-                    .staffId(products.getStaffs().getStaffId())
+                    .productManufacturerId(checkManufacturerIsNull(products.getManufacturers()))
+                    .staffId(checkStaffIsNull(products.getStaffs()))
                     .productEnrollDate(products.getProductEnrollDate())
                     .productModifyDate(products.getProductModifyDate())
                     .build();
@@ -165,6 +167,21 @@ public interface ProductDto {
         public static List<Result> of(List<Products> products) {
             return products.stream().map(Result::of)
                     .collect(Collectors.toList());
+        }
+
+        public static Integer checkStaffIsNull(Staffs staffs){
+            if (staffs == null){
+                return null;
+            }else{
+                return staffs.getStaffId();
+            }
+        }
+        public static Integer checkManufacturerIsNull(Manufacturers manufacturers){
+            if(manufacturers == null){
+                return null;
+            }else {
+                return manufacturers.getManufacturerId();
+            }
         }
 
     }

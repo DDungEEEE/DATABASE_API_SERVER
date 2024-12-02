@@ -43,6 +43,11 @@ public class MarketBasketService {
     }
 
     @Transactional
+    public void deleteByMarketBasketId(int marketBasketId){
+        marketBasketRepository.deleteById(marketBasketId);
+    }
+
+    @Transactional
     public void deleteByClientId(int clientId){
         serviceErrorHelper.findClientsOrElseThrow404(clientId);
 

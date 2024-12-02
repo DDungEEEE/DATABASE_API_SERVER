@@ -8,7 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
-@Entity
+@Entity @Setter
 @Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,6 +36,7 @@ public class Clients {
 
     @Column(name = "client_business_number")
     private String clientBusinessNumber;
+
 
     @Column(name = "client_margin_ratio")
     private String clientMarginRatio;

@@ -38,4 +38,23 @@ public class NoticeController {
                 .result(notice)
                 .build();
     }
+
+    @Operation(summary = "공지사항 수정")
+    @PutMapping
+    public ResultResponse<NoticeDto.Result> updateNotice(@RequestBody NoticeDto.Put put){
+        NoticeDto.Result result = noticeService.updateNotice(put);
+        return ResultResponse.<NoticeDto.Result>successResponse()
+                .result(result)
+                .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "공지사항 삭제")
+    @DeleteMapping("{notice_id}")
+    public ResultResponse<Void> deleteNotice(@PathVariable("notice_id") int noticeId){
+        noticeService.deleteNotice(noticeId);
+        return ResultResponse.<Void>successResponse()
+                .successCode(SuccessCode.DELETE_SUCCESS)
+                .build();
+    }
 }

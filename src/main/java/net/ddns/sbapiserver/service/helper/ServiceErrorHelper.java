@@ -76,6 +76,7 @@ public class ServiceErrorHelper {
     public boolean isUserIdDuplicated(String userId){
         QClients clients = QClients.clients;
         QStaffs staffs = QStaffs.staffs;
+
         Clients findClient = jpaQueryFactory.selectFrom(clients)
                 .where(clients.clientName.eq(userId))
                 .fetchOne();

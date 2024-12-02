@@ -32,6 +32,14 @@ public class StaffService {
         return StaffDto.Result.of(saveStaff);
     }
 
+    public StaffDto.Result updateStaff(StaffDto.Put put){
+        Staffs findStaff = serviceErrorHelper.findStaffOrElseThrow404(put.getStaffId());
+        Staffs putEntity = put.asPutEntity(findStaff);
+        Staffs saveEntity = staffRepository.save(putEntity);
+
+        return StaffDto.Result.of(saveEntity);
+    }
+
     public void deleteStaff(int staffId) {
         serviceErrorHelper.findStaffOrElseThrow404(staffId);
         staffRepository.deleteById(staffId);
