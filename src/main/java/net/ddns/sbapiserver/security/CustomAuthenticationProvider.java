@@ -28,10 +28,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String userId = authentication.getName();
         String userPwd = authentication.getCredentials().toString();
 
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
+        UnifiedUserDetails unifiedUserDetails = (UnifiedUserDetails) customUserDetailsService.loadUserByUsername(userId);
 
-            if(passwordEncoder.matches(userPwd, userDetails.getPassword())){
-                return new UsernamePasswordAuthenticationToken(userId, userPwd, userDetails.getAuthorities());
+        if(passwordEncoder.matches(userPwd, unifiedUserDetails.getPassword())){
+                return new UsernamePasswordAuthenticationToken(unifiedUserDetails.getUsername(), userPwd, unifiedUserDetails.getAuthorities());
             }else{
                 throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
             }

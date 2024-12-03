@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.UserLoginDto;
@@ -16,7 +17,8 @@ public class UserLoginController {
     private final UserLoginService userLoginService;
 
     @PostMapping
-    public void login(@RequestBody UserLoginDto userLoginDto){
-
+    public void login(@RequestBody UserLoginDto userLoginDto, HttpServletRequest req){
+//        userLoginService.userUnifiedLogin(userLoginDto.getUserId(), userLoginDto.getUserPw());
+        System.out.println("로그인 성공!!!!!!!!!!!");
     }
 }

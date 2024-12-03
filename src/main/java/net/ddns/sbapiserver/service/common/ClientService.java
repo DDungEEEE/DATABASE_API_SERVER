@@ -33,6 +33,7 @@ public class ClientService {
         }
 
         Clients createClients = create.asEntity();
+        createClients.setClientPassword(passwordEncoder.encode(create.getClientPassword()));
         Clients saveClients = clientRepository.save(createClients);
         return ClientsDto.Result.of(saveClients);
     }

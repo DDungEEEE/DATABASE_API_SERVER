@@ -4,6 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum UserType{
-    STAFF,
-    CLIENT;
+    STAFF("ROLE_STAFF"),
+    CLIENT("ROLE_CLIENT");
+
+    private final String role;
+
+    UserType(String role) {
+        this.role = role;
+    }
 }

@@ -8,6 +8,5 @@ import net.ddns.sbapiserver.security.UserType;
 @Builder
 public class JwtToken {
     private String accessToken;
-    private String refreshToken;
     private String role;
 }

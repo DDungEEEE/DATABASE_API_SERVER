@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 
 import java.sql.Timestamp;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 public interface ClientsDto {
 
     @Schema(name = "ClientCreate")
+    @NoArgsConstructor
+    @AllArgsConstructor
     @Data
     @Builder
     class Create{

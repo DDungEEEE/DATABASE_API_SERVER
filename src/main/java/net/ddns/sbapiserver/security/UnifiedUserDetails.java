@@ -22,7 +22,7 @@ public class UnifiedUserDetails implements UserDetails {
         this.userName = clients.getClientName();
         this.userPwd = clients.getClientPassword();
         this.userType = UserType.CLIENT;
-        this.authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_" + userType.name()));
+        this.authorities = Collections.singleton(new SimpleGrantedAuthority(userType.getRole()));
     }
 
     // Staffs UserDetails 반환
@@ -30,7 +30,7 @@ public class UnifiedUserDetails implements UserDetails {
         this.userName = staffs.getStaffUserId();
         this.userPwd = staffs.getStaffPassword();
         this.userType = UserType.STAFF;
-        this.authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_" + userType.name()));
+        this.authorities = Collections.singleton(new SimpleGrantedAuthority(userType.getRole()));
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
