@@ -1,11 +1,11 @@
 package net.ddns.sbapiserver.util;
 
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class JwtUtil {
     private static final String authorizationHeader = "Authorization";
     private static final String authorizationKey = "auth";
@@ -41,6 +42,22 @@ public class JwtUtil {
                 .accessToken(generateAccessToken(userId, role))
                 .role(role)
                 .build();
+    }
+
+    public boolean validToken(String token){
+        try{
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        }catch (SecurityException | MalformedJwtException e){
+            log.error("Invalid Jwt Signature, 유효허지 않은 Jwt 서명입니다.");
+        }catch (ExpiredJwtException e){
+            log.error("유효기간이 만료된 Jwt Token 입니다.");
+        }catch (UnsupportedJwtException e){
+            log.error("지원하지 않는 Jwt Token 입니다.");
+        }catch (IllegalArgumentException e){
+            log.error("Jwt claims 가 비어있쓰빈다.");
+        }
+        return false;
     }
 
     public String generateAccessToken(String userId, String role){
@@ -69,6 +86,10 @@ public class JwtUtil {
            return bearerToken.substring(7);
        }
        return null;
+   }
+
+   public Claims getClaims(String token){
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
    }
 
 

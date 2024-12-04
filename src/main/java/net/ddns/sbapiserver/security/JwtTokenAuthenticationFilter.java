@@ -71,7 +71,6 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        System.out.println(authentication.getPrincipal().toString());
         String username = ((UnifiedUserDetails) authentication.getPrincipal()).getUsername();
         String role = ((UnifiedUserDetails) authentication.getPrincipal()).getUserType().getRole();
 

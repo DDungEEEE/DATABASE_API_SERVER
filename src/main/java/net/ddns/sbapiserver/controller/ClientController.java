@@ -9,6 +9,8 @@ import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.service.common.ClientService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class ClientController {
 
     private final ClientService clientService;
 
+    @PreAuthorize("hasRole('ROLE_STAFF')")
     @Operation(summary = "클라이언트 목록 조회")
     @ApiResponse(responseCode = "200")
     @GetMapping

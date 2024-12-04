@@ -133,6 +133,9 @@ public interface StaffDto {
         @Schema(name = "updated_at")
         private Timestamp updatedAt;
 
+        @Schema(name = "staff_refresh_token")
+        private String staffRefreshToken;
+
         public static Result of(Staffs staffs){
             return Result.builder()
                     .staffUserId(staffs.getStaffUserId())
@@ -145,6 +148,7 @@ public interface StaffDto {
                     .staffPosition(staffs.getStaffPosition())
                     .createdAt(staffs.getCreateAt())
                     .updatedAt(staffs.getUpdateAt())
+                    .staffRefreshToken(staffs.getStaffRefreshToken())
                     .build();
         }
     }
