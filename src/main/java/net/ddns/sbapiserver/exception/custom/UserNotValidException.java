@@ -4,13 +4,11 @@ import lombok.Getter;
 import net.ddns.sbapiserver.common.code.ErrorCode;
 
 @Getter
-public class BusinessException extends RuntimeException{
+public class UserNotValidException extends RuntimeException{
     private final ErrorCode errorCode;
 
-
-    public BusinessException(ErrorCode errorCode, String message) {
+    public UserNotValidException(ErrorCode errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }
-
 }

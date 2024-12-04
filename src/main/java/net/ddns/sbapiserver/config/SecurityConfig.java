@@ -7,6 +7,8 @@ import net.ddns.sbapiserver.security.CustomAuthenticationProvider;
 import net.ddns.sbapiserver.security.JwtAuthorizationFilter;
 import net.ddns.sbapiserver.security.JwtTokenAuthenticationFilter;
 import net.ddns.sbapiserver.security.UnifiedUserDetailsService;
+import net.ddns.sbapiserver.service.authentication.TokenStorageService;
+import net.ddns.sbapiserver.service.authentication.TokenVerificationService;
 import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +35,8 @@ public class SecurityConfig {
     private final StaffRepository staffRepository;
     private final ClientRepository clientRepository;
     private final UnifiedUserDetailsService unifiedUserDetailsService;
+    private final TokenVerificationService tokenVerificationService;
+    private final TokenStorageService tokenStorageService;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
@@ -46,7 +50,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter() throws Exception{
-        JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter = new JwtTokenAuthenticationFilter(jwtUtil, clientRepository, staffRepository);
+        JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter = new JwtTokenAuthenticationFilter(jwtUtil, clientRepository, staffRepository, tokenVerificationService, tokenStorageService);
         jwtTokenAuthenticationFilter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return jwtTokenAuthenticationFilter;
     }
