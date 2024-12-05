@@ -5,6 +5,7 @@ import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
+import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,15 +13,18 @@ import org.springframework.stereotype.Service;
 public class TokenStorageService {
     private final ClientRepository clientRepository;
     private final StaffRepository staffRepository;
-
+    private final JwtUtil jwtUtil;
 
     public void saveRefreshToken(String userId, String refreshToken, String role) {
-        if (role.equals("ROLE_CLIENT")) {
-            saveClientRefreshToken(userId, refreshToken);
-        } else if (role.equals("ROLE_STAFF")) {
-            saveStaffRefreshToken(userId, refreshToken);
-        } else {
-            throw new IllegalArgumentException("존재하지 않는 ROLE");
+        if(!jwtUtil.validToken(refreshToken)){
+            String createRefreshToken = jwtUtil.generateRefreshToken(userId);
+            if (role.equals("ROLE_CLIENT")) {
+                saveClientRefreshToken(userId, createRefreshToken);
+            } else if (role.equals("ROLE_STAFF")) {
+                saveStaffRefreshToken(userId, createRefreshToken);
+            } else {
+                throw new IllegalArgumentException("존재하지 않는 ROLE");
+            }
         }
     }
 

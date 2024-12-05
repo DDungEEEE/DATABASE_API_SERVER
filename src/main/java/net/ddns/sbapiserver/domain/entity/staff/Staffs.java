@@ -47,6 +47,7 @@ public class Staffs {
     @Column(name = "updated_at", nullable = false, updatable = false)
     private Timestamp updateAt;
 
+
     @Column(name = "staff_refresh_token")
     private String staffRefreshToken;
 

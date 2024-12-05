@@ -44,6 +44,7 @@ public class ClientController {
                 .build();
     }
 
+    @PreAuthorize("hasRole('ROLE_STAFF') or #authentication.principal.userId == #put.clientId")
     @Operation(summary = "클라이언트 수정")
     @PutMapping
     public ResultResponse<ClientsDto.Result> putClient(@RequestBody ClientsDto.Put put){

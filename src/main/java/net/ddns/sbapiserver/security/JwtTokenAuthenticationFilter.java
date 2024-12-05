@@ -12,7 +12,6 @@ import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.service.authentication.TokenStorageService;
-import net.ddns.sbapiserver.service.authentication.TokenVerificationService;
 import net.ddns.sbapiserver.util.JwtToken;
 import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,15 +27,12 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
     private final JwtUtil jwtUtil;
     private final ClientRepository clientRepository;
     private final StaffRepository staffRepository;
-    private final TokenVerificationService tokenVerificationService;
     private final TokenStorageService tokenStorageService;
 
-    public JwtTokenAuthenticationFilter(JwtUtil jwtUtil, ClientRepository clientRepository, StaffRepository staffRepository, TokenVerificationService tokenVerificationService
-    ,TokenStorageService tokenStorageService){
+    public JwtTokenAuthenticationFilter(JwtUtil jwtUtil, ClientRepository clientRepository, StaffRepository staffRepository,TokenStorageService tokenStorageService){
         this.jwtUtil = jwtUtil;
         this.clientRepository = clientRepository;
         this.staffRepository = staffRepository;
-        this.tokenVerificationService = tokenVerificationService;
         this.tokenStorageService = tokenStorageService;
         setFilterProcessesUrl("/api/login");
     }
@@ -65,7 +61,6 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
         }catch (IOException exception){
             throw new RuntimeException(exception.getMessage());
         }
-
     }
     /**
      *
@@ -75,12 +70,10 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         String username = ((UnifiedUserDetails) authentication.getPrincipal()).getUsername();
         String role = ((UnifiedUserDetails) authentication.getPrincipal()).getUserType().getRole();
+        String refreshToken = ((UnifiedUserDetails) authentication.getPrincipal()).getRefreshToken();
 
-        boolean refreshTokenValid = tokenVerificationService.isRefreshTokenValid(username, role);
-        if(!refreshTokenValid){
-            String refreshToken = jwtUtil.generateRefreshToken(username);
-            tokenStorageService.saveRefreshToken(username, refreshToken, role);
-        }
+
+        tokenStorageService.saveRefreshToken(username, refreshToken, role);
         JwtToken jwtToken = jwtUtil.generateToken(username, role);
 
         response.setContentType("application/json");

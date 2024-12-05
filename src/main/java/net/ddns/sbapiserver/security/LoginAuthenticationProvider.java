@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class LoginAuthenticationProvider implements AuthenticationProvider {
     private final UnifiedUserDetailsService unifiedUserDetailsService;
     private final PasswordEncoder passwordEncoder;
 

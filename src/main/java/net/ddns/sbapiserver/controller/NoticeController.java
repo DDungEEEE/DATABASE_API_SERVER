@@ -8,6 +8,7 @@ import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.staff.NoticeDto;
 import net.ddns.sbapiserver.service.common.NoticeService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.List;
 public class NoticeController {
     private final NoticeService noticeService;
 
+    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "공지사항 조회")
     @GetMapping
     public ResultResponse<List<NoticeDto.Result>> get(){
@@ -30,6 +32,7 @@ public class NoticeController {
                 .build();
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "공지사항 검색")
     @GetMapping("/{start_date}/{end_date}")
     public ResultResponse<List<NoticeDto.Result>> search(@PathVariable("start_date") @DateTimeFormat(pattern = "yy-MM-dd") LocalDate startDate,
@@ -41,6 +44,7 @@ public class NoticeController {
                 .build();
     }
 
+    @PreAuthorize(value = "'ROLE_STAFF'")
     @Operation(summary = "공지사항 등록")
     @PostMapping
     public ResultResponse<NoticeDto.Result> add(@RequestBody NoticeDto.Create create){
@@ -52,6 +56,7 @@ public class NoticeController {
                 .build();
     }
 
+    @PreAuthorize(value = "'ROLE_STAFF'")
     @Operation(summary = "공지사항 수정")
     @PutMapping
     public ResultResponse<NoticeDto.Result> updateNotice(@RequestBody NoticeDto.Put put){
@@ -62,6 +67,7 @@ public class NoticeController {
                 .build();
     }
 
+    @PreAuthorize(value = "'ROLE_STAFF'")
     @Operation(summary = "공지사항 삭제")
     @DeleteMapping("{notice_id}")
     public ResultResponse<Void> deleteNotice(@PathVariable("notice_id") int noticeId){

@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Slf4j(topic = "GLOBAL_EXCEPTION_HANDLER")
@@ -26,6 +27,11 @@ public class GlobalExceptionHandler {
         List<ErrorResponse.ValidationError> fieldErrors = ErrorResponse.ValidationError.of(bindingResult);
 
         return new ResponseEntity<>(fieldErrors, HTTP_STATUS_OK);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex){
+
     }
 
     @ExceptionHandler(BusinessException.class)

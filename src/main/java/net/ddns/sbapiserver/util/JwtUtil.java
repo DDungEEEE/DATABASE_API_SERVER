@@ -38,6 +38,7 @@ public class JwtUtil {
     }
 
     public JwtToken generateToken(String userId, String role){
+        log.info("AccessToken 생성");
         return JwtToken.builder()
                 .accessToken(generateAccessToken(userId, role))
                 .role(role)
@@ -72,6 +73,7 @@ public class JwtUtil {
     }
 
     public String generateRefreshToken(String userId){
+        log.info("RefreshToken is Generated");
         return Jwts.builder()
                 .setSubject(userId)
                 .setIssuedAt(new Date())

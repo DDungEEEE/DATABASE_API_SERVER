@@ -32,6 +32,8 @@ public enum ErrorCode {
 
     ROLE_NOT_AUTHORIZED(403, "ACCOUNT_001", "ROLE IS NOT AUTHORIZED"),
 
+    ACCESS_DENIED(403, "ACCOUNT_002", "접근 권한이 존재하지 않습니다."),
+
     TOKEN_IS_EXPIRED(403, "ACCOUNT_O02", "TOKEN IS EXPIRED");
 
 

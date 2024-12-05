@@ -15,6 +15,7 @@ public class UnifiedUserDetails implements UserDetails {
     private String userName;
     private String userPwd;
     private UserType userType;
+    private String refreshToken;
     private Collection<? extends GrantedAuthority> authorities;
 
     // Clients UserDetails 반환
@@ -22,6 +23,7 @@ public class UnifiedUserDetails implements UserDetails {
         this.userName = clients.getClientName();
         this.userPwd = clients.getClientPassword();
         this.userType = UserType.CLIENT;
+        this.refreshToken = clients.getClientRefreshToken();
         this.authorities = Collections.singleton(new SimpleGrantedAuthority(userType.getRole()));
     }
 
@@ -30,6 +32,7 @@ public class UnifiedUserDetails implements UserDetails {
         this.userName = staffs.getStaffUserId();
         this.userPwd = staffs.getStaffPassword();
         this.userType = UserType.STAFF;
+        this.refreshToken = staffs.getStaffRefreshToken();
         this.authorities = Collections.singleton(new SimpleGrantedAuthority(userType.getRole()));
     }
     @Override
