@@ -13,6 +13,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins("https://minseo2000.github.io",
                         "https://sbtestminseo.ddns.net",
                         "https://statementapi.ddns.net",
+                        "https://batteryfriendtest.ddns.net",
                         "https://sbtechapiserver.ddns.net")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("Authorization", "Content-Type")

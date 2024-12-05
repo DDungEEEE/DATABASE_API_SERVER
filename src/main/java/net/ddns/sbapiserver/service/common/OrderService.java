@@ -64,20 +64,26 @@ public class OrderService {
         serviceErrorHelper.findClientsOrElseThrow404(clientId);
 
         List<Orders> ordersList = customOrderRepository.findOrder(clientId, startDate, endDate);
-        List<OrderDto.Result> orderResultList = ordersList.stream()
-                .map(order ->
-                {
-                    List<OrderContents> orderContents = customOrderRepository.findOrderContent(order.getOrderId());
-
-                    List<OrderContentDto.Result> orderContentResult = OrderContentDto.Result.of(orderContents);
-
-                    return OrderDto.Result.of(order, orderContentResult);
-                }).collect(Collectors.toList());
-        return  orderResultList;
+       return parsingToOrderDtoResult(ordersList);
     }
 
     public void deleteOrder(int orderId){
         serviceErrorHelper.findOrderOrElseThrow404(orderId);
         customOrderRepository.deleteOrderContent(orderId);
+    }
+
+    public List<OrderDto.Result> getAllOrderList(LocalDate startDate, LocalDate endDate){
+        List<Orders> orderListForAdmin = customOrderRepository.getOrderListForAdmin(startDate, endDate);
+        return parsingToOrderDtoResult(orderListForAdmin);
+
+    }
+
+    protected List<OrderDto.Result> parsingToOrderDtoResult(List<Orders> ordersList){
+        return ordersList.stream().map(
+                orders -> {
+                    List<OrderContents> orderContent = customOrderRepository.findOrderContent(orders.getOrderId());
+                    List<OrderContentDto.Result> orderContentResults = OrderContentDto.Result.of(orderContent);
+                    return OrderDto.Result.of(orders, orderContentResults);
+                }).collect(Collectors.toList());
     }
 }

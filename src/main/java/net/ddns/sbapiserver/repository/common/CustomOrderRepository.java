@@ -8,6 +8,7 @@ import net.ddns.sbapiserver.domain.entity.order.OrderContents;
 import net.ddns.sbapiserver.domain.entity.order.Orders;
 import net.ddns.sbapiserver.domain.entity.order.QOrderContents;
 import net.ddns.sbapiserver.domain.entity.order.QOrders;
+import org.hibernate.query.Order;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,20 @@ public class CustomOrderRepository {
     }
 
     @Transactional
+    public List<Orders> getOrderListForAdmin(LocalDate startDate, LocalDate endDate){
+        QOrders orders = QOrders.orders;
+
+        LocalDateTime startLocalDateTime = parsingToStartLocalDateTime(startDate);
+        LocalDateTime endLocalDateTime = parsingToEndLocalDateTime(endDate);
+
+        List<Orders> allOrderList = jpaQueryFactory.selectFrom(orders)
+                .where(orders.orderDate.between(startLocalDateTime, endLocalDateTime))
+                .fetch();
+
+        return allOrderList;
+    }
+
+    @Transactional
     public List<OrderContents> findOrderContent(int orderId){
         QOrderContents qOrderContents = QOrderContents.orderContents;
 
@@ -54,6 +69,7 @@ public class CustomOrderRepository {
 
         return orderContentsList;
     }
+
 
     protected LocalDateTime parsingToStartLocalDateTime(LocalDate localDate){
         return localDate.atStartOfDay();

@@ -31,6 +31,20 @@ public class OrderController {
                 .successCode(SuccessCode.INSERT_SUCCESS)
                 .build();
     }
+    @ApiResponse(responseCode = "200")
+    @Operation(summary = "관리자가 사용할 주문내역 조회")
+    @GetMapping("{start_date}/{end_date}")
+    public ResultResponse<List<OrderDto.Result>> getAllOrder(@PathVariable("start_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate, @PathVariable("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
+
+        List<OrderDto.Result> orderResultList = orderService.getAllOrderList(startDate, endDate);
+
+        return ResultResponse.<List<OrderDto.Result>>successResponse()
+                .result(orderResultList)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
+
 
     @ApiResponse(responseCode = "200")
     @Operation(summary = "주문내역 조회")
