@@ -34,6 +34,8 @@ public enum ErrorCode {
 
     ACCESS_DENIED(403, "ACCOUNT_002", "접근 권한이 존재하지 않습니다."),
 
+    USER_IS_NOT_OWNER(403, "ACCOUNT_003", "User IS NOT OWNER"),
+
     TOKEN_IS_EXPIRED(403, "ACCOUNT_O02", "TOKEN IS EXPIRED");
 
 

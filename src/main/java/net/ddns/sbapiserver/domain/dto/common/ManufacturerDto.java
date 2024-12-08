@@ -25,6 +25,9 @@ public interface ManufacturerDto {
         @Schema(name = "manufacturer_img")
         private String manufacturerImg;
 
+        @Schema(name = "manufacturer_status")
+        private String manufacturerStatus;
+
     }
 
     @Schema(name = "manufacturerResult")
@@ -40,6 +43,9 @@ public interface ManufacturerDto {
         @Schema(name = "manufacturer_img")
         private String manufacturerImg;
 
+        @Schema(name = "manufacturer_status")
+        private String manufacturerStatus;
+
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "created_at")
         private Timestamp createdAt;
@@ -53,6 +59,7 @@ public interface ManufacturerDto {
                     .manufacturerId(manufacturers.getManufacturerId())
                     .manufacturerName(manufacturers.getManufacturerName())
                     .manufacturerImg(manufacturers.getManufacturerImg())
+                    .manufacturerStatus(manufacturers.getManufactuerStatus())
                     .createdAt(manufacturers.getCreatedAt())
                     .updatedAt(manufacturers.getUpdatedAt())
                     .build();

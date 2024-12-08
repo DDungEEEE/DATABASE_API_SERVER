@@ -11,6 +11,7 @@ import net.ddns.sbapiserver.service.common.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class ClientController {
     @Operation(summary = "클라이언트 목록 조회")
     @ApiResponse(responseCode = "200")
     @GetMapping
-    public ResultResponse<List<ClientsDto.Result>> getClientList(){
+    public ResultResponse<List<ClientsDto.Result>> getClientList(Authentication authentication){
         List<ClientsDto.Result> clientList = clientService.getClientList();
         return ResultResponse.<List<ClientsDto.Result>>successResponse()
                 .result(clientList)
@@ -56,7 +57,7 @@ public class ClientController {
                 .build();
     }
 
-    @Operation(summary = "클라이언트 수정")
+    @Operation(summary = "클라이언트 삭제")
     @DeleteMapping("{client_id}")
     public ResultResponse<Void> deleteClient(@PathVariable("client_id") int clientId){
         clientService.deleteClientsById(clientId);

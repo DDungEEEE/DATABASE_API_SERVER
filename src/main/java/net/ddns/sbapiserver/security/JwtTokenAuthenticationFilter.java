@@ -5,14 +5,18 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.ddns.sbapiserver.common.ResponseWrapper;
 import net.ddns.sbapiserver.domain.dto.UserLoginDto;
+import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
+import net.ddns.sbapiserver.domain.dto.staff.StaffDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.service.authentication.TokenStorageService;
-import net.ddns.sbapiserver.util.JwtToken;
+import net.ddns.sbapiserver.security.dto.JwtToken;
 import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,19 +27,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
     private final ClientRepository clientRepository;
     private final StaffRepository staffRepository;
     private final TokenStorageService tokenStorageService;
-
-    public JwtTokenAuthenticationFilter(JwtUtil jwtUtil, ClientRepository clientRepository, StaffRepository staffRepository,TokenStorageService tokenStorageService){
-        this.jwtUtil = jwtUtil;
-        this.clientRepository = clientRepository;
-        this.staffRepository = staffRepository;
-        this.tokenStorageService = tokenStorageService;
-        setFilterProcessesUrl("/api/login");
-    }
+    private final ResponseWrapper responseWrapper;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -68,22 +66,24 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        String username = ((UnifiedUserDetails) authentication.getPrincipal()).getUsername();
-        String role = ((UnifiedUserDetails) authentication.getPrincipal()).getUserType().getRole();
-        String refreshToken = ((UnifiedUserDetails) authentication.getPrincipal()).getRefreshToken();
+        UnifiedUserDetails userDetails = (UnifiedUserDetails) authentication.getPrincipal();
+
+        String username = userDetails.getUsername();
+        String role = userDetails.getUserType().getRole();
+        String refreshToken = userDetails.getRefreshToken();
 
 
         tokenStorageService.saveRefreshToken(username, refreshToken, role);
         JwtToken jwtToken = jwtUtil.generateToken(username, role);
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String responseJwtToken = objectMapper.writeValueAsString(jwtToken);
-
-        response.getWriter().write(responseJwtToken);
-
+        if(role.equals(UserType.CLIENT.getRole())){
+            Clients clients = clientRepository.findClientsByClientName(username);
+            jwtToken.setUser(ClientsDto.Result.of(clients));
+        }else{
+            Staffs staffs = staffRepository.findStaffsByStaffUserId(username);
+            jwtToken.setUser(StaffDto.Result.of(staffs));
+        }
+        responseWrapper.convertObjectToResponse(response, jwtToken);
     }
 
     @Override

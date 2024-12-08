@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.config;
 
 import lombok.RequiredArgsConstructor;
+import net.ddns.sbapiserver.common.ResponseWrapper;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.security.JwtAuthorizationFilter;
@@ -33,6 +34,7 @@ public class SecurityConfig {
     private final ClientRepository clientRepository;
     private final UnifiedUserDetailsService unifiedUserDetailsService;
     private final TokenStorageService tokenStorageService;
+    private final ResponseWrapper responseWrapper;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
@@ -46,8 +48,9 @@ public class SecurityConfig {
 
     @Bean
     public JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter() throws Exception{
-        JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter = new JwtTokenAuthenticationFilter(jwtUtil, clientRepository, staffRepository, tokenStorageService);
+        JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter = new JwtTokenAuthenticationFilter(jwtUtil, clientRepository, staffRepository, tokenStorageService, responseWrapper);
         jwtTokenAuthenticationFilter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
+        jwtTokenAuthenticationFilter.setFilterProcessesUrl("/api/login");
         return jwtTokenAuthenticationFilter;
     }
 

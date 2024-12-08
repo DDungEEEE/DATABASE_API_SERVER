@@ -7,7 +7,12 @@ import net.ddns.sbapiserver.common.code.ErrorCode;
 public class UserNotValidException extends RuntimeException{
     private final ErrorCode errorCode;
 
-    public UserNotValidException(ErrorCode errorCode, String message) {
+    public UserNotValidException(ErrorCode errorCode) {
+        super(errorCode.getReason());
+        this.errorCode = errorCode;
+    }
+
+    public UserNotValidException(String message, ErrorCode errorCode){
         super(message);
         this.errorCode = errorCode;
     }

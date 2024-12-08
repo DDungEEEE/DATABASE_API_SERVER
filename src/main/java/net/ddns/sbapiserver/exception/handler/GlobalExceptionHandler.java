@@ -29,10 +29,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(fieldErrors, HTTP_STATUS_OK);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex){
-
-    }
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex){
+//
+//    }
 
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex){

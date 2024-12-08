@@ -173,6 +173,7 @@ public interface ClientsDto {
                     .clientMarginRatio(clients.getClientMarginRatio())
                     .clientPhNum(clients.getClientPhNum())
                     .clientStatus(clients.getClientStatus())
+                    .clientRefreshToken(clients.getClientRefreshToken())
                     .clientCreatedAt(clients.getClientCreatedAt())
                     .clientUpdatedAt(clients.getClientUpdatedAt())
                     .build();
