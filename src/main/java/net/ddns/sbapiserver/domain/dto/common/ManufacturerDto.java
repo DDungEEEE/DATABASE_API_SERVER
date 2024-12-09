@@ -59,7 +59,7 @@ public interface ManufacturerDto {
                     .manufacturerId(manufacturers.getManufacturerId())
                     .manufacturerName(manufacturers.getManufacturerName())
                     .manufacturerImg(manufacturers.getManufacturerImg())
-                    .manufacturerStatus(manufacturers.getManufactuerStatus())
+                    .manufacturerStatus(manufacturers.getManufacturerStatus())
                     .createdAt(manufacturers.getCreatedAt())
                     .updatedAt(manufacturers.getUpdatedAt())
                     .build();

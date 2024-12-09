@@ -3,6 +3,7 @@ package net.ddns.sbapiserver.exception.handler;
 import lombok.extern.slf4j.Slf4j;
 import net.ddns.sbapiserver.exception.custom.BusinessException;
 import net.ddns.sbapiserver.common.code.ErrorCode;
+import net.ddns.sbapiserver.exception.custom.UserNotValidException;
 import net.ddns.sbapiserver.exception.error.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +30,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(fieldErrors, HTTP_STATUS_OK);
     }
 
-//    @ExceptionHandler(AccessDeniedException.class)
-//    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex){
-//
-//    }
+    @ExceptionHandler(UserNotValidException.class)
+    protected ResponseEntity<ErrorResponse> handleUserNotValidException(UserNotValidException ex){
+        ErrorCode errorCode = ex.getErrorCode();
+        ErrorResponse errorResponse = new ErrorResponse(errorCode);
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
+    }
 
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex){

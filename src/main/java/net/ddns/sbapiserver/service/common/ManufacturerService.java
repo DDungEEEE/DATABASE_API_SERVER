@@ -5,6 +5,7 @@ import net.ddns.sbapiserver.domain.dto.common.ManufacturerDto;
 import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
 import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class ManufacturerService {
     private final ManufacturersRepository manufacturersRepository;
 
+    @Transactional
     public ManufacturerDto.Result CreateManufacturer(ManufacturerDto.Create create){
         Manufacturers createManufacturer = Manufacturers.builder()
                 .manufacturerImg(create.getManufacturerImg())
@@ -23,10 +25,12 @@ public class ManufacturerService {
         return ManufacturerDto.Result.of(saveManufacturer);
     }
 
+    @Transactional(readOnly = true)
     public List<ManufacturerDto.Result> getManufacturerList(){
         return ManufacturerDto.Result.of(manufacturersRepository.findAll());
     }
 
+    @Transactional
     public void deleteManufacturerById(int manufacturerId){
         manufacturersRepository.deleteById(manufacturerId);
     }

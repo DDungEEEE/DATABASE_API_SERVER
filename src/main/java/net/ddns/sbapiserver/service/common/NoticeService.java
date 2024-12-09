@@ -31,6 +31,7 @@ public class NoticeService {
         return NoticeDto.Result.of(createNotice);
     }
 
+    @Transactional(readOnly = true)
     public List<NoticeDto.Result> getNoticeList(){
         return NoticeDto.Result.of(noticeRepository.findAll());
     }
@@ -45,6 +46,7 @@ public class NoticeService {
 
     }
 
+    @Transactional(readOnly = true)
     public List<NoticeDto.Result> searchNotice(LocalDate startDate, LocalDate endDate){
         QNotice notice = QNotice.notice;
         LocalDateTime startDateTime = startDate.atStartOfDay();

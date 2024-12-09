@@ -20,16 +20,17 @@ public class MarketBasketService {
     private final MarketBasketRepository marketBasketRepository;
     private final ServiceErrorHelper serviceErrorHelper;
 
-    public List<MarketBasketDto.Result> saveMarketBasket(List<MarketBasketDto.Create> creates){
+    public List<MarketBasketDto.Result> saveMarketBasket(MarketBasketDto.Create creates){
 
+        Clients findClients = serviceErrorHelper.findClientsOrElseThrow404(creates.getClientId());
+        List<MarketBasketDto.Create.MarketBasketItem> marketBasketItems = creates.getMarketBasketItems();
 
-        List<MarketBasket> marketBasketList = creates.stream()
-                .map(create -> {
-                    Clients clients = serviceErrorHelper.findClientsOrElseThrow404(create.getClientId());
-                    Products products = serviceErrorHelper.findProductsOrElseThrow404(create.getProductId());
-                    return create.asEntity(marketBasket ->
-                            marketBasket.withProducts(products).withClients(clients));
+        List<MarketBasket> marketBasketList = marketBasketItems.stream().map(
+                marketBasketItem -> {
+                    Products findProducts = serviceErrorHelper.findProductsOrElseThrow404(marketBasketItem.getProductId());
+                    return MarketBasket.builder().clients(findClients).products(findProducts).productCnt(marketBasketItem.getProductCnt()).build();
                 }).collect(Collectors.toList());
+
 
         List<MarketBasket> savedMarketbaksetList = marketBasketRepository.saveAll(marketBasketList);
         return MarketBasketDto.Result.of(savedMarketbaksetList);

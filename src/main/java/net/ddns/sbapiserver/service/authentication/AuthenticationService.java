@@ -23,16 +23,16 @@ public class AuthenticationService {
      * @param userId Clients or Staffs Primary Key
      * @return 관리자 or 사용자 본인 -> true or false
      */
-    public boolean isOwner(Authentication authentication, int userId){
+    public void isOwner(Authentication authentication, int userId){
         UnifiedUserDetails userDetails = (UnifiedUserDetails) authentication.getPrincipal();
         String role = userDetails.getUserType().getRole();
 
         isUserAuthenticated(authentication, role);
 
         if(role.equals(UserType.CLIENT.getRole())){
-           return isClientOwner(userDetails, userId);
+           isClientOwner(userDetails, userId);
         }else if(role.equals(UserType.STAFF.getRole())){
-            return true; // STAFF 는 모든 권한 존재
+//            return true; // STAFF 는 모든 권한 존재
         }else {
             throw new UserNotValidException(ErrorCode.ACCESS_DENIED);
         }

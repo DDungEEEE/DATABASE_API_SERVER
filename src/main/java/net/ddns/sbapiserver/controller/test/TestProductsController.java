@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.controller;
+package net.ddns.sbapiserver.controller.test;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,7 +13,6 @@ import net.ddns.sbapiserver.domain.dto.common.ProductDto.Put;
 import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.service.common.ProductsService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,12 +20,11 @@ import java.util.List;
 @Tag(name = "상품 컨트롤러",description = "상품 조회, 삭제, 수정, 추가")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/products")
-public class ProductsController {
+@RequestMapping("/api/products")
+public class TestProductsController {
 
     private final ProductsService productsService;
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "상품 조회")
     @ApiResponse(responseCode = "200")
     @GetMapping
@@ -39,7 +37,6 @@ public class ProductsController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "상품 추가")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -51,7 +48,6 @@ public class ProductsController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "제조사로 상품 조회")
     @ApiResponse(responseCode = "200")
     @GetMapping("/{manufacturer_id}")
@@ -64,7 +60,6 @@ public class ProductsController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "상품 수정")
     @PutMapping
     ResultResponse<Products> updateProduct(@RequestBody Put put){
@@ -75,7 +70,6 @@ public class ProductsController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "상품 삭제")
     @DeleteMapping("/{product_id}")
     ResultResponse<Void> delete(@PathVariable("product_id") int productId){

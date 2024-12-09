@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.controller;
+package net.ddns.sbapiserver.controller.test;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,12 +16,12 @@ import java.util.List;
 
 @Tag(name = "공지사항 컨트롤러")
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/notice")
+@RequestMapping("/api/notice")
 @RestController
-public class NoticeController {
+public class TestNoticeController {
     private final NoticeService noticeService;
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
+
     @Operation(summary = "공지사항 조회")
     @GetMapping
     public ResultResponse<List<NoticeDto.Result>> get(){
@@ -32,7 +32,6 @@ public class NoticeController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "공지사항 검색")
     @GetMapping("/{start_date}/{end_date}")
     public ResultResponse<List<NoticeDto.Result>> search(@PathVariable("start_date") @DateTimeFormat(pattern = "yy-MM-dd") LocalDate startDate,
@@ -44,7 +43,6 @@ public class NoticeController {
                 .build();
     }
 
-    @PreAuthorize(value = "'ROLE_STAFF'")
     @Operation(summary = "공지사항 등록")
     @PostMapping
     public ResultResponse<NoticeDto.Result> add(@RequestBody NoticeDto.Create create){
@@ -56,7 +54,6 @@ public class NoticeController {
                 .build();
     }
 
-    @PreAuthorize(value = "'ROLE_STAFF'")
     @Operation(summary = "공지사항 수정")
     @PutMapping
     public ResultResponse<NoticeDto.Result> updateNotice(@RequestBody NoticeDto.Put put){
@@ -67,7 +64,6 @@ public class NoticeController {
                 .build();
     }
 
-    @PreAuthorize(value = "'ROLE_STAFF'")
     @Operation(summary = "공지사항 삭제")
     @DeleteMapping("{notice_id}")
     public ResultResponse<Void> deleteNotice(@PathVariable("notice_id") int noticeId){

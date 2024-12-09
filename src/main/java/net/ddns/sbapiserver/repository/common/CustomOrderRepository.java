@@ -27,7 +27,6 @@ public class CustomOrderRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Transactional
     public List<Orders> findOrder(int clientId, LocalDate startDate, LocalDate endDate){
         QOrders orders = QOrders.orders;
 
@@ -44,7 +43,6 @@ public class CustomOrderRepository {
         return orderList;
     }
 
-    @Transactional
     public List<Orders> getOrderListForAdmin(LocalDate startDate, LocalDate endDate){
         QOrders orders = QOrders.orders;
 
@@ -58,7 +56,6 @@ public class CustomOrderRepository {
         return allOrderList;
     }
 
-    @Transactional
     public List<OrderContents> findOrderContent(int orderId){
         QOrderContents qOrderContents = QOrderContents.orderContents;
 
@@ -79,7 +76,6 @@ public class CustomOrderRepository {
         return localDate.atTime(LocalTime.MAX);
     }
 
-    @Transactional
     public void deleteOrderContent(int orderId){
         QOrders qOrders = QOrders.orders;
         QOrderContents qOrderContents = QOrderContents.orderContents;

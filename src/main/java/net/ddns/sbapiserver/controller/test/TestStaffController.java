@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.controller;
+package net.ddns.sbapiserver.controller.test;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "직원 컨트롤러")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/staff")
-public class StaffController {
+@RequestMapping("/api/staff")
+public class TestStaffController {
 
     private final StaffService staffService;
 

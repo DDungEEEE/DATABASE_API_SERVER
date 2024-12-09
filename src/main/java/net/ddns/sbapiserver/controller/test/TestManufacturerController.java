@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.controller;
+package net.ddns.sbapiserver.controller.test;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -6,20 +6,18 @@ import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.common.ManufacturerDto;
 import net.ddns.sbapiserver.service.common.ManufacturerService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Tag(name = "제조사 컨트롤러")
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/manufacturer")
+@RequestMapping("/api/manufacturer")
 @RestController
-public class ManufacturerController {
+public class TestManufacturerController {
     private final ManufacturerService manufacturerService;
 
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @GetMapping
     public ResultResponse<List<ManufacturerDto.Result>> getManufacturer(){
         List<ManufacturerDto.Result> manufacturerList = manufacturerService.getManufacturerList();
@@ -29,7 +27,6 @@ public class ManufacturerController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @PostMapping
     public ResultResponse<ManufacturerDto.Result> createManufacturer(@RequestBody ManufacturerDto.Create create){
         ManufacturerDto.Result result = manufacturerService.CreateManufacturer(create);
@@ -39,7 +36,6 @@ public class ManufacturerController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @DeleteMapping("/{manufacturer_id}")
     public ResultResponse<Void> deleteManufacturer(@PathVariable("manufacturer_id") int manufacturerId){
         manufacturerService.deleteManufacturerById(manufacturerId);

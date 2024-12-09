@@ -38,8 +38,8 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try{
+            log.info("JwtTokenAuthenticationFilter 작동");
             UserLoginDto userLoginDto = new ObjectMapper().readValue(request.getInputStream(), UserLoginDto.class);
-            log.error("JwtTokenAuthenticationFilter 작동");
 
             Clients clients = clientRepository.findClientsByClientName(userLoginDto.getUserId());
             Staffs staffs = staffRepository.findStaffsByStaffUserId(userLoginDto.getUserId());

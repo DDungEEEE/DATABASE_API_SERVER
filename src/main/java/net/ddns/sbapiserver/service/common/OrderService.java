@@ -60,6 +60,7 @@ public class OrderService {
         return OrderContentDto.Result.of(orderContents);
     }
 
+    @Transactional(readOnly = true)
     public List<OrderDto.Result> getOrderResultList(int clientId, LocalDate startDate, LocalDate endDate){
         serviceErrorHelper.findClientsOrElseThrow404(clientId);
 
@@ -67,11 +68,13 @@ public class OrderService {
        return parsingToOrderDtoResult(ordersList);
     }
 
+    @Transactional
     public void deleteOrder(int orderId){
         serviceErrorHelper.findOrderOrElseThrow404(orderId);
         customOrderRepository.deleteOrderContent(orderId);
     }
 
+    @Transactional(readOnly = true)
     public List<OrderDto.Result> getAllOrderList(LocalDate startDate, LocalDate endDate){
         List<Orders> orderListForAdmin = customOrderRepository.getOrderListForAdmin(startDate, endDate);
         return parsingToOrderDtoResult(orderListForAdmin);

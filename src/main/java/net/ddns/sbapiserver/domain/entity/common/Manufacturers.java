@@ -25,8 +25,8 @@ public class Manufacturers {
     @Column(name = "manufacturer_img")
     private String manufacturerImg;
 
-    @Column(name = "manufactuer_status", nullable = false)
-    private String manufactuerStatus;
+    @Column(name = "manufacturer_status", nullable = false, length = 50)
+    private String manufacturerStatus;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -71,7 +71,7 @@ public interface ClientsDto {
 
     @Schema(name = "ClientPut")
     @Data
-    @Builder
+    @NoArgsConstructor
     class Put{
         @Schema(name = "client_id")
         private int clientId;

@@ -9,6 +9,7 @@ import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,11 +21,13 @@ public class ClientService {
     private final ServiceErrorHelper serviceErrorHelper;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional(readOnly = true)
     public List<ClientsDto.Result> getClientList(){
         List<Clients> allClients = clientRepository.findAll();
         return ClientsDto.Result.of(allClients);
     }
 
+    @Transactional
     public ClientsDto.Result addClients(ClientsDto.Create create){
 
         if(serviceErrorHelper.isUserIdDuplicated(create.getClientName())){
@@ -38,6 +41,7 @@ public class ClientService {
         return ClientsDto.Result.of(saveClients);
     }
 
+    @Transactional
     public Clients updateClients(ClientsDto.Put put){
 
         Clients findClients = serviceErrorHelper.findClientsOrElseThrow404(put.getClientId());
@@ -51,6 +55,7 @@ public class ClientService {
 
     }
 
+    @Transactional
     public void deleteClientsById(int clientId){
         clientRepository.deleteById(clientId);
     }

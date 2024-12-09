@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.controller;
+package net.ddns.sbapiserver.controller.test;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,9 +14,9 @@ import java.util.List;
 
 @Tag(name = "즐겨찾기 컨트롤러")
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/starbasket")
+@RequestMapping("/api/starbasket")
 @RestController
-public class StarBasketController {
+public class TestStarBasketController {
     private final StarBasketService starBasketService;
 
     @ApiResponse(responseCode = "200", description = "즐겨찾기 취소 성공")

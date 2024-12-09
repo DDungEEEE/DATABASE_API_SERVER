@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.controller;
+package net.ddns.sbapiserver.controller.test;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -8,12 +8,7 @@ import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.basket.MarketBasketDto;
-import net.ddns.sbapiserver.domain.entity.basket.MarketBasket;
-import net.ddns.sbapiserver.service.authentication.AuthenticationService;
 import net.ddns.sbapiserver.service.basket.MarketBasketService;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,19 +16,15 @@ import java.util.List;
 @Tag(name = "장바구니 컨트롤러")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/marketbasket")
-public class MarketBasketController {
+@RequestMapping("/api/marketbasket")
+public class TestMarketBasketController {
 
     private final MarketBasketService marketBasketService;
-    private final AuthenticationService authenticationService;
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @ApiResponse(responseCode = "200")
     @Operation(summary = "장바구니 추가")
     @PostMapping
-    public ResultResponse<List<MarketBasketDto.Result>> create(@RequestBody @Valid MarketBasketDto.Create create, Authentication authentication){
-        authenticationService.isOwner(authentication, create.getClientId());
-
+    public ResultResponse<List<MarketBasketDto.Result>> create(@RequestBody @Valid MarketBasketDto.Create create){
         List<MarketBasketDto.Result> results = marketBasketService.saveMarketBasket(create);
         return ResultResponse.<List<MarketBasketDto.Result>>successResponse()
                 .result(results)
@@ -41,13 +32,10 @@ public class MarketBasketController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "장바구니 불러오기")
     @ApiResponse(responseCode = "200")
     @GetMapping("{client_id}")
-    public ResultResponse<List<MarketBasketDto.Result>> getMarketBaskets(@PathVariable("client_id") int clientId, Authentication authentication){
-        authenticationService.isOwner(authentication, clientId);
-
+    public ResultResponse<List<MarketBasketDto.Result>> getMarketBaskets(@PathVariable("client_id") int clientId){
         marketBasketService.getMarketBasketList(clientId);
         return ResultResponse.<List<MarketBasketDto.Result>>successResponse()
                 .result(marketBasketService.getMarketBasketList(clientId))
@@ -55,7 +43,6 @@ public class MarketBasketController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "장바구니 단일건 삭제")
     @ApiResponse(responseCode = "200")
     @DeleteMapping("{market_basket_id}")
@@ -66,7 +53,6 @@ public class MarketBasketController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "장바구니 전체 삭제")
     @ApiResponse(responseCode = "200")
     @DeleteMapping("{client_id}")

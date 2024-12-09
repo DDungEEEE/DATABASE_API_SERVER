@@ -23,7 +23,6 @@ public class UserLoginController {
     public void login(@RequestBody UserLoginDto userLoginDto, HttpServletRequest req)throws Exception{
         log.info("dsadddddddddddd");
         String userId = new ObjectMapper().readValue(req.getInputStream(), UserLoginDto.class).getUserId();
-        userLoginService.userUnifiedLogin(userId);
         log.info("RefreshToken 저장 성공");
     }
 }

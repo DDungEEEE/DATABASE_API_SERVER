@@ -1,10 +1,7 @@
 package net.ddns.sbapiserver.domain.dto.basket;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.ddns.sbapiserver.domain.entity.basket.MarketBasket;
 
 import java.util.List;
@@ -23,18 +20,19 @@ public interface MarketBasketDto {
         @Schema(name = "client_id")
         private int clientId;
 
-        @Schema(name = "product_id")
-        private int productId;
+        @Schema(name = "market_basket_items")
+        private List<MarketBasketItem> marketBasketItems;
 
-        @Schema(name = "product_cnt")
-        private int productCnt;
 
-        public MarketBasket asEntity(
-                Function<? super MarketBasket, ? extends MarketBasket> init){
-            return init.apply(
-                    MarketBasket.builder()
-                            .productCnt(productCnt)
-                            .build());
+        @Data
+        @Schema(name = "MarketBasketItem")
+        public static class MarketBasketItem{
+            @Schema(name = "product_id")
+            private int productId;
+
+            @Schema(name = "product_cnt")
+            private int productCnt;
+
         }
     }
 

@@ -9,6 +9,7 @@ import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class ProductsService {
     private final ManufacturersRepository manufacturersRepository;
     private final ServiceErrorHelper serviceErrorHelper;
 
+    @Transactional
     public Products addProduct(ProductDto.Create create){
 
         Products productEntity = create.asEntity(products ->
@@ -28,15 +30,18 @@ public class ProductsService {
         return productsRepository.save(productEntity);
     }
 
+    @Transactional
     public void deleteProduct(int productId){
         serviceErrorHelper.findProductsOrElseThrow404(productId);
         productsRepository.deleteById(productId);
     }
 
+    @Transactional(readOnly = true)
     public List<Products> getAllProducts(){
         return productsRepository.findAll();
     }
 
+    @Transactional
     public Products updateProducts(ProductDto.Put put){
         Products findProduct = serviceErrorHelper.findProductsOrElseThrow404(put.getProductId());
         Staffs findStaff = serviceErrorHelper.findStaffOrElseThrow404(put.getStaffId());
@@ -46,6 +51,7 @@ public class ProductsService {
         return productsRepository.save(updatedProduct);
     }
 
+    @Transactional(readOnly = true)
     public List<Products> findProductsByManufacturersId(int manufacturerId){
         return productsRepository.findByManufacturersManufacturerId(manufacturerId);
     }
