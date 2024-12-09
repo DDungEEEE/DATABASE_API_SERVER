@@ -6,6 +6,7 @@ import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.security.JwtAuthorizationFilter;
 import net.ddns.sbapiserver.security.JwtTokenAuthenticationFilter;
+import net.ddns.sbapiserver.security.UnifiedUserDetails;
 import net.ddns.sbapiserver.security.UnifiedUserDetailsService;
 import net.ddns.sbapiserver.service.authentication.TokenStorageService;
 import net.ddns.sbapiserver.util.JwtUtil;
@@ -20,6 +21,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -35,6 +37,7 @@ public class SecurityConfig {
     private final UnifiedUserDetailsService unifiedUserDetailsService;
     private final TokenStorageService tokenStorageService;
     private final ResponseWrapper responseWrapper;
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
