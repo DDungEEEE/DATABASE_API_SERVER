@@ -40,10 +40,10 @@ public class TestProductsController {
     @Operation(summary = "상품 추가")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    ResultResponse<Products> create(@RequestBody @Valid Create create){
+    ResultResponse<ProductDto.Result> create(@RequestBody @Valid Create create){
         Products products = productsService.addProduct(create);
-        return ResultResponse.<Products>successResponse()
-                .result(products)
+        return ResultResponse.<ProductDto.Result>successResponse()
+                .result(ProductDto.Result.of(products))
                 .successCode(SuccessCode.INSERT_SUCCESS)
                 .build();
     }

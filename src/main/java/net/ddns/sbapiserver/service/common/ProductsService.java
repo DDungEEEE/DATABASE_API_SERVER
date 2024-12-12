@@ -24,7 +24,7 @@ public class ProductsService {
     public Products addProduct(ProductDto.Create create){
 
         Products productEntity = create.asEntity(products ->
-                products.withManufacturers(manufacturersRepository.findById(create.getProductManufacturerId()).get())
+                products.withManufacturers(serviceErrorHelper.findManufacturerOrElseThrow404(create.getProductManufacturerId()))
                         .withStaffs(serviceErrorHelper.findStaffOrElseThrow404(create.getStaffId())));
 
         return productsRepository.save(productEntity);
