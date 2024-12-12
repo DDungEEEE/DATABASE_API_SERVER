@@ -158,7 +158,7 @@ public interface ProductDto {
                     .productStatus(products.getProductStatus())
                     .productType(products.getProductType())
                     .productManufacturerId(checkManufacturerIsNull(products.getManufacturers()))
-                    .staffId(products.getStaffs().getStaffId())
+                    .staffId(checkStaffIsNull(products.getStaffs()))
                     .productEnrollDate(products.getProductEnrollDate())
                     .productModifyDate(products.getProductModifyDate())
                     .build();
@@ -169,6 +169,13 @@ public interface ProductDto {
                     .collect(Collectors.toList());
         }
 
+        public static Integer checkStaffIsNull(Staffs staffs){
+            if (staffs == null){
+                return null;
+            }else{
+                return staffs.getStaffId();
+            }
+        }
         public static Integer checkManufacturerIsNull(Manufacturers manufacturers){
             if(manufacturers == null){
                 return null;
