@@ -10,6 +10,7 @@ import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.service.authentication.AuthenticationService;
 import net.ddns.sbapiserver.service.common.ClientService;
+import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ import java.util.List;
 public class TestClientController {
 
     private final ClientService clientService;
-    private final AuthenticationService authenticationService;
+    private final ServiceErrorHelper serviceErrorHelper;
 
     @Operation(summary = "클라이언트 목록 조회")
     @ApiResponse(responseCode = "200")
@@ -45,6 +46,18 @@ public class TestClientController {
                 .result(clientResult)
                 .build();
     }
+
+    @Operation(summary = "아이디 중복 검사")
+    @GetMapping("/check/{client_name}")
+    public ResultResponse<Boolean> checkDuplicatedId(@PathVariable("client_name") String clientName){
+        boolean userIdDuplicated = serviceErrorHelper.isUserIdDuplicated(clientName);
+        return ResultResponse.<Boolean>successResponse()
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .result(userIdDuplicated)
+                .build();
+    }
+
+
 
 
     @Operation(summary = "클라이언트 수정")

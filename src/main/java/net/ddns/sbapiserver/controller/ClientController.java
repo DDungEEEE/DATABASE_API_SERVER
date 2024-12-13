@@ -11,6 +11,7 @@ import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.service.authentication.AuthenticationService;
 import net.ddns.sbapiserver.service.common.ClientService;
+import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +28,7 @@ public class ClientController {
 
     private final ClientService clientService;
     private final AuthenticationService authenticationService;
+    private final ServiceErrorHelper serviceErrorHelper;
 
     @PreAuthorize("hasRole('ROLE_STAFF')")
     @Operation(summary = "클라이언트 목록 조회")
@@ -39,6 +41,18 @@ public class ClientController {
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
+
+    @Operation(summary = "아이디 중복 검사")
+    @GetMapping("/check/{client_name}")
+    public ResultResponse<Boolean> checkDuplicatedId(@PathVariable("client_name") String clientName){
+        boolean userIdDuplicated = serviceErrorHelper.isUserIdDuplicated(clientName);
+        return ResultResponse.<Boolean>successResponse()
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .result(userIdDuplicated)
+                .build();
+    }
+
+
     @Operation(summary = "클라이언트 회원 가입")
     @PostMapping
     public ResultResponse<ClientsDto.Result> addClient(@RequestBody @Valid ClientsDto.Create create){
