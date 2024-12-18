@@ -1,16 +1,12 @@
 package net.ddns.sbapiserver.domain.entity.staff;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "staff_alert_token")
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
-@Getter
+@Entity @Getter @Builder
 public class StaffAlertToken {
 
     @Id @Column(name = "staff_alert_token_id")
@@ -24,7 +20,7 @@ public class StaffAlertToken {
     private String deviceInfo;
 
     @Column(name = "token_number")
-    private String tokenNumber;
+    private int tokenNumber;
 
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @OneToOne
