@@ -1,12 +1,9 @@
 package net.ddns.sbapiserver.domain.entity.client;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Entity @Getter
+@Entity @Getter @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "client_alert_token")
@@ -25,6 +22,7 @@ public class ClientAlertToken {
     @Column(name = "token_number")
     private int tokenNumber;
 
+    @With
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "client_id")
     private Clients clients;

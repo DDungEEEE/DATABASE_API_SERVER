@@ -11,6 +11,8 @@ import net.ddns.sbapiserver.domain.dto.staff.StaffDto;
 import net.ddns.sbapiserver.service.StaffService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "직원 컨트롤러")
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +30,14 @@ public class TestStaffController {
         return ResultResponse.<StaffDto.Result>successResponse()
                 .successCode(SuccessCode.INSERT_SUCCESS)
                 .result(staff)
+                .build();
+    }
+
+    @GetMapping
+    ResultResponse<List<StaffDto.Result>> getAll(){
+        return ResultResponse.<List<StaffDto.Result>>successResponse()
+                .result(staffService.getAllStaffs())
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 

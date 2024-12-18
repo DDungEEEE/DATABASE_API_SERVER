@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -19,6 +20,7 @@ public class JacksonConfig implements WebMvcConfigurer {
     private ObjectMapper createObjectMapper(PropertyNamingStrategy namingStrategy) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setPropertyNamingStrategy(namingStrategy);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.registerModule(new JavaTimeModule()); // 날짜/시간 처리
         return objectMapper;
     }

@@ -22,6 +22,7 @@ public class StaffAlertToken {
     @Column(name = "token_number")
     private int tokenNumber;
 
+    @With
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @OneToOne
     private Staffs staffs;
