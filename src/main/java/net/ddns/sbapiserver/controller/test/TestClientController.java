@@ -3,6 +3,7 @@ package net.ddns.sbapiserver.controller.test;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
@@ -38,7 +39,7 @@ public class TestClientController {
     }
     @Operation(summary = "클라이언트 회원 가입")
     @PostMapping
-    public ResultResponse<ClientsDto.Result> addClient(@RequestBody ClientsDto.Create create){
+    public ResultResponse<ClientsDto.Result> addClient(@RequestBody @Valid  ClientsDto.Create create){
         ClientsDto.Result clientResult = clientService.addClients(create);
 
         return ResultResponse.<ClientsDto.Result>successResponse()

@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.controller.test;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
@@ -28,7 +29,7 @@ public class TestManufacturerController {
     }
 
     @PostMapping
-    public ResultResponse<ManufacturerDto.Result> createManufacturer(@RequestBody ManufacturerDto.Create create){
+    public ResultResponse<ManufacturerDto.Result> createManufacturer(@RequestBody @Valid ManufacturerDto.Create create){
         ManufacturerDto.Result result = manufacturerService.CreateManufacturer(create);
         return ResultResponse.<ManufacturerDto.Result>successResponse()
                 .result(result)

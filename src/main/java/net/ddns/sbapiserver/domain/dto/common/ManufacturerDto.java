@@ -21,13 +21,14 @@ public interface ManufacturerDto {
     @NoArgsConstructor
     @Builder
     class Create{
+        @NotNull(message = "제조사 이름은 필수입니다.")
         @Schema(name = "manufacturer_name")
         private String manufacturerName;
 
         @Schema(name = "manufacturer_img")
         private String manufacturerImg;
 
-        @NotNull @NotBlank(message = "제조자 상태는 공백일 수 없습니다.")
+        @NotBlank(message = "제조사 상태는 공백일 수 없습니다.")
         @Schema(name = "manufacturer_status")
         private String manufacturerStatus;
 

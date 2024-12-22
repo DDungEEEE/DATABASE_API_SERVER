@@ -48,9 +48,10 @@ public class ErrorResponse {
 
         public static List<ValidationError> of(final BindingResult bindingResult){
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+
             List<ValidationError> errors = fieldErrors.stream()
                     .map(error -> new ValidationError(error.getField(),
-                            error.getRejectedValue().toString(),
+                            error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
                             error.getDefaultMessage()))
                     .collect(Collectors.toList());
 
