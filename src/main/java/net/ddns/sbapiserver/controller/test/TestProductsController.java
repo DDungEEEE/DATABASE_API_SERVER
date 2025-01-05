@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.common.ProductDto;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Tag(name = "상품 컨트롤러",description = "상품 조회, 삭제, 수정, 추가")
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
 public class TestProductsController {
@@ -63,7 +65,9 @@ public class TestProductsController {
     @Operation(summary = "상품 수정")
     @PutMapping
     ResultResponse<Products> updateProduct(@RequestBody Put put){
+        System.out.println(put.toString());
         Products products = productsService.updateProducts(put);
+
         return ResultResponse.<Products>successResponse()
                 .result(products)
                 .successCode(SuccessCode.UPDATE_SUCCESS)
