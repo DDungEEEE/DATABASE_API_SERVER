@@ -148,6 +148,9 @@ public interface ProductDto {
         @Schema(name = "product_manufacturer_id")
         private Integer productManufacturerId;
 
+        @Schema(name = "manufacturer_name")
+        private String manufacturerName;
+
         @Schema(name = "manufacturer_sort_id")
         private Integer manufacturerSortId;
 
@@ -172,6 +175,7 @@ public interface ProductDto {
                     .productType(products.getProductType())
                     .manufacturerSortId(checkManufacturerSortIsNull(products.getManufacturerSort()))
                     .productManufacturerId(checkManufacturerIsNull(products.getManufacturers()))
+                    .manufacturerName(getManufacturerName(products.getManufacturers()))
                     .staffId(checkStaffIsNull(products.getStaffs()))
                     .productEnrollDate(products.getProductEnrollDate())
                     .productModifyDate(products.getProductModifyDate())
@@ -181,6 +185,13 @@ public interface ProductDto {
         public static List<Result> of(List<Products> products) {
             return products.stream().map(Result::of)
                     .collect(Collectors.toList());
+        }
+
+        public static String getManufacturerName(Manufacturers manufacturers){
+            if(manufacturers != null) {
+                return manufacturers.getManufacturerName();
+            }
+            return null;
         }
 
         // 아직 데이터가 정리되기 전이어서 null 일경우 NullPointException 방지
