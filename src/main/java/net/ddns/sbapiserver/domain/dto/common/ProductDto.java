@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,6 +39,8 @@ public interface ProductDto {
         @DecimalMin(value = "0.00", message = "가격은 0.00 이상이어야 합니다.")
         private BigDecimal productPrice;
 
+        @Pattern(regexp = "주문 가능|주문 불가능\\(재고\\)|주문 불가능\\(기타\\)",
+                message = "product_status는 '주문가능', '주문 불가능(재고)', '주문 불가능(기타)'만 입력 가능합니다.")
         @Schema(name = "product_status")
         private String productStatus;
 
@@ -89,6 +92,8 @@ public interface ProductDto {
         @DecimalMin(value = "0.00", message = "가격은 0.00 이상이어야 합니다.")
         private BigDecimal productPrice;
 
+        @Pattern(regexp = "주문 가능|주문 불가능\\(재고\\)|주문 불가능\\(기타\\)",
+                message = "product_status는 '주문 가능', '주문 불가능(재고)', '주문 불가능(기타)'만 입력 가능합니다.")
         @Schema(name = "product_status")
         private String productStatus;
 

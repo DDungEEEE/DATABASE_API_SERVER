@@ -69,6 +69,9 @@ public class Products {
             if(this.productPrice == null){
                 this.productPrice = new BigDecimal("0.00");
             }
+            this.productEnrollDate = new Timestamp(System.currentTimeMillis());
+            this.productModifyDate = new Timestamp(System.currentTimeMillis());
     }
+
 
 }
