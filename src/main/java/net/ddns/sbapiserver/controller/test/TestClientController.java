@@ -72,8 +72,19 @@ public class TestClientController {
                 .build();
     }
 
+    @Operation(summary = "거래처 정보 검색")
+    @GetMapping("/{client_id}")
+    public ResultResponse<ClientsDto.Result> findClient(@PathVariable("client_id") int clientId){
+        ClientsDto.Result findClient = clientService.findClientById(clientId);
+        return ResultResponse.<ClientsDto.Result>successResponse()
+                .result(findClient)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
+
+
     @Operation(summary = "클라이언트 삭제")
-    @DeleteMapping("{client_id}")
+    @DeleteMapping("/{client_id}")
     public ResultResponse<Void> deleteClient(@PathVariable("client_id") int clientId, Authentication authentication){
         clientService.deleteClientsById(clientId);
         return ResultResponse.<Void>successResponse()

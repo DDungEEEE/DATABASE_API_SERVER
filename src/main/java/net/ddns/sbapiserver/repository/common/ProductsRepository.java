@@ -9,5 +9,4 @@ public interface ProductsRepository extends JpaRepository<Products, Integer> {
 
     Products findByProductId(int productId);
     List<Products> findByManufacturersManufacturerId(int manufacturerId);
-
 }

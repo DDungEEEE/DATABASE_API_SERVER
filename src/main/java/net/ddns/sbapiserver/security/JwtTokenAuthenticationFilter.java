@@ -38,7 +38,6 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try{
-            log.info("JwtTokenAuthenticationFilter 작동");
             UserLoginDto userLoginDto = new ObjectMapper().readValue(request.getInputStream(), UserLoginDto.class);
 
             Clients clients = clientRepository.findClientsByClientName(userLoginDto.getUserId());
@@ -75,7 +74,6 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
 
         tokenStorageService.saveRefreshToken(username, refreshToken, role);
         JwtToken jwtToken = jwtUtil.generateToken(username, role);
-
         if(role.equals(UserType.CLIENT.getRole())){
             Clients clients = clientRepository.findClientsByClientName(username);
             jwtToken.setUser(ClientsDto.Result.of(clients));

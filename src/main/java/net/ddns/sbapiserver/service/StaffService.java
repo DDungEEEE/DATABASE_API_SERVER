@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.ErrorCode;
 import net.ddns.sbapiserver.domain.dto.staff.StaffDto;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
-import net.ddns.sbapiserver.exception.custom.BusinessException;
+import net.ddns.sbapiserver.exception.error.custom.BusinessException;
 import net.ddns.sbapiserver.repository.staff.NoticeRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;

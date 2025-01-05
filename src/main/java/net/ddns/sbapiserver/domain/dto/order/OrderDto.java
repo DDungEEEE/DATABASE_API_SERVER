@@ -69,11 +69,19 @@ public interface OrderDto {
         @Schema(name = "order_status")
         private String orderStatus;
 
+        @Schema(name = "client_name")
+        private String clientName;
+
+        @Schema(name = "client_ceo_name")
+        private String clientCeoName;
+
         @Schema(name = "order_contents")
         private List<OrderContentDto.Result> orderContents;
 
         public static Result of(Orders order, List<OrderContentDto.Result> orderContents){
             return Result.builder()
+                    .clientName(order.getClients().getClientName())
+                    .clientCeoName(order.getClients().getClientCeoName())
                     .orderId(order.getOrderId())
                     .orderDate(order.getOrderDate())
                     .orderPrintCk(order.getOrderPrintCk())

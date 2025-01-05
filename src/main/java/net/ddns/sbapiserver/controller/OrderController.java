@@ -41,7 +41,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @ApiResponse(responseCode = "200")
     @Operation(summary = "관리자가 사용할 주문내역 조회")
-    @GetMapping("{start_date}/{end_date}")
+    @GetMapping("/{start_date}/{end_date}")
     public ResultResponse<List<OrderDto.Result>> getAllOrder(@PathVariable("start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate, @PathVariable("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
 
@@ -57,7 +57,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @ApiResponse(responseCode = "200")
     @Operation(summary = "주문내역 조회")
-    @GetMapping("{client_id}/{start_date}/{end_date}")
+    @GetMapping("/{client_id}/{start_date}/{end_date}")
     public ResultResponse<List<OrderDto.Result>> getOrder(@PathVariable("client_id") int clientId, @PathVariable("start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate, @PathVariable("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, Authentication authentication){
         authenticationService.isOwner(authentication, clientId);
@@ -71,11 +71,20 @@ public class OrderController {
 
     @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @Operation(summary = "주문내역 삭제")
-    @DeleteMapping("{order_id}")
+    @DeleteMapping("/{order_id}")
     public ResultResponse<Void> deleteOrder( @PathVariable("order_id") int orderId){
         orderService.deleteOrder(orderId);
         return ResultResponse.<Void>successResponse()
                 .successCode(SuccessCode.DELETE_SUCCESS)
+                .build();
+    }
+
+    @GetMapping("/{order_id}")
+    public ResultResponse<OrderDto.Result> findOrder(@PathVariable("order_id") int orderId){
+        OrderDto.Result orderResult = orderService.findOrder(orderId);
+        return ResultResponse.<OrderDto.Result>successResponse()
+                .result(orderResult)
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 }

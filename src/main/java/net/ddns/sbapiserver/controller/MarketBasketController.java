@@ -31,7 +31,7 @@ public class MarketBasketController {
     @ApiResponse(responseCode = "200")
     @Operation(summary = "장바구니 추가")
     @PostMapping
-    public ResultResponse<List<MarketBasketDto.Result>> create(@RequestBody @Valid MarketBasketDto.Create create, Authentication authentication){
+    public ResultResponse<List<MarketBasketDto.Result>> createMarketBasket(@RequestBody @Valid MarketBasketDto.Create create, Authentication authentication){
         authenticationService.isOwner(authentication, create.getClientId());
 
         List<MarketBasketDto.Result> results = marketBasketService.saveMarketBasket(create);

@@ -3,8 +3,10 @@ package net.ddns.sbapiserver.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import net.ddns.sbapiserver.common.code.ErrorCode;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
+import net.ddns.sbapiserver.common.swagger.ApiErrorCodeExample;
 import net.ddns.sbapiserver.domain.dto.common.ManufacturerDto;
 import net.ddns.sbapiserver.service.common.ManufacturerService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,6 +42,18 @@ public class ManufacturerController {
                 .build();
     }
 
+    @PutMapping
+    public ResultResponse<ManufacturerDto.Result> updateManufacturer(@RequestBody @Valid ManufacturerDto.Put put){
+        ManufacturerDto.Result result = manufacturerService.updateManufacturer(put);
+
+        return ResultResponse.<ManufacturerDto.Result>successResponse()
+                .result(result)
+                .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
+
+
+    @ApiErrorCodeExample(ErrorCode.MANUFACTURER_NOT_FOUND_ERROR)
     @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @DeleteMapping("/{manufacturer_id}")
     public ResultResponse<Void> deleteManufacturer(@PathVariable("manufacturer_id") int manufacturerId){

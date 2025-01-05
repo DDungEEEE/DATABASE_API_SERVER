@@ -4,15 +4,17 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.domain.entity.client.QClients;
+import net.ddns.sbapiserver.domain.entity.common.ManufacturerSort;
 import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
 import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.domain.entity.order.Orders;
 import net.ddns.sbapiserver.domain.entity.staff.Notice;
 import net.ddns.sbapiserver.domain.entity.staff.QStaffs;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
-import net.ddns.sbapiserver.exception.custom.BusinessException;
+import net.ddns.sbapiserver.exception.error.custom.BusinessException;
 import net.ddns.sbapiserver.common.code.ErrorCode;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
+import net.ddns.sbapiserver.repository.common.ManufacturerSortRepository;
 import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
 import net.ddns.sbapiserver.repository.common.OrderRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
@@ -30,6 +32,7 @@ public class ServiceErrorHelper {
     private final OrderRepository orderRepository;
     private final ManufacturersRepository manufacturersRepository;
     private final JPAQueryFactory jpaQueryFactory;
+    private final ManufacturerSortRepository manufacturerSortRepository;
 
     public Clients findClientsOrElseThrow404(int clientId){
         ErrorCode clientNotFoundError = ErrorCode.CLIENT_NOT_FOUND_ERROR;
@@ -73,6 +76,13 @@ public class ServiceErrorHelper {
         );
     }
 
+    public ManufacturerSort findManufacturerSortOrElseThrow404(int manufacturerSortId){
+        ErrorCode manufacturerSortNotFoundError = ErrorCode.MANUFACTURER_SORT_NOT_FOUND_ERROR;
+        return manufacturerSortRepository.findById(manufacturerSortId).orElseThrow(
+                () -> new BusinessException(manufacturerSortNotFoundError, manufacturerSortNotFoundError.getReason())
+        );
+    }
+
     public boolean isUserIdDuplicated(String userId){
         QClients clients = QClients.clients;
         QStaffs staffs = QStaffs.staffs;
@@ -86,6 +96,19 @@ public class ServiceErrorHelper {
                 .fetchOne();
 
         return findClient != null || findStaff != null;
+    }
+
+    public boolean isUserPhoneNumberDuplicated(String userPhNum){
+        QClients qClients = QClients.clients;
+        QStaffs qStaffs = QStaffs.staffs;
+
+        Clients findClient = jpaQueryFactory.selectFrom(qClients)
+                .where(qClients.clientPhNum.eq(userPhNum))
+                .fetchOne();
+        Staffs findStaffs = jpaQueryFactory.selectFrom(qStaffs)
+                .where(qStaffs.staffPhoneNumber.eq(userPhNum))
+                .fetchOne();
+        return findClient != null || findStaffs != null;
     }
 
 }

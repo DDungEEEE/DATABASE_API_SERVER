@@ -1,12 +1,14 @@
 package net.ddns.sbapiserver.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.staff.NoticeDto;
 import net.ddns.sbapiserver.service.common.NoticeService;
+import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,18 @@ public class NoticeController {
         return ResultResponse.<List<NoticeDto.Result>>successResponse()
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .result(noticeList)
+                .build();
+    }
+
+    @GetMapping("/{notice_id}/{page}")
+    public ResultResponse<List<NoticeDto.Result>> findNotice(@PathVariable(value = "notice_id") int noticeId,
+                                                             @PathVariable(value = "page",required = false)
+                                                             @Parameter(description = "Page number, optional", required = false)Integer page){
+        int actualPage = (page != null) ? page : 0;
+        List<NoticeDto.Result> findNotice = noticeService.findNotice(noticeId, actualPage);
+        return ResultResponse.<List<NoticeDto.Result>>successResponse()
+                .result(findNotice)
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 

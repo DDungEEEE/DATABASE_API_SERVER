@@ -29,6 +29,7 @@ public interface StaffAlertTokenDto {
         public StaffAlertToken asEntity(Function<? super StaffAlertToken, StaffAlertToken> init){
             return init.apply(
                     StaffAlertToken.builder()
+                            .alertToken(alertToken)
                             .deviceInfo(deviceInfo)
                             .tokenNumber(tokenNumber)
                             .build());

@@ -54,9 +54,9 @@ public class ProductsController {
     @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "제조사로 상품 조회")
     @ApiResponse(responseCode = "200")
-    @GetMapping("/{manufacturer_id}")
-    ResultResponse<List<Products>> find(@PathVariable("manufacturer_id") int manufacturerId){
-        List<Products> productsByManufacturersId = productsService.findProductsByManufacturersId(manufacturerId);
+    @GetMapping("/{manufacturer_id}/{manufacturer_sort_id}")
+    ResultResponse<List<Products>> find(@PathVariable("manufacturer_id") int manufacturerId, @PathVariable("manufacturer_sort_id") int manufacturerSortId){
+        List<Products> productsByManufacturersId = productsService.findProductsByManufacturersId(manufacturerId, manufacturerSortId);
 
         return ResultResponse.<List<Products>>successResponse()
                 .result(productsByManufacturersId)

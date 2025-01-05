@@ -8,12 +8,17 @@ import net.ddns.sbapiserver.domain.entity.staff.QNotice;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.repository.staff.NoticeRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,6 +61,19 @@ public class NoticeService {
                 .where(notice.noticeDate.between(startDateTime, endDateTime))
                 .fetch();
         return NoticeDto.Result.of(searchNoticeList);
+    }
+
+    @Transactional(readOnly = true)
+    public List<NoticeDto.Result> findNotice(int noticeId, int page){
+        if(page == 0){
+            Notice findNotice = serviceErrorHelper.findNoticeOrElseThrow404(noticeId);
+            return List.of(NoticeDto.Result.of(findNotice));
+        }else{
+            Pageable pageable = PageRequest.of(page-1, 10, Sort.by("noticeId").ascending());
+            Page<Notice> findNotices = noticeRepository.findNoticesByAfterId(noticeId, pageable);
+
+            return findNotices.stream().map(NoticeDto.Result::of).collect(Collectors.toList());
+        }
     }
 
     @Transactional

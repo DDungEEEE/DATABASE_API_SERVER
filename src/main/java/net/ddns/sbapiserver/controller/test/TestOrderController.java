@@ -68,4 +68,13 @@ public class TestOrderController {
                 .successCode(SuccessCode.DELETE_SUCCESS)
                 .build();
     }
+
+    @GetMapping("/{order_id}")
+    public ResultResponse<OrderDto.Result> findOrder(@PathVariable("order_id") int orderId){
+        OrderDto.Result orderResult = orderService.findOrder(orderId);
+        return ResultResponse.<OrderDto.Result>successResponse()
+                .result(orderResult)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
 }

@@ -33,6 +33,36 @@ public interface ManufacturerDto {
         private String manufacturerStatus;
 
     }
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(name = "manufacturerPut")
+    class Put{
+        @NotNull(message = "제조사 아이디는 필수입니다.")
+        @Schema(name = "manufacturer_id")
+        private int manufacturerId;
+
+        @NotBlank(message = "제조사 이름은 공백일 수 없습니다.")
+        @Schema(name = "manufacturer_name")
+        private String manufacturerName;
+
+
+        @Schema(name = "manufacturer_img")
+        private String manufacturerImg;
+
+        @NotNull(message = "제조사 상태는 공백일 수 없습니다.")
+        @Schema(name = "manufacturer_status")
+        private String manufacturerStatus;
+
+        public Manufacturers asPutEntity(){
+            return Manufacturers.builder()
+                    .manufacturerId(manufacturerId)
+                    .manufacturerName(manufacturerName)
+                    .manufacturerImg(manufacturerImg)
+                    .manufacturerStatus(manufacturerStatus)
+                    .build();
+        }
+    }
 
     @Schema(name = "manufacturerResult")
     @Data

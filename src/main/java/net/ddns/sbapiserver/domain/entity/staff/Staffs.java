@@ -44,16 +44,15 @@ public class Staffs {
     private Timestamp createAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false, updatable = false)
+    @Column(name = "updated_at", nullable = false)
     private Timestamp updateAt;
-
 
     @Column(name = "staff_refresh_token")
     private String staffRefreshToken;
 
-    @PrePersist
+    @PreUpdate
     protected void setStaffTime(){
-        updateAt = new Timestamp(System.currentTimeMillis());
+        this.updateAt = new Timestamp(System.currentTimeMillis());
     }
 
 }

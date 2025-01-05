@@ -16,7 +16,7 @@ public class ClientAlertToken {
     @Column(name = "alert_token")
     private String alertToken;
 
-    @Column(name = "devicer_info")
+    @Column(name = "device_info")
     private String deviceInfo;
 
     @Column(name = "token_number")

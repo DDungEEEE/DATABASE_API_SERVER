@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.ddns.sbapiserver.domain.entity.common.ManufacturerSort;
 import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
 import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
@@ -46,12 +47,14 @@ public interface ProductDto {
         @Schema(name="product_type")
         private String productType;
 
-
         @Schema(name = "product_manufacturer_id")
         private int productManufacturerId;
 
         @Schema(name = "staff_id")
         private int staffId;
+
+        @Schema(name = "manufacturer_sort_id")
+        private int manufacturerSortId;
 
         public Products asEntity(
                 Function<? super Products, ? extends Products> init){
@@ -95,6 +98,8 @@ public interface ProductDto {
         @Schema(name="product_type")
         private String productType;
 
+        @Schema(name = "manufacturer_sort_id")
+        private int manufacturerSortId;
 
         @Schema(name = "product_manufacturer_id")
         private int productManufacturerId;
@@ -138,6 +143,9 @@ public interface ProductDto {
         @Schema(name = "product_manufacturer_id")
         private Integer productManufacturerId;
 
+        @Schema(name = "manufacturer_sort_id")
+        private Integer manufacturerSortId;
+
         @Schema(name = "staff_id")
         private Integer staffId;
 
@@ -157,6 +165,7 @@ public interface ProductDto {
                     .productPrice(products.getProductPrice())
                     .productStatus(products.getProductStatus())
                     .productType(products.getProductType())
+                    .manufacturerSortId(checkManufacturerSortIsNull(products.getManufacturerSort()))
                     .productManufacturerId(checkManufacturerIsNull(products.getManufacturers()))
                     .staffId(checkStaffIsNull(products.getStaffs()))
                     .productEnrollDate(products.getProductEnrollDate())
@@ -169,11 +178,20 @@ public interface ProductDto {
                     .collect(Collectors.toList());
         }
 
+        // 아직 데이터가 정리되기 전이어서 null 일경우 NullPointException 방지
         public static Integer checkStaffIsNull(Staffs staffs){
             if (staffs == null){
                 return null;
             }else{
                 return staffs.getStaffId();
+            }
+        }
+
+        public static Integer checkManufacturerSortIsNull(ManufacturerSort manufacturerSort){
+            if(manufacturerSort == null){
+                return null;
+            }else{
+                return manufacturerSort.getManufacturerSortId();
             }
         }
         public static Integer checkManufacturerIsNull(Manufacturers manufacturers){

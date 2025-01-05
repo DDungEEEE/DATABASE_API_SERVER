@@ -25,6 +25,8 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
 
         UnifiedUserDetails unifiedUserDetails = (UnifiedUserDetails) unifiedUserDetailsService.loadUserByUsername(userId);
 
+        log.error("여기까찌도 작동됨 인증 성공");
+
         if(passwordEncoder.matches(userPwd, unifiedUserDetails.getPassword())){
                 return new UsernamePasswordAuthenticationToken(unifiedUserDetails, userPwd, unifiedUserDetails.getAuthorities());
             }else{

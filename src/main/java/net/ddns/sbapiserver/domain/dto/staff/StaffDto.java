@@ -42,7 +42,6 @@ public interface StaffDto {
         private String staffDepartment;
 
         @Schema(name = "staff_phone_number")
-        @Pattern(regexp = "^010-\\d{4}-\\d{4}$", message = "휴대폰 번호는 010-XXXX-XXXX 형식이어야 합니다.")
         private String staffPhoneNumber;
 
         @Schema(name = "staff_gender")
@@ -82,7 +81,6 @@ public interface StaffDto {
         private String staffDepartment;
 
         @Schema(name = "staff_phone_number")
-        @Pattern(regexp = "^010-\\d{4}-\\d{4}$", message = "휴대폰 번호는 010-XXXX-XXXX 형식이어야 합니다.")
         private String staffPhoneNumber;
 
         @Schema(name = "staff_gender")

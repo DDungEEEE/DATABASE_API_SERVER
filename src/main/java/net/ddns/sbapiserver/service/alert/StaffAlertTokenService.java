@@ -38,6 +38,6 @@ public class StaffAlertTokenService {
     public void deleteStaffAlertToken(StaffAlertTokenDto.Delete delete){
         serviceErrorHelper.findStaffOrElseThrow404(delete.getStaffId());
 
-        staffAlertTokenRepository.deleteByStaffsStaffIdAndTokenNumber(delete.getTokenNumber(), delete.getStaffId());
+        staffAlertTokenRepository.deleteByStaffsStaffIdAndTokenNumber(delete.getStaffId(), delete.getTokenNumber());
     }
 }

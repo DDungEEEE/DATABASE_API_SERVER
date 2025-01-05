@@ -46,13 +46,19 @@ public class OrderService {
         return OrderDto.Result.of(saveOrder, orderContents);
     }
 
+    @Transactional(readOnly = true)
+    public OrderDto.Result findOrder(int orderId){
+        Orders findOrder = serviceErrorHelper.findOrderOrElseThrow404(orderId);
+        return parsingToOneOrderDtoResult(findOrder);
+    }
+
     @Transactional
     protected List<OrderContentDto.Result> saveOrderContent(List<OrderContentDto.Create> orderCreates, Orders orders){
         List<OrderContents> collectOrderContents = orderCreates.stream()
                 .map(orderCreate -> orderCreate.asEntity(orderContents ->
                         orderContents
                                 .withOrders(orders)
-                                .withProducts(serviceErrorHelper.findProductsOrElseThrow404(orderContents.getProducts().getProductId())))
+                                .withProducts(serviceErrorHelper.findProductsOrElseThrow404(orderCreate.getProductId())))
                 ).collect(Collectors.toList());
 
         List<OrderContents> orderContents = orderContentsRepository.saveAll(collectOrderContents);
@@ -65,7 +71,7 @@ public class OrderService {
         serviceErrorHelper.findClientsOrElseThrow404(clientId);
 
         List<Orders> ordersList = customOrderRepository.findOrder(clientId, startDate, endDate);
-       return parsingToOrderDtoResult(ordersList);
+       return parsingToOrdersDtoResult(ordersList);
     }
 
     @Transactional
@@ -77,16 +83,20 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<OrderDto.Result> getAllOrderList(LocalDate startDate, LocalDate endDate){
         List<Orders> orderListForAdmin = customOrderRepository.getOrderListForAdmin(startDate, endDate);
-        return parsingToOrderDtoResult(orderListForAdmin);
+        return parsingToOrdersDtoResult(orderListForAdmin);
 
     }
 
-    protected List<OrderDto.Result> parsingToOrderDtoResult(List<Orders> ordersList){
+    protected List<OrderDto.Result> parsingToOrdersDtoResult(List<Orders> ordersList){
         return ordersList.stream().map(
                 orders -> {
                     List<OrderContents> orderContent = customOrderRepository.findOrderContent(orders.getOrderId());
-                    List<OrderContentDto.Result> orderContentResults = OrderContentDto.Result.of(orderContent);
-                    return OrderDto.Result.of(orders, orderContentResults);
+                    return OrderDto.Result.of(orders, OrderContentDto.Result.of(orderContent));
                 }).collect(Collectors.toList());
+    }
+
+    protected OrderDto.Result parsingToOneOrderDtoResult(Orders orders){
+        List<OrderContents> orderContent = customOrderRepository.findOrderContent(orders.getOrderId());
+        return OrderDto.Result.of(orders, OrderContentDto.Result.of(orderContent));
     }
 }

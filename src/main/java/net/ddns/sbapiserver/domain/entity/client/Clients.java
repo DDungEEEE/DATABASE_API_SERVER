@@ -41,7 +41,7 @@ public class Clients {
     @Column(name = "client_margin_ratio")
     private String clientMarginRatio;
 
-    @Column(name = "client_ph_num")
+    @Column(name = "client_ph_num", unique = true)
     private String clientPhNum;
 
     @Column(name = "client_status")
@@ -54,12 +54,11 @@ public class Clients {
     @Column(name = "client_created_at",updatable = false, nullable = false)
     private Timestamp clientCreatedAt;
 
-    @UpdateTimestamp
     @Column(name = "client_updated_at", nullable = false)
     private Timestamp clientUpdatedAt;
 
-    @PrePersist
+    @PreUpdate
     private void setClientUpdatedAt(){
-        clientUpdatedAt = new Timestamp(System.currentTimeMillis());
+        this.clientUpdatedAt = new Timestamp(System.currentTimeMillis());
     }
 }

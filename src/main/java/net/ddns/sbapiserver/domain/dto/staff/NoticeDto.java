@@ -54,7 +54,7 @@ public interface NoticeDto {
         @Schema(name = "notice_status")
         private String noticeStatus;
 
-        @Schema(name = "notice_name")
+        @Schema(name = "notice_title")
         private String noticeTitle;
 
         @Schema(name = "staff_id")
@@ -72,18 +72,23 @@ public interface NoticeDto {
     @Data
     @Builder
     class Result{
+        @Schema(name = "notice_id")
         private int noticeId;
 
+        @Schema(name = "notice_content")
         private String noticeContent;
 
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime noticeDate;
 
+        @Schema(name = "notice_status")
         private String noticeStatus;
 
+        @Schema(name = "notice_title")
         private String noticeTitle;
 
-        private int staff_id;
+        @Schema(name = "staff_name")
+        private String staffName;
 
         public static Result of(Notice notice){
             return Result.builder()
@@ -91,7 +96,7 @@ public interface NoticeDto {
                     .noticeId(notice.getNoticeId())
                     .noticeDate(notice.getNoticeDate())
                     .noticeStatus(notice.getNoticeStatus())
-                    .staff_id(notice.getStaffs().getStaffId())
+                    .staffName(notice.getStaffs().getStaffName())
                     .noticeTitle(notice.getNoticeTitle())
                     .build();
         }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.ErrorCode;
 import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
-import net.ddns.sbapiserver.exception.custom.BusinessException;
+import net.ddns.sbapiserver.exception.error.custom.BusinessException;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,6 +53,12 @@ ClientService {
         Clients saveClients = clientRepository.save(putClients);
 
         return saveClients;
+
+    }
+
+    @Transactional(readOnly = true)
+    public ClientsDto.Result findClientById(int clientId){
+        return ClientsDto.Result.of(serviceErrorHelper.findClientsOrElseThrow404(clientId));
 
     }
 

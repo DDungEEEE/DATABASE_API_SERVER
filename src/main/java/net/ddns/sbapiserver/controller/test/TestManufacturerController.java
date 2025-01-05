@@ -36,6 +36,14 @@ public class TestManufacturerController {
                 .successCode(SuccessCode.INSERT_SUCCESS)
                 .build();
     }
+    @PutMapping
+    public ResultResponse<ManufacturerDto.Result> createManufacturer(@RequestBody @Valid ManufacturerDto.Put put){
+        ManufacturerDto.Result result = manufacturerService.updateManufacturer(put);
+        return ResultResponse.<ManufacturerDto.Result>successResponse()
+                .result(result)
+                .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
 
     @DeleteMapping("/{manufacturer_id}")
     public ResultResponse<Void> deleteManufacturer(@PathVariable("manufacturer_id") int manufacturerId){

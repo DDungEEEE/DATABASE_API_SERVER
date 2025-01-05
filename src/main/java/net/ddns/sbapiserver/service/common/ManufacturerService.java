@@ -19,9 +19,17 @@ public class ManufacturerService {
         Manufacturers createManufacturer = Manufacturers.builder()
                 .manufacturerImg(create.getManufacturerImg())
                 .manufacturerName(create.getManufacturerName())
+                .manufacturerStatus(create.getManufacturerStatus())
                 .build();
 
         Manufacturers saveManufacturer = manufacturersRepository.save(createManufacturer);
+        return ManufacturerDto.Result.of(saveManufacturer);
+    }
+
+    @Transactional
+    public ManufacturerDto.Result updateManufacturer(ManufacturerDto.Put put){
+        Manufacturers putManufacturer = put.asPutEntity();
+        Manufacturers saveManufacturer = manufacturersRepository.save(putManufacturer);
         return ManufacturerDto.Result.of(saveManufacturer);
     }
 

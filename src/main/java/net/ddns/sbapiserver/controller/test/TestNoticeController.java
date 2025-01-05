@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.controller.test;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
@@ -61,6 +62,16 @@ public class TestNoticeController {
         return ResultResponse.<NoticeDto.Result>successResponse()
                 .result(result)
                 .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
+
+    @GetMapping("/search/{notice_id}/{page}")
+    public ResultResponse<List<NoticeDto.Result>> findNotice(@PathVariable(value = "notice_id") int noticeId,
+                                                             @PathVariable(value = "page",required = false) Integer page){
+        List<NoticeDto.Result> findNotice = noticeService.findNotice(noticeId, page);
+        return ResultResponse.<List<NoticeDto.Result>>successResponse()
+                .result(findNotice)
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 

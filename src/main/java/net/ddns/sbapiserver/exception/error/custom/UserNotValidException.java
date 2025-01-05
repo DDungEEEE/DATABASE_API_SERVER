@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.exception.custom;
+package net.ddns.sbapiserver.exception.error.custom;
 
 import lombok.Getter;
 import net.ddns.sbapiserver.common.code.ErrorCode;

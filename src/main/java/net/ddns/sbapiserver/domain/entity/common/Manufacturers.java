@@ -3,9 +3,6 @@ package net.ddns.sbapiserver.domain.entity.common;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-
 import java.sql.Timestamp;
 
 @Entity
@@ -32,13 +29,12 @@ public class Manufacturers {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
 
-    @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
 
-    @PrePersist
+    @PreUpdate
     private void setUpdatedAt(){
-        updatedAt = new Timestamp(System.currentTimeMillis());
+        this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
 }

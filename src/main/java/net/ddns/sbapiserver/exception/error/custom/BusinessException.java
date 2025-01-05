@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.exception.custom;
+package net.ddns.sbapiserver.exception.error.custom;
 
 import lombok.Getter;
 import net.ddns.sbapiserver.common.code.ErrorCode;
@@ -12,6 +12,7 @@ public class BusinessException extends RuntimeException{
         super(message);
         this.errorCode = errorCode;
     }
+
 
 
 }

@@ -21,13 +21,8 @@ public class ErrorResponse {
         this.divisionCode = errorCode.getDivisionCode();
         this.status = errorCode.getStatus();
     }
-
-    @Builder
-    public ErrorResponse(final ErrorCode errorCode, String reasonMsg){
-        this.reason = errorCode.getReason();
-        this.status = errorCode.getStatus();
-        this.divisionCode = errorCode.getDivisionCode();
-        this.reasonMsg = reasonMsg;
+    public static ErrorResponse from(ErrorCode errorCode){
+        return new ErrorResponse(errorCode);
     }
     @Builder
     public ErrorResponse(List<ValidationError> errors) {

@@ -37,30 +37,38 @@ public class Products {
     @Column(name="product_type")
     private String productType;
 
+    //상품의 제조사
     @With
     @JoinColumn(name = "product_manufacturer_id", referencedColumnName = "manufacturer_id")
     @ManyToOne
     private Manufacturers manufacturers;
+
+    //상품의 제조사 ->상세 구분
+    @With
+    @ManyToOne
+    @JoinColumn(name = "manufacturer_sort_id")
+    private ManufacturerSort manufacturerSort;
 
     @With
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id")
     @ManyToOne
     private Staffs staffs;
 
-    @CreationTimestamp
     @Column(name = "product_enroll_date", nullable = false, updatable = false)
     private Timestamp productEnrollDate;
 
-    @UpdateTimestamp
-    @Column(name="product_modify_date", nullable = false, updatable = false)
+    @Column(name="product_modify_date", nullable = false)
     private Timestamp productModifyDate;
 
+    @PreUpdate
+    protected void setUpdateProductModifyDate(){
+        this.productModifyDate = new Timestamp(System.currentTimeMillis());
+    }
     @PrePersist
     protected void setDefaultProductPriceAndModifyDate(){
-            if(productPrice == null){
-                productPrice = new BigDecimal("0.00");
+            if(this.productPrice == null){
+                this.productPrice = new BigDecimal("0.00");
             }
-            productModifyDate = new Timestamp(System.currentTimeMillis());
     }
 
 }
