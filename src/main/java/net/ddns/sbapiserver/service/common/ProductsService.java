@@ -62,9 +62,10 @@ public class ProductsService {
     public List<Products> findProductsByManufacturersId(int manufacturerId, int manufacturerSortId){
         QProducts qProducts = QProducts.products;
         if(manufacturerId == 0){
-            return jpaQueryFactory.selectFrom(qProducts)
-                    .where(qProducts.manufacturerSort.manufacturerSortId.eq(manufacturerId))
-                    .fetch();
+                return jpaQueryFactory.selectFrom(qProducts)
+                        .where(qProducts.manufacturerSort.manufacturerSortId.eq(manufacturerId))
+                        .fetch();
+
         }else{
             return jpaQueryFactory.selectFrom(qProducts)
                     .where(qProducts.manufacturers.manufacturerId.eq(manufacturerId),

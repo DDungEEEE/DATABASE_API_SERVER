@@ -21,9 +21,6 @@ public class UserLoginController {
 
     @PostMapping
     public void login(@RequestBody UserLoginDto userLoginDto, HttpServletRequest req)throws Exception{
-        log.info("dsadddddddddddd");
-        String userId = new ObjectMapper().readValue(req.getInputStream(), UserLoginDto.class).getUserId();
-        log.info("RefreshToken 저장 성공");
     }
 
 
