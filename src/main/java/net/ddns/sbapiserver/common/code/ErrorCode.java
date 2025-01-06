@@ -12,8 +12,9 @@ public enum ErrorCode {
     //권한이 없음
     FORBIDDEN_ERROR(403, "COMMON_002", "FOR BIDDEN"),
 
+    USER_NOT_FOUND_ERROR(403, "COMMON_003", "사용자를 찾을 수 없습니다."),
 
-    CLIENT_NOT_FOUND_ERROR(404, "CLIENT_001", "사용자를 찾을 수 없습니다"),
+    CLIENT_NOT_FOUND_ERROR(404, "CLIENT_001", "고객 정보를 찾을 수 없습니다"),
 
     // 사용자 ID 중복
     DUPLICATE_USER_ID_ERROR(400, "USER_001", "이미 존재하는 사용자 아이디입니다."),

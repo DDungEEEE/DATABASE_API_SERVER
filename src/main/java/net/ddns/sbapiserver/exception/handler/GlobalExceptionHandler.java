@@ -5,9 +5,11 @@ import net.ddns.sbapiserver.exception.error.custom.BusinessException;
 import net.ddns.sbapiserver.common.code.ErrorCode;
 import net.ddns.sbapiserver.exception.error.custom.UserNotValidException;
 import net.ddns.sbapiserver.exception.error.ErrorResponse;
+import org.apache.coyote.Response;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,6 +47,7 @@ public class GlobalExceptionHandler {
         String message = ex.getMessage().toString();
         return new ResponseEntity<>(message, HTTP_NOT_FOUND_ERROR);
     }
+
 
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex){

@@ -8,11 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ddns.sbapiserver.common.ResponseWrapper;
+import net.ddns.sbapiserver.common.code.ErrorCode;
+import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.UserLoginDto;
 import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
 import net.ddns.sbapiserver.domain.dto.staff.StaffDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
+import net.ddns.sbapiserver.exception.error.ErrorResponse;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.service.authentication.TokenStorageService;
@@ -86,6 +89,7 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.setStatus(403);
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.USER_NOT_FOUND_ERROR);
+        responseWrapper.convertObjectToResponse(response, errorResponse);
     }
 }

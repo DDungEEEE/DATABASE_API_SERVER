@@ -23,7 +23,9 @@ public class ResultResponse<T> implements Serializable {
     @Builder(builderMethodName = "successResponse")
     public ResultResponse(final T result, final SuccessCode successCode){
         this.result = result;
-        this.resultCode = successCode.getStatus();
-        this.resultMessage = successCode.getMessage();
+        if(successCode != null){
+            this.resultCode = successCode.getStatus();
+            this.resultMessage = successCode.getMessage();
+        }
     }
 }
