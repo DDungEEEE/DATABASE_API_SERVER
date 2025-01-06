@@ -3,9 +3,11 @@ package net.ddns.sbapiserver.service.common;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import net.ddns.sbapiserver.common.code.ErrorCode;
 import net.ddns.sbapiserver.domain.dto.common.ProductDto;
 import net.ddns.sbapiserver.domain.entity.common.*;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
+import net.ddns.sbapiserver.exception.error.custom.BusinessException;
 import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
@@ -22,7 +24,7 @@ public class ProductsService {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Transactional
-    public Products addProduct(ProductDto.Create create){
+    public ProductDto.Result addProduct(ProductDto.Create create){
 
         Products productEntity = create.asEntity(products ->
                 products.withManufacturers(serviceErrorHelper.findManufacturerOrElseThrow404(create.getProductManufacturerId()))
@@ -30,7 +32,7 @@ public class ProductsService {
                         .withManufacturerSort(serviceErrorHelper.findManufacturerSortOrElseThrow404(create.getManufacturerSortId()))
         );
 
-        return productsRepository.save(productEntity);
+        return ProductDto.Result.of(productsRepository.save(productEntity));
     }
 
     @Transactional
@@ -40,12 +42,12 @@ public class ProductsService {
     }
 
     @Transactional(readOnly = true)
-    public List<Products> getAllProducts(){
-        return productsRepository.findAll();
+    public List<ProductDto.Result> getAllProducts(){
+        return ProductDto.Result.of(productsRepository.findAll());
     }
 
     @Transactional
-    public Products updateProducts(ProductDto.Put put){
+    public ProductDto.Result updateProducts(ProductDto.Put put){
         Products findProduct = serviceErrorHelper.findProductsOrElseThrow404(put.getProductId());
         Staffs findStaff = serviceErrorHelper.findStaffOrElseThrow404(put.getStaffId());
         Manufacturers findManufacturer = serviceErrorHelper.findManufacturerOrElseThrow404(put.getProductManufacturerId());
@@ -55,23 +57,28 @@ public class ProductsService {
                 withManufacturers(findManufacturer).
                         withStaffs(findStaff).
                         withManufacturerSort(findManufacturerSort));
-        return productsRepository.save(updatedProduct);
+        return ProductDto.Result.of(productsRepository.save(updatedProduct));
     }
 
+
+    // 제조사 id로 상품 불러오기
     @Transactional(readOnly = true)
-    public List<Products> findProductsByManufacturersId(int manufacturerId, int manufacturerSortId){
-        QProducts qProducts = QProducts.products;
-        if(manufacturerId == 0){
-                return jpaQueryFactory.selectFrom(qProducts)
-                        .where(qProducts.manufacturerSort.manufacturerSortId.eq(manufacturerId))
-                        .fetch();
-
-        }else{
-            return jpaQueryFactory.selectFrom(qProducts)
-                    .where(qProducts.manufacturers.manufacturerId.eq(manufacturerId),
-                            qProducts.manufacturerSort.manufacturerSortId.eq(manufacturerSortId))
-                    .fetch();
-        }
+    public List<ProductDto.Result> findProductsByManufacturersId(int manufacturerId){
+        ErrorCode productNotFoundError = ErrorCode.PRODUCT_NOT_FOUND_ERROR;
+        List<Products> products = productsRepository.findByManufacturersManufacturerId(manufacturerId).orElseThrow(
+                () -> new BusinessException(productNotFoundError, productNotFoundError.getReason()));
+        return ProductDto.Result.of(products);
     }
 
+    //제조사id, 제품군 id로 상품 불러오기
+    @Transactional(readOnly = true)
+    public List<ProductDto.Result> findProductsByManufacturerAndSortId(int manufacturerId, int manufacturerSortId){
+        QProducts qProducts = QProducts.products;
+
+        List<Products> findProducts = jpaQueryFactory.selectFrom(qProducts)
+                .where(qProducts.manufacturers.manufacturerId.eq(manufacturerId),
+                        qProducts.manufacturerSort.manufacturerSortId.eq(manufacturerSortId))
+                .fetch();
+        return ProductDto.Result.of(findProducts);
+    }
 }

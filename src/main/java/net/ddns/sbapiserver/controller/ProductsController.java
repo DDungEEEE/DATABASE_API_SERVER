@@ -31,10 +31,10 @@ public class ProductsController {
     @ApiResponse(responseCode = "200")
     @GetMapping
     ResultResponse<List<ProductDto.Result>> getProducts(){
-        List<Products> allProductList = productsService.getAllProducts();
+        List<ProductDto.Result> allProducts = productsService.getAllProducts();
 
         return ResultResponse.<List<ProductDto.Result>>successResponse()
-                .result(ProductDto.Result.of(allProductList))
+                .result(allProducts)
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
@@ -44,9 +44,9 @@ public class ProductsController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     ResultResponse<ProductDto.Result> create(@RequestBody @Valid Create create){
-        Products products = productsService.addProduct(create);
+        ProductDto.Result product = productsService.addProduct(create);
         return ResultResponse.<ProductDto.Result>successResponse()
-                .result(ProductDto.Result.of(products))
+                .result(product)
                 .successCode(SuccessCode.INSERT_SUCCESS)
                 .build();
     }
@@ -54,12 +54,22 @@ public class ProductsController {
     @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "제조사로 상품 조회")
     @ApiResponse(responseCode = "200")
-    @GetMapping("/{manufacturer_id}/{manufacturer_sort_id}")
-    ResultResponse<List<Products>> find(@PathVariable("manufacturer_id") int manufacturerId, @PathVariable("manufacturer_sort_id") int manufacturerSortId){
-        List<Products> productsByManufacturersId = productsService.findProductsByManufacturersId(manufacturerId, manufacturerSortId);
+    @GetMapping("/{manufacturer_id}")
+    ResultResponse<List<ProductDto.Result>> find(@PathVariable("manufacturer_id") int manufacturerId){
+        List<ProductDto.Result> findProducts = productsService.findProductsByManufacturersId(manufacturerId);
 
-        return ResultResponse.<List<Products>>successResponse()
-                .result(productsByManufacturersId)
+        return ResultResponse.<List<ProductDto.Result>>successResponse()
+                .result(findProducts)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "제조사, 상품군으로 상품들 조회")
+    @GetMapping("/{manufacturer_id}/{manufacturer_sort_id}")
+    ResultResponse<List<ProductDto.Result>> findByMacIdAndSortId(@PathVariable(value = "manufacturer_id") int manufacturerId, @PathVariable(value = "manufacturer_sort_id") int manufacturerSortId){
+        List<ProductDto.Result> productsByManufacturerAndSortId = productsService.findProductsByManufacturerAndSortId(manufacturerId, manufacturerSortId);
+        return ResultResponse.<List<ProductDto.Result>>successResponse()
+                .result(productsByManufacturerAndSortId)
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
@@ -67,10 +77,10 @@ public class ProductsController {
     @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "상품 수정")
     @PutMapping
-    ResultResponse<Products> updateProduct(@RequestBody Put put){
-        Products products = productsService.updateProducts(put);
-        return ResultResponse.<Products>successResponse()
-                .result(products)
+    ResultResponse<ProductDto.Result> updateProduct(@RequestBody Put put){
+        ProductDto.Result updateProducts = productsService.updateProducts(put);
+        return ResultResponse.<ProductDto.Result>successResponse()
+                .result(updateProducts)
                 .successCode(SuccessCode.UPDATE_SUCCESS)
                 .build();
     }
