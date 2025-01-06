@@ -34,6 +34,11 @@ public class StaffAlertTokenService {
         return StaffAlertTokenDto.Result.of(findStaffAlertTokens);
     }
 
+    @Transactional(readOnly = true)
+    public List<StaffAlertTokenDto.Result> getAllStaffAlertTokens(){
+        return StaffAlertTokenDto.Result.of(staffAlertTokenRepository.findAll());
+    }
+
     @Transactional
     public void deleteStaffAlertToken(StaffAlertTokenDto.Delete delete){
         serviceErrorHelper.findStaffOrElseThrow404(delete.getStaffId());

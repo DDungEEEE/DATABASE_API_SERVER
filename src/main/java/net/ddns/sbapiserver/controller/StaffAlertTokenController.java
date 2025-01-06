@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
@@ -21,6 +22,16 @@ public class StaffAlertTokenController {
         List<StaffAlertTokenDto.Result> staffAlertTokens = staffAlertTokenService.findStaffAlertTokensByStaffId(staffId);
         return ResultResponse.<List<StaffAlertTokenDto.Result>>successResponse()
                 .result(staffAlertTokens)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "모든 직원 알림토큰 조회")
+    @GetMapping
+    public ResultResponse<List<StaffAlertTokenDto.Result>> getAllStaffTokens(){
+        List<StaffAlertTokenDto.Result> allStaffAlertTokens = staffAlertTokenService.getAllStaffAlertTokens();
+        return ResultResponse.<List<StaffAlertTokenDto.Result>>successResponse()
+                .result(allStaffAlertTokens)
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }

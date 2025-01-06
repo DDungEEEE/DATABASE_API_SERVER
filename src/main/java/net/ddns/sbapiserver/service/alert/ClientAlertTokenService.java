@@ -36,6 +36,11 @@ public class ClientAlertTokenService {
         return ClientAlertTokenDto.Result.of(findClientAlertTokens);
     }
 
+    @Transactional(readOnly = true)
+    public List<ClientAlertTokenDto.Result> getAllClientAlertTokens(){
+        return ClientAlertTokenDto.Result.of(clientAlertTokenRepository.findAll());
+    }
+
 
     @Transactional
     public void deleteClientAlertToken(ClientAlertTokenDto.Delete delete){
