@@ -9,6 +9,7 @@ import net.ddns.sbapiserver.security.JwtTokenAuthenticationFilter;
 import net.ddns.sbapiserver.security.UnifiedUserDetails;
 import net.ddns.sbapiserver.security.UnifiedUserDetailsService;
 import net.ddns.sbapiserver.service.authentication.TokenStorageService;
+import net.ddns.sbapiserver.service.login.LoginService;
 import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,7 @@ public class SecurityConfig {
     private final UnifiedUserDetailsService unifiedUserDetailsService;
     private final TokenStorageService tokenStorageService;
     private final ResponseWrapper responseWrapper;
+    private final LoginService loginService;
 
 
     @Bean
@@ -51,7 +53,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter() throws Exception{
-        JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter = new JwtTokenAuthenticationFilter(jwtUtil, clientRepository, staffRepository, tokenStorageService, responseWrapper);
+        JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter = new JwtTokenAuthenticationFilter(jwtUtil, clientRepository, staffRepository, loginService,tokenStorageService, responseWrapper);
         jwtTokenAuthenticationFilter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         jwtTokenAuthenticationFilter.setFilterProcessesUrl("/api/login");
         return jwtTokenAuthenticationFilter;

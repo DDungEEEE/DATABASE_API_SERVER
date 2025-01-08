@@ -8,6 +8,7 @@ import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 public class TokenStorageService {
@@ -15,17 +16,18 @@ public class TokenStorageService {
     private final StaffRepository staffRepository;
     private final JwtUtil jwtUtil;
 
-    public void saveRefreshToken(String userId, String refreshToken, String role) {
-        if(!jwtUtil.validToken(refreshToken)){
+    /**
+     * db에 RefreshToken이 존재 X -> 새로운 RefreshToken 저장
+     * @param userId : 유저 아이디
+     * @param role : 권한 (client or staff)
+     */
+    public void saveNewRefreshToken(String userId, String role) {
             String createRefreshToken = jwtUtil.generateRefreshToken(userId);
             if (role.equals("ROLE_CLIENT")) {
                 saveClientRefreshToken(userId, createRefreshToken);
             } else if (role.equals("ROLE_STAFF")) {
                 saveStaffRefreshToken(userId, createRefreshToken);
-            } else {
-                throw new IllegalArgumentException("존재하지 않는 ROLE");
             }
-        }
     }
 
     private void saveClientRefreshToken(String userId, String refreshToken) {

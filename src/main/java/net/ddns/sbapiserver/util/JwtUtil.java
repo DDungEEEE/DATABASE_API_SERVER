@@ -35,8 +35,8 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(decode);
     }
 
+    //Client에게 전송할 JwtToken 객체 생성
     public JwtToken generateToken(String userId, String role){
-        log.info("AccessToken 생성");
         return JwtToken.builder()
                 .accessToken(generateAccessToken(userId, role))
                 .role(role)
@@ -54,13 +54,13 @@ public class JwtUtil {
         }catch (UnsupportedJwtException e){
             log.error("지원하지 않는 Jwt Token 입니다.");
         }catch (IllegalArgumentException e){
-            log.error("Jwt claims 가 비어있쓰빈다.");
+            log.error("Jwt claims 가 비어있습니다.");
         }
         return false;
     }
 
     public String generateAccessToken(String userId, String role){
-
+        log.info("{} ------------ AccessToken Generation", userId);
         return Jwts.builder()
                 .setSubject(userId)
                 .claim(authorizationKey, role)
@@ -70,8 +70,9 @@ public class JwtUtil {
                 .compact();
     }
 
+    // userId로 RefreshToken 생성
     public String generateRefreshToken(String userId){
-        log.info("RefreshToken is Generated");
+        log.info("{} ------------ Generated New RefreshToken", userId);
         return Jwts.builder()
                 .setSubject(userId)
                 .setIssuedAt(new Date())
@@ -80,6 +81,7 @@ public class JwtUtil {
                 .compact();
     }
 
+    // req Header 에서 jwt Token 추출
     public String getJwtToken(HttpServletRequest req){
        String bearerToken = req.getHeader(authorizationHeader);
        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER)){

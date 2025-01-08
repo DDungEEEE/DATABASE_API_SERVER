@@ -20,6 +20,7 @@ import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import net.ddns.sbapiserver.service.authentication.TokenStorageService;
 import net.ddns.sbapiserver.security.dto.JwtToken;
+import net.ddns.sbapiserver.service.login.LoginService;
 import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,6 +36,7 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
     private final JwtUtil jwtUtil;
     private final ClientRepository clientRepository;
     private final StaffRepository staffRepository;
+    private final LoginService loginService;
     private final TokenStorageService tokenStorageService;
     private final ResponseWrapper responseWrapper;
 
@@ -74,8 +76,31 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
         String role = userDetails.getUserType().getRole();
         String refreshToken = userDetails.getRefreshToken();
 
+        if(loginService.isUserLoggedIn(username)){
+            ErrorResponse errorResponse = new ErrorResponse(ErrorCode.USER_ALREADY_LOGGED_ERROR);
+            responseWrapper.convertObjectToResponse(response, errorResponse);
+        }else{
+            /** refreshToken 의 존재, 우효한지 확인
+             * 존재하고 유효 -> 클라이언트에게 액세스토큰 발급
+             * 그 외의 경우 -> RefreshToken DB 저장 -> 액세스토큰 발급
+             */
+            if (refreshToken == null || !jwtUtil.validToken(refreshToken)) {
+                tokenStorageService.saveNewRefreshToken(username, role);
+            }
+            JwtToken jwtToken = generateTokenByIdAndRole(username, role);
+            //Redis 에 username , AccessToken 저장
+            loginService.storeAccessToken(username, jwtToken.getAccessToken());
+            responseWrapper.convertObjectToResponse(response, jwtToken);
+        }
+    }
 
-        tokenStorageService.saveRefreshToken(username, refreshToken, role);
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.USER_NOT_FOUND_ERROR);
+        responseWrapper.convertObjectToResponse(response, errorResponse);
+    }
+
+    protected JwtToken generateTokenByIdAndRole(String username, String role){
         JwtToken jwtToken = jwtUtil.generateToken(username, role);
         if(role.equals(UserType.CLIENT.getRole())){
             Clients clients = clientRepository.findClientsByClientName(username);
@@ -84,12 +109,6 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
             Staffs staffs = staffRepository.findStaffsByStaffUserId(username);
             jwtToken.setUser(StaffDto.Result.of(staffs));
         }
-        responseWrapper.convertObjectToResponse(response, jwtToken);
-    }
-
-    @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.USER_NOT_FOUND_ERROR);
-        responseWrapper.convertObjectToResponse(response, errorResponse);
+        return jwtToken;
     }
 }

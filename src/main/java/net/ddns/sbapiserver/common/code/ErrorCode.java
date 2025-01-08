@@ -14,6 +14,8 @@ public enum ErrorCode {
 
     USER_NOT_FOUND_ERROR(403, "COMMON_003", "사용자를 찾을 수 없습니다."),
 
+    USER_ALREADY_LOGGED_ERROR(403, "COMMON_004", "이미 사용중인 아이디입니다."),
+
     CLIENT_NOT_FOUND_ERROR(404, "CLIENT_001", "고객 정보를 찾을 수 없습니다"),
 
     // 사용자 ID 중복
