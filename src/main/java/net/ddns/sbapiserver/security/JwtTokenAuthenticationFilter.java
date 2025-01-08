@@ -30,6 +30,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 
+/**
+ * Login 시에만 사용되는 Filter
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -49,6 +52,7 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
             Staffs staffs = staffRepository.findStaffsByStaffUserId(userLoginDto.getUserId());
 
             if(clients != null || staffs != null){
+                request.setAttribute("checkSum", userLoginDto.getCheckSum());
                 return getAuthenticationManager().authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 userLoginDto.getUserId(),
@@ -76,10 +80,21 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
         String role = userDetails.getUserType().getRole();
         String refreshToken = userDetails.getRefreshToken();
 
+        /**
+         * 사용자의 Id 로 생성된 토큰이 레디스에 존재 --> 이미 로그인 중인 사용자
+         * checkSum --> 1 : 이미 로그인중인 사용자의 accessToken을 삭제하고 업데이트
+         * checkSum --> 0 : 로그인 거부
+         */
+        int checksum = (int)request.getAttribute("checkSum");
         if(loginService.isUserLoggedIn(username)){
-            ErrorResponse errorResponse = new ErrorResponse(ErrorCode.USER_ALREADY_LOGGED_ERROR);
-            responseWrapper.convertObjectToResponse(response, errorResponse);
-        }else{
+            if(checksum == 1){
+                loginService.deleteAccessToken(username);
+            }else{
+                ErrorResponse errorResponse = new ErrorResponse(ErrorCode.USER_ALREADY_LOGGED_ERROR);
+                responseWrapper.convertObjectToResponse(response, errorResponse);
+                return;
+            }
+        }
             /** refreshToken 의 존재, 우효한지 확인
              * 존재하고 유효 -> 클라이언트에게 액세스토큰 발급
              * 그 외의 경우 -> RefreshToken DB 저장 -> 액세스토큰 발급
@@ -91,7 +106,6 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
             //Redis 에 username , AccessToken 저장
             loginService.storeAccessToken(username, jwtToken.getAccessToken());
             responseWrapper.convertObjectToResponse(response, jwtToken);
-        }
     }
 
     @Override

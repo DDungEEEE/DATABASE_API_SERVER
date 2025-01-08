@@ -15,4 +15,6 @@ public class UserLoginDto {
     private String userId;
     @Schema(name = "userPw")
     private String userPw;
+    // 다른 사용자의 로그인을 해제하고 로그인 할것인지
+    private int checkSum;
 }

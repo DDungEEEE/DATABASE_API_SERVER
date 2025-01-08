@@ -16,6 +16,10 @@ public enum ErrorCode {
 
     USER_ALREADY_LOGGED_ERROR(403, "COMMON_004", "이미 사용중인 아이디입니다."),
 
+    USER_NOT_LOGGED_ERROR(403, "COMMON_005", "로그인 중인 사용자가 아닙니다."),
+
+    TOKEN_EXPIRED_ERROR(403, "COMMON_005", "로그인 세션이 만료되었습니다. 다시 로그인해주세요."),
+
     CLIENT_NOT_FOUND_ERROR(404, "CLIENT_001", "고객 정보를 찾을 수 없습니다"),
 
     // 사용자 ID 중복

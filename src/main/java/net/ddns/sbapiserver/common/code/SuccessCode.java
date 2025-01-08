@@ -14,7 +14,9 @@ public enum SuccessCode {
 
     INSERT_SUCCESS(201, "201", "INSERT_SUCCESS"),
 
-    UPDATE_SUCCESS(200, "200", "UPDATE_SUCCESS");
+    UPDATE_SUCCESS(200, "200", "UPDATE_SUCCESS"),
+
+    LOGOUT_SUCCESS(200, "200", "LOGIN_SUCCESS");
 
     private final int  status;
 
