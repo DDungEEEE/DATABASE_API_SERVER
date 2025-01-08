@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ddns.sbapiserver.common.ResponseWrapper;
 import net.ddns.sbapiserver.common.code.ErrorCode;
+import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.UserLoginDto;
 import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
@@ -105,7 +106,12 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
             JwtToken jwtToken = generateTokenByIdAndRole(username, role);
             //Redis 에 username , AccessToken 저장
             loginService.storeAccessToken(username, jwtToken.getAccessToken());
-            responseWrapper.convertObjectToResponse(response, jwtToken);
+
+        ResultResponse<Object> tokenResponse = ResultResponse.<Object>successResponse()
+                .successCode(SuccessCode.LOGIN_SUCCESS)
+                .result(jwtToken)
+                .build();
+        responseWrapper.convertObjectToResponse(response, tokenResponse);
     }
 
     @Override

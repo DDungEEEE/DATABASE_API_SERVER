@@ -16,7 +16,7 @@ public enum SuccessCode {
 
     UPDATE_SUCCESS(200, "200", "UPDATE_SUCCESS"),
 
-    LOGOUT_SUCCESS(200, "200", "LOGIN_SUCCESS");
+    LOGOUT_SUCCESS(200, "200", "LOGOUT_SUCCESS");
 
     private final int  status;
 

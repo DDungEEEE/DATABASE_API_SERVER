@@ -46,6 +46,7 @@ public class LoginService {
             throw new BusinessException(ErrorCode.USER_NOT_LOGGED_ERROR, ErrorCode.USER_NOT_LOGGED_ERROR.getReason());
         }
         deleteAccessToken(userId);
-        log.info("User : [{}] Logout", userId.toString());
+        System.out.println(userId);
+        log.info("User : [{}] Logout", userId);
     }
 }
