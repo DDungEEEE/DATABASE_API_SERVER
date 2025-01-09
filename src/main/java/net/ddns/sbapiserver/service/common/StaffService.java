@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.service;
+package net.ddns.sbapiserver.service.common;
 
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.ErrorCode;
@@ -23,6 +23,7 @@ public class StaffService {
     private final NoticeRepository noticeRepository;
     private final ServiceErrorHelper serviceErrorHelper;
 
+    @Transactional
     public StaffDto.Result createStaff(StaffDto.Create create) {
         boolean userIdDuplicated = serviceErrorHelper.isUserIdDuplicated(create.getStaffUserId());
         if(userIdDuplicated){
@@ -36,11 +37,12 @@ public class StaffService {
         Staffs saveStaff = staffRepository.save(createStaff);
         return StaffDto.Result.of(saveStaff);
     }
-
+    @Transactional(readOnly = true)
     public List<StaffDto.Result> getAllStaffs(){
         return staffRepository.findAll().stream().map(StaffDto.Result::of).collect(Collectors.toList());
     }
 
+    @Transactional
     public StaffDto.Result updateStaff(StaffDto.Put put){
         Staffs findStaff = serviceErrorHelper.findStaffOrElseThrow404(put.getStaffId());
         Staffs putEntity = put.asPutEntity(findStaff);

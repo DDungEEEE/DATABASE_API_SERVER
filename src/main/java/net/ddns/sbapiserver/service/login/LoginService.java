@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 public class LoginService {
 
     private final RedisTemplate<String, String> redisTemplate;
-    private final JwtUtil jwtUtil;
     private static final int ACCESS_TOKEN_EXPIRATION_TIME = 30 * 60;
 
     // Redis에 AccessToken 저장

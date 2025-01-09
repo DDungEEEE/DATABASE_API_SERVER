@@ -171,6 +171,7 @@ public interface ClientsDto {
                     .clientCeoName(clients.getClientCeoName())
                     .clientAddr(clients.getClientAddr())
                     .clientBusinessNumber(clients.getClientBusinessNumber())
+                    .clientStoreName(clients.getClientStoreName())
                     .clientMarginRatio(clients.getClientMarginRatio())
                     .clientPhNum(clients.getClientPhNum())
                     .clientStatus(clients.getClientStatus())

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.staff.StaffDto;
-import net.ddns.sbapiserver.service.StaffService;
+import net.ddns.sbapiserver.service.common.StaffService;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "직원 컨트롤러")

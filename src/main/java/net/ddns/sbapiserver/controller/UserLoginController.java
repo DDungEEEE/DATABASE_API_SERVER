@@ -1,6 +1,5 @@
 package net.ddns.sbapiserver.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.UserLoginDto;
-import net.ddns.sbapiserver.service.common.UserLoginService;
 import net.ddns.sbapiserver.service.login.LoginService;
 import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.web.bind.annotation.PostMapping;

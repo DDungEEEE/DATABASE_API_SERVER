@@ -14,8 +14,11 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -40,7 +43,6 @@ public class OrderService {
         Orders saveOrder = orderRepository.save(order);
 
         List<OrderContentDto.Create> orderItemCreateList = orderCreate.getOrderItemCreateList();
-
         List<OrderContentDto.Result> orderContents = saveOrderContent(orderItemCreateList, order);
 
         return OrderDto.Result.of(saveOrder, orderContents);
@@ -71,7 +73,10 @@ public class OrderService {
         serviceErrorHelper.findClientsOrElseThrow404(clientId);
 
         List<Orders> ordersList = customOrderRepository.findOrder(clientId, startDate, endDate);
-       return parsingToOrdersDtoResult(ordersList);
+        List<OrderDto.Result> resultOrderResult = parsingToOrdersDtoResult(ordersList);
+        resultOrderResult.sort(Comparator.comparing(OrderDto.Result::getOrderDate));
+
+        return resultOrderResult;
     }
 
     @Transactional
@@ -87,6 +92,7 @@ public class OrderService {
 
     }
 
+    // 결과 Order List를 ResultDto 로 바꾸는 method
     protected List<OrderDto.Result> parsingToOrdersDtoResult(List<Orders> ordersList){
         return ordersList.stream().map(
                 orders -> {
