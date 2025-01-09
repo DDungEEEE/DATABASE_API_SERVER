@@ -45,6 +45,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             if (token != null && jwtUtil.validToken(token)) {
                 Claims claims = jwtUtil.getClaims(token);
                 String userId = claims.getSubject();
+                log.error("user");
                 boolean userLoginValid = loginService.isUserLoginValid(userId, token);
                 // accessToken이 레디스에 저장되어있는지 검증
                 if (!userLoginValid) {
@@ -58,7 +59,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
         catch (Exception e){
             log.error(e.getMessage());
-                throw new ResponseStatusException(NOT_FOUND, "요청하신 유저가 없습니다.");
+//                throw new ResponseStatusException(NOT_FOUND, "요청하신 유저가 없습니다.");
             }
         }
 

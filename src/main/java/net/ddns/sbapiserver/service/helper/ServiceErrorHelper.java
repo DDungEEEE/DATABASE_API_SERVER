@@ -22,6 +22,8 @@ import net.ddns.sbapiserver.repository.staff.NoticeRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Component
 public class ServiceErrorHelper {
@@ -81,6 +83,14 @@ public class ServiceErrorHelper {
         return manufacturerSortRepository.findById(manufacturerSortId).orElseThrow(
                 () -> new BusinessException(manufacturerSortNotFoundError, manufacturerSortNotFoundError.getReason())
         );
+    }
+
+    public boolean isClientPhoneNumDuplicated(String clientPhoneNumber){
+        QClients qClients = QClients.clients;
+        Optional<Clients> clients = Optional.ofNullable(jpaQueryFactory.selectFrom(qClients)
+                .where(qClients.clientPhNum.eq(clientPhoneNumber))
+                .fetchOne());
+        return !clients.isEmpty();
     }
 
     public boolean isUserIdDuplicated(String userId){

@@ -14,7 +14,12 @@ import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +48,13 @@ public class ProductsService {
 
     @Transactional(readOnly = true)
     public List<ProductDto.Result> getAllProducts(){
-        return ProductDto.Result.of(productsRepository.findAll());
+        List<Products> allProducts = productsRepository.findAll();
+        List<Products> sortedProducts = allProducts.stream().sorted(Comparator.comparing(Products::getProductName).reversed()).collect(Collectors.toList());
+        Collections.sort(allProducts, (productName1, producT2) -> {
+            int nnum1 = extractNumber(product1);
+
+        });
+        return ProductDto.Result.of(sortedProducts);
     }
 
     @Transactional
@@ -80,5 +91,19 @@ public class ProductsService {
                         qProducts.manufacturerSort.manufacturerSortId.eq(manufacturerSortId))
                 .fetch();
         return ProductDto.Result.of(findProducts);
+    }
+
+    protected int extractNumber(String str) {
+        // "\\d+" 정규식 패턴을 사용하여 숫자를 찾는다.
+        Matcher matcher = Pattern.compile("\\d+").matcher(str);
+
+        // 숫자가 하나라도 발견되면
+        if (matcher.find()) {
+            // 첫 번째로 발견된 숫자를 문자열로 가져오고, 이를 정수로 변환하여 반환
+            return Integer.parseInt(matcher.group());
+        }
+
+        // 숫자가 없으면 0을 반환
+        return 0;
     }
 }

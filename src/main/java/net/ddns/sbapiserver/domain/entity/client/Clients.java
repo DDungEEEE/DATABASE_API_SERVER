@@ -50,13 +50,17 @@ public class Clients {
     @Column(name = "client_refresh_token")
     private String clientRefreshToken;
 
-    @CreationTimestamp
     @Column(name = "client_created_at",updatable = false, nullable = false)
     private Timestamp clientCreatedAt;
 
     @Column(name = "client_updated_at", nullable = false)
     private Timestamp clientUpdatedAt;
 
+    @PrePersist
+    private void setClintTime(){
+        this.clientCreatedAt = new Timestamp(System.currentTimeMillis());
+        this.clientUpdatedAt = new Timestamp(System.currentTimeMillis());
+    }
     @PreUpdate
     private void setClientUpdatedAt(){
         this.clientUpdatedAt = new Timestamp(System.currentTimeMillis());

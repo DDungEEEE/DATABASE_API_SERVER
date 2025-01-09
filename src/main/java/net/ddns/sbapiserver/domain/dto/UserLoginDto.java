@@ -10,11 +10,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "사용자 로그인 요청 DTO")
 public class UserLoginDto {
-    @Schema(name = "userId")
+    @Schema(name = "userId", description = "사용자가 ID", example = "string")
     private String userId;
-    @Schema(name = "userPw")
+    @Schema(name = "userPw", description = "사용자 PASSWORD", example = "rhdoddldml!1423")
     private String userPw;
     // 다른 사용자의 로그인을 해제하고 로그인 할것인지
+    @Schema(name = "checkSum")
     private int checkSum;
 }

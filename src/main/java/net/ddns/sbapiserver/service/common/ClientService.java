@@ -2,6 +2,7 @@ package net.ddns.sbapiserver.service.common;
 
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.ErrorCode;
+import net.ddns.sbapiserver.domain.dto.ClientPasswordEditDto;
 import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.exception.error.custom.BusinessException;
@@ -15,8 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class
-ClientService {
+public class ClientService {
 
     private final ClientRepository clientRepository;
     private final ServiceErrorHelper serviceErrorHelper;
@@ -36,9 +36,26 @@ ClientService {
             throw new BusinessException(duplicateClientError, duplicateClientError.getReason());
         }
 
+        if(serviceErrorHelper.isUserPhoneNumberDuplicated(create.getClientPhNum())){
+            ErrorCode duplicatePhoneNumberError = ErrorCode.DUPLICATE_PHONE_NUMBER_ERROR;
+            throw new BusinessException(duplicatePhoneNumberError, duplicatePhoneNumberError.getReason());
+        }
+
         Clients createClients = create.asEntity();
         createClients.setClientPassword(passwordEncoder.encode(create.getClientPassword()));
         Clients saveClients = clientRepository.save(createClients);
+        return ClientsDto.Result.of(saveClients);
+    }
+
+    @Transactional
+    public ClientsDto.Result editClientPassword(ClientPasswordEditDto clientPasswordEditDto){
+        int clientId = clientPasswordEditDto.getClientId();
+        String clientPassword = clientPasswordEditDto.getClientPassword();
+
+        Clients findClients = serviceErrorHelper.findClientsOrElseThrow404(clientId);
+        findClients.setClientPassword(passwordEncoder.encode(clientPassword));
+
+        Clients saveClients = clientRepository.save(findClients);
         return ClientsDto.Result.of(saveClients);
     }
 

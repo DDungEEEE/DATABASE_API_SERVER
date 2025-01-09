@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
+import net.ddns.sbapiserver.domain.dto.ClientPasswordEditDto;
 import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.service.authentication.AuthenticationService;
@@ -37,6 +38,17 @@ public class TestClientController {
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
+
+    @Operation(summary = "비밀번호 변경", description = "사용자의 비밀번호만 변경하는 api")
+    @PostMapping("/editPassword")
+    public ResultResponse<ClientsDto.Result> editClientPassword(@RequestBody ClientPasswordEditDto clientPasswordEditDto){
+        ClientsDto.Result resultClients = clientService.editClientPassword(clientPasswordEditDto);
+        return ResultResponse.<ClientsDto.Result>successResponse()
+                .result(resultClients)
+                .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
+
     @Operation(summary = "클라이언트 회원 가입")
     @PostMapping
     public ResultResponse<ClientsDto.Result> addClient(@RequestBody @Valid  ClientsDto.Create create){

@@ -55,7 +55,7 @@ public class SecurityConfig {
     public JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter() throws Exception{
         JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter = new JwtTokenAuthenticationFilter(jwtUtil, clientRepository, staffRepository, loginService,tokenStorageService, responseWrapper);
         jwtTokenAuthenticationFilter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
-        jwtTokenAuthenticationFilter.setFilterProcessesUrl("/api/login");
+        jwtTokenAuthenticationFilter.setFilterProcessesUrl("/api/user/login");
         return jwtTokenAuthenticationFilter;
     }
 
@@ -71,7 +71,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/**").authenticated()
                                 .requestMatchers("/api/v1/client").permitAll()
                                 .requestMatchers("/api/**").permitAll()
-                                .requestMatchers("/api/login").permitAll()
+                                .requestMatchers("/api/user/login").permitAll()
                                 .anyRequest().authenticated());
 
         httpSecurity.addFilterBefore(jwtAuthorizationFilter(), jwtTokenAuthenticationFilter().getClass());
