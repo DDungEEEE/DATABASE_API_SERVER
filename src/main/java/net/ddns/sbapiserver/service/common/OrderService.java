@@ -75,6 +75,7 @@ public class OrderService {
         List<Orders> ordersList = customOrderRepository.findOrder(clientId, startDate, endDate);
         List<OrderDto.Result> resultOrderResult = parsingToOrdersDtoResult(ordersList);
         resultOrderResult.sort(Comparator.comparing(OrderDto.Result::getOrderDate));
+        Collections.reverse(resultOrderResult);
 
         return resultOrderResult;
     }
@@ -88,7 +89,12 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<OrderDto.Result> getAllOrderList(LocalDate startDate, LocalDate endDate){
         List<Orders> orderListForAdmin = customOrderRepository.getOrderListForAdmin(startDate, endDate);
-        return parsingToOrdersDtoResult(orderListForAdmin);
+        List<OrderDto.Result> adminResultOrders = parsingToOrdersDtoResult(orderListForAdmin);
+        
+        adminResultOrders.sort(Comparator.comparing(OrderDto.Result::getOrderDate));
+        Collections.reverse(adminResultOrders);
+
+        return adminResultOrders;
 
     }
 
