@@ -48,6 +48,7 @@ public class ClientServiceTest{
                 .clientStatus("활성")
                 .build();
         clientService.addClients(duplicateNameClient);
+
     }
 
     @Test
@@ -69,4 +70,5 @@ public class ClientServiceTest{
         clientService.addClients(duplicatePhoneNumClient);
     }
 
+    public void
 }

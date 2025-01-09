@@ -25,6 +25,9 @@ public class Manufacturers {
     @Column(name = "manufacturer_status", nullable = false, length = 50)
     private String manufacturerStatus;
 
+
+    private int manufacturerOrder;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;

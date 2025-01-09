@@ -90,7 +90,7 @@ public class OrderService {
     public List<OrderDto.Result> getAllOrderList(LocalDate startDate, LocalDate endDate){
         List<Orders> orderListForAdmin = customOrderRepository.getOrderListForAdmin(startDate, endDate);
         List<OrderDto.Result> adminResultOrders = parsingToOrdersDtoResult(orderListForAdmin);
-        
+
         adminResultOrders.sort(Comparator.comparing(OrderDto.Result::getOrderDate));
         Collections.reverse(adminResultOrders);
 
