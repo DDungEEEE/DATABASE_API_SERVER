@@ -49,12 +49,9 @@ public class ProductsService {
     @Transactional(readOnly = true)
     public List<ProductDto.Result> getAllProducts(){
         List<Products> allProducts = productsRepository.findAll();
-        List<Products> sortedProducts = allProducts.stream().sorted(Comparator.comparing(Products::getProductName).reversed()).collect(Collectors.toList());
-        Collections.sort(allProducts, (productName1, producT2) -> {
-            int nnum1 = extractNumber(product1);
+//        List<Products> sortedProducts = allProducts.stream().sorted(Comparator.comparing(Products::getProductName).reversed()).collect(Collectors.toList());
 
-        });
-        return ProductDto.Result.of(sortedProducts);
+        return ProductDto.Result.of(allProducts);
     }
 
     @Transactional
@@ -90,6 +87,15 @@ public class ProductsService {
                 .where(qProducts.manufacturers.manufacturerId.eq(manufacturerId),
                         qProducts.manufacturerSort.manufacturerSortId.eq(manufacturerSortId))
                 .fetch();
+
+        Collections.sort(findProducts, (product1, product2) -> {
+            int num1 = extractNumber(product1.getProductName());
+            int num2 = extractNumber(product2.getProductName());
+            return Integer.compare(num1, num2);
+        });
+
+        Collections.reverse(findProducts);
+        
         return ProductDto.Result.of(findProducts);
     }
 
@@ -98,12 +104,13 @@ public class ProductsService {
         Matcher matcher = Pattern.compile("\\d+").matcher(str);
 
         // 숫자가 하나라도 발견되면
+        StringBuilder fullNumber = new StringBuilder();
         if (matcher.find()) {
             // 첫 번째로 발견된 숫자를 문자열로 가져오고, 이를 정수로 변환하여 반환
-            return Integer.parseInt(matcher.group());
+            fullNumber.append(matcher.group());
         }
 
         // 숫자가 없으면 0을 반환
-        return 0;
+        return !fullNumber.isEmpty() ?Integer.parseInt(fullNumber.toString()) : 0;
     }
 }
