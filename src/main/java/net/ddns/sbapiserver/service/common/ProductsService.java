@@ -30,13 +30,11 @@ public class ProductsService {
 
     @Transactional
     public ProductDto.Result addProduct(ProductDto.Create create){
-
         Products productEntity = create.asEntity(products ->
                 products.withManufacturers(serviceErrorHelper.findManufacturerOrElseThrow404(create.getProductManufacturerId()))
                         .withStaffs(serviceErrorHelper.findStaffOrElseThrow404(create.getStaffId()))
                         .withManufacturerSort(serviceErrorHelper.findManufacturerSortOrElseThrow404(create.getManufacturerSortId()))
         );
-
         return ProductDto.Result.of(productsRepository.save(productEntity));
     }
 
@@ -93,9 +91,6 @@ public class ProductsService {
             int num2 = extractNumber(product2.getProductName());
             return Integer.compare(num1, num2);
         });
-
-        Collections.reverse(findProducts);
-        
         return ProductDto.Result.of(findProducts);
     }
 

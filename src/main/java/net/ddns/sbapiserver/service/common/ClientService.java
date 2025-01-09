@@ -30,7 +30,6 @@ public class ClientService {
 
     @Transactional
     public ClientsDto.Result addClients(ClientsDto.Create create){
-
         if(serviceErrorHelper.isUserIdDuplicated(create.getClientName())){
             ErrorCode duplicateClientError = ErrorCode.DUPLICATE_USER_ID_ERROR;
             throw new BusinessException(duplicateClientError, duplicateClientError.getReason());

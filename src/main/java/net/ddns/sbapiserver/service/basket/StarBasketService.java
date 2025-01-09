@@ -9,6 +9,7 @@ import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.repository.bakset.StarBasketRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +50,7 @@ public class StarBasketService {
     public void deleteStarBasket(int starBasketId){
         starBasketRepository.deleteById(starBasketId);
     }
-
+    @Transactional(readOnly = true)
     public List<StarBasketDto.Result> getStarBasketList(int clientId){
         List<StarBasket> findStarBasketList = starBasketRepository.findByClientsClientId(clientId);
         return StarBasketDto.Result.of(findStarBasketList);

@@ -21,7 +21,6 @@ public class MarketBasketService {
     private final ServiceErrorHelper serviceErrorHelper;
 
     public List<MarketBasketDto.Result> saveMarketBasket(MarketBasketDto.Create creates){
-
         Clients findClients = serviceErrorHelper.findClientsOrElseThrow404(creates.getClientId());
         List<MarketBasketDto.Create.MarketBasketItem> marketBasketItems = creates.getMarketBasketItems();
 
