@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ManufacturerSortRepository extends JpaRepository<ManufacturerSort, Integer> {
     List<ManufacturerSort> getManufacturerSortByManufacturersManufacturerId(int manufacturerId);
+    void deleteAllByManufacturersManufacturerId(int manufacturerId);
 
 }

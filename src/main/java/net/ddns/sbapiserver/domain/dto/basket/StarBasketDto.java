@@ -34,6 +34,9 @@ public interface StarBasketDto {
         @Schema(name = "product_id")
         private int productId;
 
+        private String productName;
+
+
         public static Result of(StarBasket starBasket){
             return Result.builder()
                     .starBasketId(starBasket.getStarBasketId())

@@ -21,4 +21,7 @@ public class ManufacturerSort {
 
     @Column(name = "sort_name")
     private String sortName;
+
+    @Column(name = "manufacturer_sort_order")
+    private int manufacturerSortOrder;
 }

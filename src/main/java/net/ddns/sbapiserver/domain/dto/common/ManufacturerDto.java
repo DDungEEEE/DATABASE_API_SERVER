@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +30,12 @@ public interface ManufacturerDto {
         private String manufacturerImg;
 
         @NotBlank(message = "제조사 상태는 공백일 수 없습니다.")
+        @Pattern(regexp = "활성|비활성", message = "manufacturer_order는 '활성', '비활성'만 입력 가능합니다.")
         @Schema(name = "manufacturer_status")
         private String manufacturerStatus;
+
+        @Schema(name = "manufacturer_order")
+        private Integer manufacturerOrder;
 
     }
     @Data
@@ -46,7 +51,6 @@ public interface ManufacturerDto {
         @Schema(name = "manufacturer_name")
         private String manufacturerName;
 
-
         @Schema(name = "manufacturer_img")
         private String manufacturerImg;
 
@@ -54,12 +58,16 @@ public interface ManufacturerDto {
         @Schema(name = "manufacturer_status")
         private String manufacturerStatus;
 
+        @Schema(name = "manufacturer_order")
+        private int manufacturerOrder;
+
         public Manufacturers asPutEntity(){
             return Manufacturers.builder()
                     .manufacturerId(manufacturerId)
                     .manufacturerName(manufacturerName)
                     .manufacturerImg(manufacturerImg)
                     .manufacturerStatus(manufacturerStatus)
+                    .manufacturerOrder(manufacturerOrder)
                     .build();
         }
     }
@@ -80,6 +88,9 @@ public interface ManufacturerDto {
         @Schema(name = "manufacturer_status")
         private String manufacturerStatus;
 
+        @Schema(name = "manufacturer_order")
+        private int manufacturerOrder;
+
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "created_at")
         private Timestamp createdAt;
@@ -96,6 +107,7 @@ public interface ManufacturerDto {
                     .manufacturerStatus(manufacturers.getManufacturerStatus())
                     .createdAt(manufacturers.getCreatedAt())
                     .updatedAt(manufacturers.getUpdatedAt())
+                    .manufacturerOrder(manufacturers.getManufacturerOrder())
                     .build();
         }
 

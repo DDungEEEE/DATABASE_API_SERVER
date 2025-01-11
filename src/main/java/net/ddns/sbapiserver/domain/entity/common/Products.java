@@ -73,5 +73,8 @@ public class Products {
             this.productModifyDate = new Timestamp(System.currentTimeMillis());
     }
 
+    public int getManufacturerSortOrder(){
+        return this.manufacturerSort.getManufacturerSortOrder();
+    }
 
 }

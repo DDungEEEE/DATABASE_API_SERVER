@@ -43,6 +43,15 @@ public class TestNoticeController {
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
+    @Operation(summary = "공지사항 검색", description = "notice_id로 단일 공지사항 조회")
+    @GetMapping("/find/{notice_id}")
+    public ResultResponse<NoticeDto.Result> findNoticeById(@PathVariable("notice_id") int noticeId){
+        NoticeDto.Result findNotice = noticeService.findNoticeById(noticeId);
+        return ResultResponse.<NoticeDto.Result>successResponse()
+                .result(findNotice)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
 
     @Operation(summary = "공지사항 등록")
     @PostMapping

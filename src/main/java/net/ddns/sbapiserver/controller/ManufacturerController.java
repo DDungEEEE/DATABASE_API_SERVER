@@ -35,6 +35,7 @@ public class ManufacturerController {
     @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @PostMapping
     public ResultResponse<ManufacturerDto.Result> createManufacturer(@RequestBody @Valid ManufacturerDto.Create create){
+
         ManufacturerDto.Result result = manufacturerService.CreateManufacturer(create);
         return ResultResponse.<ManufacturerDto.Result>successResponse()
                 .result(result)

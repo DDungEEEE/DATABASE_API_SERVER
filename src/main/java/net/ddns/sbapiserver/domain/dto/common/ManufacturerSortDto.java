@@ -19,9 +19,13 @@ public interface ManufacturerSortDto {
         @Schema(name = "sort_name")
         private String sortName;
 
+        @Schema(name = "manufacturer_sort_order")
+        private int manufacturerSortOrder;
+
         public ManufacturerSort asEntity(Function<? super ManufacturerSort, ManufacturerSort> init){
             return init.apply(
                     ManufacturerSort.builder()
+                            .manufacturerSortOrder(manufacturerSortOrder)
                             .sortName(sortName)
                             .build()
             );
@@ -41,8 +45,12 @@ public interface ManufacturerSortDto {
         @Schema(name = "sort_name")
         private String sortName;
 
+        @Schema(name = "manufacturer_sort_order")
+        private int manufacturerSortOrder;
+
         public ManufacturerSort asPutEntity(ManufacturerSort manufacturerSort){
             manufacturerSort.setSortName(sortName);
+            manufacturerSort.setManufacturerSortOrder(manufacturerSortOrder);
             return manufacturerSort;
         }
     }
@@ -59,11 +67,15 @@ public interface ManufacturerSortDto {
         @Schema(name = "sort_name")
         private String sortName;
 
+        @Schema(name = "manufacturer_sort_order")
+        private int manufacturerSortOrder;
+
         public static Result of(ManufacturerSort manufacturerSort){
             return Result.builder()
                     .manufacturerSortId(manufacturerSort.getManufacturerSortId())
                     .manufacturerId(manufacturerSort.getManufacturers().getManufacturerId())
                     .sortName(manufacturerSort.getSortName())
+                    .manufacturerSortOrder(manufacturerSort.getManufacturerSortOrder())
                     .build();
         }
 

@@ -52,6 +52,11 @@ public class NoticeService {
     }
 
     @Transactional(readOnly = true)
+    public NoticeDto.Result findNoticeById(int noticeId){
+        return NoticeDto.Result.of(serviceErrorHelper.findNoticeOrElseThrow404(noticeId));
+    }
+
+    @Transactional(readOnly = true)
     public List<NoticeDto.Result> searchNotice(LocalDate startDate, LocalDate endDate){
         QNotice notice = QNotice.notice;
         LocalDateTime startDateTime = startDate.atStartOfDay();

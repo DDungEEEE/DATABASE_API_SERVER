@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public interface ProductDto {
 
-    @Data
+    @Data @Builder
     @Schema(name = "ProductCreate")
     @NoArgsConstructor
     @AllArgsConstructor
@@ -154,6 +154,9 @@ public interface ProductDto {
         @Schema(name = "manufacturer_sort_id")
         private Integer manufacturerSortId;
 
+        @Schema(name = "manufacturer_sort_order")
+        private Integer manufacturerSortOrder;
+
         @Schema(name = "staff_id")
         private Integer staffId;
 
@@ -174,6 +177,7 @@ public interface ProductDto {
                     .productStatus(products.getProductStatus())
                     .productType(products.getProductType())
                     .manufacturerSortId(checkManufacturerSortIsNull(products.getManufacturerSort()))
+                    .manufacturerSortOrder(getManufacturerSortOrder(products.getManufacturerSort()))
                     .productManufacturerId(checkManufacturerIsNull(products.getManufacturers()))
                     .manufacturerName(getManufacturerName(products.getManufacturers()))
                     .staffId(checkStaffIsNull(products.getStaffs()))
@@ -185,6 +189,13 @@ public interface ProductDto {
         public static List<Result> of(List<Products> products) {
             return products.stream().map(Result::of)
                     .collect(Collectors.toList());
+        }
+
+        public static int getManufacturerSortOrder(ManufacturerSort manufacturerSort){
+            if(manufacturerSort != null){
+                return manufacturerSort.getManufacturerSortOrder();
+            }
+            return 0;
         }
 
         public static String getManufacturerName(Manufacturers manufacturers){

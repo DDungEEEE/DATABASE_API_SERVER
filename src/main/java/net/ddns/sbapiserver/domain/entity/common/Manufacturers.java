@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 @Entity
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Builder
+@Getter @Builder @Setter
 @Table(name = "manufacturers")
 public class Manufacturers {
 
@@ -25,13 +25,14 @@ public class Manufacturers {
     @Column(name = "manufacturer_status", nullable = false, length = 50)
     private String manufacturerStatus;
 
-
+    @Column(name = "manufacturer_order", nullable = false)
     private int manufacturerOrder;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
 
+    @CreationTimestamp
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
 
@@ -39,5 +40,6 @@ public class Manufacturers {
     private void setUpdatedAt(){
         this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
+
 
 }

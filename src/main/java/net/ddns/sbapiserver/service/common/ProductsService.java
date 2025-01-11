@@ -14,11 +14,10 @@ import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +46,6 @@ public class ProductsService {
     @Transactional(readOnly = true)
     public List<ProductDto.Result> getAllProducts(){
         List<Products> allProducts = productsRepository.findAll();
-//        List<Products> sortedProducts = allProducts.stream().sorted(Comparator.comparing(Products::getProductName).reversed()).collect(Collectors.toList());
 
         return ProductDto.Result.of(allProducts);
     }
@@ -71,9 +69,18 @@ public class ProductsService {
     @Transactional(readOnly = true)
     public List<ProductDto.Result> findProductsByManufacturersId(int manufacturerId){
         ErrorCode productNotFoundError = ErrorCode.PRODUCT_NOT_FOUND_ERROR;
+
         List<Products> products = productsRepository.findByManufacturersManufacturerId(manufacturerId).orElseThrow(
                 () -> new BusinessException(productNotFoundError, productNotFoundError.getReason()));
-        return ProductDto.Result.of(products);
+        // 제품군 -> key -> 상품 List -> value Map 생성
+        Map<Integer, List<Products>> groupedProducts = groupProductsByManufacturerSortId(products);
+        //제품군 id 별로 분류 -> productList 값들을 이름 -> 숫자추출 정렬
+        groupedProducts.forEach((manufacturerSortId, productList) -> sortProductsByName(productList));
+        //다시 List로 합침
+        List<Products> mergedProducts = groupedProducts.values().stream().flatMap(Collection::stream).toList();
+        //제품군 order id로 정렬
+        List<Products> resultProducts = sortByManufacturerSortOrder(mergedProducts);
+        return ProductDto.Result.of(resultProducts);
     }
 
     //제조사id, 제품군 id로 상품 불러오기
@@ -86,11 +93,12 @@ public class ProductsService {
                         qProducts.manufacturerSort.manufacturerSortId.eq(manufacturerSortId))
                 .fetch();
 
-        Collections.sort(findProducts, (product1, product2) -> {
-            int num1 = extractNumber(product1.getProductName());
-            int num2 = extractNumber(product2.getProductName());
-            return Integer.compare(num1, num2);
-        });
+//        Collections.sort(findProducts, (product1, product2) -> {
+//            int num1 = extractNumber(product1.getProductName());
+//            int num2 = extractNumber(product2.getProductName());
+//            return Integer.compare(num1, num2);
+//        });
+        sortProductsByName(findProducts);
         return ProductDto.Result.of(findProducts);
     }
 
@@ -107,5 +115,29 @@ public class ProductsService {
 
         // 숫자가 없으면 0을 반환
         return !fullNumber.isEmpty() ?Integer.parseInt(fullNumber.toString()) : 0;
+    }
+
+    protected void sortProductsByName(List<Products> products) {
+        products.sort((p1, p2) -> {
+            int num1 = extractNumber(p1.getProductName());
+            int num2 = extractNumber(p2.getProductName());
+            return Integer.compare(num1, num2);
+        });
+    }
+
+
+    protected Map<Integer, List<Products>> groupProductsByManufacturerSortId(List<Products> productsList){
+        return productsList.stream().collect(Collectors.groupingBy(product ->
+                product.getManufacturerSort() != null
+                        ? product.getManufacturerSort().getManufacturerSortId() : 0
+        ));
+    }
+
+    protected List<Products> sortByManufacturerSortOrder(List<Products> products) {
+        return products.stream()
+                .sorted(Comparator.comparing(product ->
+                        product.getManufacturerSort() != null ? product.getManufacturerSort().getManufacturerSortOrder() : 0
+                ))
+                .toList();
     }
 }

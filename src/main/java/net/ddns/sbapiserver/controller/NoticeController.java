@@ -37,10 +37,20 @@ public class NoticeController {
     @GetMapping("/{notice_id}/{page}")
     public ResultResponse<List<NoticeDto.Result>> findNotice(@PathVariable(value = "notice_id") int noticeId,
                                                              @PathVariable(value = "page",required = false)
-                                                             @Parameter(description = "Page number, optional", required = false)Integer page){
+                                                             @Parameter(description = "Page number, optional")Integer page){
         int actualPage = (page != null) ? page : 0;
         List<NoticeDto.Result> findNotice = noticeService.findNotice(noticeId, actualPage);
         return ResultResponse.<List<NoticeDto.Result>>successResponse()
+                .result(findNotice)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "공지사항 검색", description = "notice_id로 단일 공지사항 조회")
+    @GetMapping("/find/{notice_id}")
+    public ResultResponse<NoticeDto.Result> findNoticeById(@PathVariable("notice_id") int noticeId){
+        NoticeDto.Result findNotice = noticeService.findNoticeById(noticeId);
+        return ResultResponse.<NoticeDto.Result>successResponse()
                 .result(findNotice)
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
