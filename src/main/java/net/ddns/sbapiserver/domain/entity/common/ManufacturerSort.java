@@ -3,7 +3,7 @@ package net.ddns.sbapiserver.domain.entity.common;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter @Setter
+@Getter @Setter @ToString
 @Entity @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

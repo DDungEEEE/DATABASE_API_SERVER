@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.sesrvice;
 
+import jakarta.persistence.EntityManager;
 import net.ddns.sbapiserver.domain.dto.common.ProductDto;
 import net.ddns.sbapiserver.domain.entity.common.ManufacturerSort;
 import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
@@ -33,6 +34,8 @@ public class ManufacturerSortServiceTest {
     private ProductsService productsService;
     @Autowired
     private ProductsRepository productsRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     @Test
     @DisplayName("제품군 삭제 -> 상품들 null로 바뀌는지 확인")
@@ -68,28 +71,17 @@ public class ManufacturerSortServiceTest {
                 .productStatus("주문 가능")
                 .productManufacturerId(saveManufacture.getManufacturerId())
                 .build();
-        ProductDto.Create testP3 = ProductDto.Create.builder()
-                .manufacturerSortId(testManufacturerSort.getManufacturerSortId())
-                .productName("asd")
-                .productImg("das")
-                .productStatus("주문 가능")
-                .productManufacturerId(saveManufacture.getManufacturerId())
-                .build();
 
-        ProductDto.Create testP4 = ProductDto.Create.builder()
-                .manufacturerSortId(9)
-                .productName("asd")
-                .productImg("das")
-                .productStatus("주문 가능")
-                .productManufacturerId(saveManufacture.getManufacturerId())
-                .build();
-        productsService.addProduct(testP1);
-        productsService.addProduct(testP2);
-        productsService.addProduct(testP3);
-        productsService.addProduct(testP4);
+        ProductDto.Result result1 = productsService.addProduct(testP1);
+        ProductDto.Result result2 = productsService.addProduct(testP2);
+
         manufacturerSortService.deleteManufacturerSortById(testManufacturerSort.getManufacturerSortId());
-        List<Products> byManufacturersManufacturerId = productsRepository.getProductsByManufacturerSortManufacturerSortId(testManufacturerSort.getManufacturerSortId());
-        System.out.println(Arrays.toString(byManufacturersManufacturerId.toArray()));
+        entityManager.flush();
+        entityManager.clear();
+        Optional<Products> byId1 = productsRepository.findById(result1.getProductId());
+        Optional<Products> byId2 = productsRepository.findById(result2.getProductId());
+        System.out.println("------------ first data-------" + (byId1.get().getManufacturerSort()));
+        System.out.println("------------ second data--------  " + (byId2.get().getManufacturerSort()));
 
     }
 }

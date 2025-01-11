@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity  @Getter
-@Setter
+@Setter @ToString
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
