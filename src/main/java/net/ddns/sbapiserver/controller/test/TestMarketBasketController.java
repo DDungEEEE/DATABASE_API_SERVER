@@ -55,7 +55,7 @@ public class TestMarketBasketController {
 
     @Operation(summary = "장바구니 전체 삭제")
     @ApiResponse(responseCode = "200")
-    @DeleteMapping("{client_id}")
+    @DeleteMapping("/all/{client_id}")
     public ResultResponse<Void> deleteAll(@PathVariable("client_id") int clientId){
         marketBasketService.deleteByClientId(clientId);
         return ResultResponse.<Void>successResponse()

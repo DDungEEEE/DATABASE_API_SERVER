@@ -47,9 +47,11 @@ public class StarBasketService {
     }
 
 
+    @Transactional
     public void deleteStarBasket(int starBasketId){
         starBasketRepository.deleteById(starBasketId);
     }
+
     @Transactional(readOnly = true)
     public List<StarBasketDto.Result> getStarBasketList(int clientId){
         List<StarBasket> findStarBasketList = starBasketRepository.findByClientsClientId(clientId);

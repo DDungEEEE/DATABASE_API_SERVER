@@ -10,6 +10,7 @@ import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.exception.error.custom.BusinessException;
 import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
+import net.ddns.sbapiserver.service.basket.StarBasketService;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class ProductsService {
     private final ProductsRepository productsRepository;
     private final ServiceErrorHelper serviceErrorHelper;
     private final JPAQueryFactory jpaQueryFactory;
+    private final StarBasketService starBasketService;
 
     @Transactional
     public ProductDto.Result addProduct(ProductDto.Create create){

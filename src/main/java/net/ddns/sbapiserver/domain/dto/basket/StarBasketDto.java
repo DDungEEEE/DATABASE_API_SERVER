@@ -3,6 +3,8 @@ package net.ddns.sbapiserver.domain.dto.basket;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import net.ddns.sbapiserver.domain.dto.common.ManufacturerDto;
+import net.ddns.sbapiserver.domain.dto.common.ManufacturerSortDto;
 import net.ddns.sbapiserver.domain.entity.basket.StarBasket;
 
 import java.util.List;
@@ -34,7 +36,13 @@ public interface StarBasketDto {
         @Schema(name = "product_id")
         private int productId;
 
+        @Schema(name = "product_name")
         private String productName;
+
+        @Schema(name = "manufacturer_sort_name")
+        private String manufacturerSortName;
+        @Schema(name = "manufacturer_name")
+        private String manufacturerName;
 
 
         public static Result of(StarBasket starBasket){
@@ -42,6 +50,9 @@ public interface StarBasketDto {
                     .starBasketId(starBasket.getStarBasketId())
                     .clientId(starBasket.getClients().getClientId())
                     .productId(starBasket.getProducts().getProductId())
+                    .productName(starBasket.getProducts().getProductName())
+                    .manufacturerSortName(starBasket.getProducts().getManufacturerSort().getSortName())
+                    .manufacturerName(starBasket.getProducts().getManufacturers().getManufacturerName())
                     .build();
         }
 

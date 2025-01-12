@@ -2,6 +2,8 @@ package net.ddns.sbapiserver.domain.dto.basket;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import net.ddns.sbapiserver.domain.dto.common.ManufacturerDto;
+import net.ddns.sbapiserver.domain.dto.common.ManufacturerSortDto;
 import net.ddns.sbapiserver.domain.entity.basket.MarketBasket;
 
 import java.util.List;
@@ -22,7 +24,6 @@ public interface MarketBasketDto {
 
         @Schema(name = "market_basket_items")
         private List<MarketBasketItem> marketBasketItems;
-
 
         @Data
         @Schema(name = "MarketBasketItem")
@@ -53,12 +54,19 @@ public interface MarketBasketDto {
         @Schema(name = "product_id")
         private int productId;
 
+        @Schema(name = "manufacturer_sort_name")
+        private String manufacturerSortName;
+        @Schema(name = "manufacturer_name")
+        private String manufacturerName;
+
         public static Result of(MarketBasket marketBasket){
             return Result.builder()
                     .marketBasketId(marketBasket.getMarketBasketId())
                     .productName(marketBasket.getProducts().getProductName())
                     .productCnt(marketBasket.getProductCnt())
                     .productId(marketBasket.getProducts().getProductId())
+                    .manufacturerName(marketBasket.getProducts().getManufacturers().getManufacturerName())
+                    .manufacturerSortName(marketBasket.getProducts().getManufacturerSort().getSortName())
                     .build();
 
         }
