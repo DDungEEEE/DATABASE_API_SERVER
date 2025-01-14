@@ -33,22 +33,35 @@ public class TestNoticeController {
                 .build();
     }
 
-    @Operation(summary = "공지사항 검색")
+
+    @Operation(summary = "지정한 noticeId부터 page 검색")
+    @GetMapping("/search/{notice_id}/{page}")
+    public ResultResponse<List<NoticeDto.Result>> findNotice(@PathVariable(value = "notice_id") int noticeId,
+                                                             @PathVariable(value = "page",required = false) Integer page){
+        List<NoticeDto.Result> findNotice = noticeService.findNotice(noticeId, page);
+        return ResultResponse.<List<NoticeDto.Result>>successResponse()
+                .result(findNotice)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "공지사항 단일건 검색", description = "notice_id로 단일 공지사항 조회")
+    @GetMapping("/find/{notice_id}")
+    public ResultResponse<NoticeDto.Result> findNoticeById(@PathVariable("notice_id") int noticeId){
+        NoticeDto.Result findNotice = noticeService.findNoticeById(noticeId);
+        return ResultResponse.<NoticeDto.Result>successResponse()
+                .result(findNotice)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "공지사항 날짜로 검색")
     @GetMapping("/{start_date}/{end_date}")
     public ResultResponse<List<NoticeDto.Result>> search(@PathVariable("start_date") @DateTimeFormat(pattern = "yy-MM-dd") LocalDate startDate,
                                                          @PathVariable("end_date") @DateTimeFormat(pattern = "yy-MM-dd") LocalDate endDate){
         List<NoticeDto.Result> searchNotice = noticeService.searchNotice(startDate, endDate);
         return ResultResponse.<List<NoticeDto.Result>>successResponse()
                 .result(searchNotice)
-                .successCode(SuccessCode.SELECT_SUCCESS)
-                .build();
-    }
-    @Operation(summary = "공지사항 검색", description = "notice_id로 단일 공지사항 조회")
-    @GetMapping("/find/{notice_id}")
-    public ResultResponse<NoticeDto.Result> findNoticeById(@PathVariable("notice_id") int noticeId){
-        NoticeDto.Result findNotice = noticeService.findNoticeById(noticeId);
-        return ResultResponse.<NoticeDto.Result>successResponse()
-                .result(findNotice)
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
@@ -71,16 +84,6 @@ public class TestNoticeController {
         return ResultResponse.<NoticeDto.Result>successResponse()
                 .result(result)
                 .successCode(SuccessCode.UPDATE_SUCCESS)
-                .build();
-    }
-
-    @GetMapping("/search/{notice_id}/{page}")
-    public ResultResponse<List<NoticeDto.Result>> findNotice(@PathVariable(value = "notice_id") int noticeId,
-                                                             @PathVariable(value = "page",required = false) Integer page){
-        List<NoticeDto.Result> findNotice = noticeService.findNotice(noticeId, page);
-        return ResultResponse.<List<NoticeDto.Result>>successResponse()
-                .result(findNotice)
-                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 

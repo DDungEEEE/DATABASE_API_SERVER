@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.security;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -40,14 +42,32 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("AuthorizationFilter[OncePerRequestFilter] 작동");
 
+        if (request.getRequestURI().startsWith("/api/user/getAccessToken")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String token = jwtUtil.getJwtToken(request);
         try {
-            if (token != null && jwtUtil.validToken(token)) {
+            log.error("token 값 : {}", token);
+            if (token != null) {
+                // 토큰 유효성 검증
+                if(!jwtUtil.validToken(token)){
+                    ErrorResponse errorResponse = new ErrorResponse(ErrorCode.TOKEN_EXPIRED_ERROR);
+                    responseWrapper.convertObjectToResponse(response, errorResponse);
+                    return;
+                }
+
                 Claims claims = jwtUtil.getClaims(token);
                 String userId = claims.getSubject();
-                log.error("user");
                 boolean userLoginValid = loginService.isUserLoginValid(userId, token);
-                // accessToken이 레디스에 저장되어있는지 검증
+
+                if(!loginService.isUserLoggedIn(userId)){
+                    ErrorResponse errorResponse = new ErrorResponse(ErrorCode.USER_NOT_LOGGED_ERROR);
+                    responseWrapper.convertObjectToResponse(response, errorResponse);
+                    return;
+                }
+
+                // Redis의 저장되어있는 accessToken = 입력받은 accessToken
                 if (!userLoginValid) {
                     ErrorResponse errorResponse = new ErrorResponse(ErrorCode.TOKEN_EXPIRED_ERROR);
                     responseWrapper.convertObjectToResponse(response, errorResponse);
@@ -59,7 +79,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
         catch (Exception e){
             log.error(e.getMessage());
-//                throw new ResponseStatusException(NOT_FOUND, "요청하신 유저가 없습니다.");
+            ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
+            responseWrapper.convertObjectToResponse(response, errorResponse);
             }
         }
 

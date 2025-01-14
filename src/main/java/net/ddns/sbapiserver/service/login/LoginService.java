@@ -29,13 +29,14 @@ public class LoginService {
         redisTemplate.delete(userId);
     }
 
+
     public boolean isUserLoginValid(String userid, String accessToken){
         String findToken = redisTemplate.opsForValue().get(userid);
         log.error("찾은 Token : {} 입력한 Token : {}", findToken, accessToken);
         return findToken.equals(accessToken);
     }
 
-    // Login 중 -> true, or false
+    // Login 중 -> true, or false ->
     public boolean isUserLoggedIn(String userId){
         return redisTemplate.opsForValue().get(userId) != null;
     }

@@ -54,10 +54,11 @@ public class JwtUtil {
         }catch (UnsupportedJwtException e){
             log.error("지원하지 않는 Jwt Token 입니다.");
         }catch (IllegalArgumentException e){
-            log.error("Jwt claims 가 비어있습니다.");
+            log.error("{}", e.getMessage());
         }
         return false;
     }
+
 
     public String generateAccessToken(String userId, String role){
         log.info("{} ------------ AccessToken Generation", userId);
@@ -92,6 +93,11 @@ public class JwtUtil {
 
    public Claims getClaims(String token){
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+   }
+
+   public String extractRole(String token){
+       Claims claims = getClaims(token);
+       return claims.get(authorizationKey, String.class);
    }
 
 

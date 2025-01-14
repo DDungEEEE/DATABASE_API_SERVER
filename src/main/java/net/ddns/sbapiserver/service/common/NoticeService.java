@@ -60,11 +60,12 @@ public class NoticeService {
     public List<NoticeDto.Result> searchNotice(LocalDate startDate, LocalDate endDate){
         QNotice notice = QNotice.notice;
         LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
 
         List<Notice> searchNoticeList = jpaQueryFactory.selectFrom(notice)
                 .where(notice.noticeDate.between(startDateTime, endDateTime))
                 .fetch();
+
         return NoticeDto.Result.of(searchNoticeList);
     }
 

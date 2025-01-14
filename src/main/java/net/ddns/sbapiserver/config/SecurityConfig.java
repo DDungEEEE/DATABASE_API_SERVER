@@ -70,8 +70,9 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/api/v1/**").authenticated()
                                 .requestMatchers("/api/v1/client").permitAll()
-                                .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/api/user/login").permitAll()
+                                .requestMatchers("/api/user/getAccessToken").permitAll()
+                                .requestMatchers("/api/**").permitAll()
                                 .anyRequest().authenticated());
 
         httpSecurity.addFilterBefore(jwtAuthorizationFilter(), jwtTokenAuthenticationFilter().getClass());

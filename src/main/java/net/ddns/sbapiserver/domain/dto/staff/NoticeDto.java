@@ -41,8 +41,10 @@ public interface NoticeDto {
                         .build());
         }
     }
-    @Schema(name = "noticePut")
+    @Schema(name = "noticePutDto")
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     class Put{
         @Schema(name = "notice_id")
@@ -87,6 +89,9 @@ public interface NoticeDto {
         @Schema(name = "notice_title")
         private String noticeTitle;
 
+        @Schema(name = "staff_id")
+        private int staffId;
+
         @Schema(name = "staff_name")
         private String staffName;
 
@@ -96,6 +101,7 @@ public interface NoticeDto {
                     .noticeId(notice.getNoticeId())
                     .noticeDate(notice.getNoticeDate())
                     .noticeStatus(notice.getNoticeStatus())
+                    .staffId(notice.getStaffs().getStaffId())
                     .staffName(notice.getStaffs().getStaffName())
                     .noticeTitle(notice.getNoticeTitle())
                     .build();

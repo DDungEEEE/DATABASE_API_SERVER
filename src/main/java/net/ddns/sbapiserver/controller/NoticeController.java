@@ -34,19 +34,18 @@ public class NoticeController {
                 .build();
     }
 
-    @GetMapping("/{notice_id}/{page}")
+    @Operation(summary = "지정한 noticeId부터 page 검색")
+    @GetMapping("/search/{notice_id}/{page}")
     public ResultResponse<List<NoticeDto.Result>> findNotice(@PathVariable(value = "notice_id") int noticeId,
-                                                             @PathVariable(value = "page",required = false)
-                                                             @Parameter(description = "Page number, optional")Integer page){
-        int actualPage = (page != null) ? page : 0;
-        List<NoticeDto.Result> findNotice = noticeService.findNotice(noticeId, actualPage);
+                                                             @PathVariable(value = "page",required = false) Integer page){
+        List<NoticeDto.Result> findNotice = noticeService.findNotice(noticeId, page);
         return ResultResponse.<List<NoticeDto.Result>>successResponse()
                 .result(findNotice)
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 
-    @Operation(summary = "공지사항 검색", description = "notice_id로 단일 공지사항 조회")
+    @Operation(summary = "공지사항 단일건 검색", description = "notice_id로 단일 공지사항 조회")
     @GetMapping("/find/{notice_id}")
     public ResultResponse<NoticeDto.Result> findNoticeById(@PathVariable("notice_id") int noticeId){
         NoticeDto.Result findNotice = noticeService.findNoticeById(noticeId);
@@ -57,7 +56,7 @@ public class NoticeController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
-    @Operation(summary = "공지사항 검색")
+    @Operation(summary = "공지사항 날짜로 조회")
     @GetMapping("/{start_date}/{end_date}")
     public ResultResponse<List<NoticeDto.Result>> search(@PathVariable("start_date") @DateTimeFormat(pattern = "yy-MM-dd") LocalDate startDate,
                                                          @PathVariable("end_date") @DateTimeFormat(pattern = "yy-MM-dd") LocalDate endDate){
