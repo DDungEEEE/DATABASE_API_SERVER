@@ -21,8 +21,7 @@ public class JwtUtil {
     private static final String authorizationHeader = "Authorization";
     private static final String authorizationKey = "auth";
     private static final  String BEARER = "Bearer ";
-    private final Date accessTokenExpired = new Date(System.currentTimeMillis() + 30 * 60 * 1000);
-    private final Date refreshTokenExpired = new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
+
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -63,6 +62,8 @@ public class JwtUtil {
 
     public String generateAccessToken(String userId, String role){
         log.info("{} ------------ AccessToken Generation", userId);
+
+        Date accessTokenExpired = new Date(System.currentTimeMillis() + 30 * 60 * 1000);
         return Jwts.builder()
                 .setSubject(userId)
                 .claim(authorizationKey, role)
@@ -75,6 +76,7 @@ public class JwtUtil {
     // userId로 RefreshToken 생성
     public String generateRefreshToken(String userId){
         log.info("{} ------------ Generated New RefreshToken", userId);
+        Date refreshTokenExpired = new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
         return Jwts.builder()
                 .setSubject(userId)
                 .setIssuedAt(new Date())
