@@ -156,7 +156,6 @@ private void generateErrorCodeResponseExample(Operation operation, ErrorCode err
                                 .bearerFormat("JWT")))
                 .servers(List.of(
                         new Server().url("https://batteryfriendserverapi.com"),
-                        new Server().url("https://sbtechapiserver.ddns.net"),
                         new Server().url("http://localhost:33080")));
     }
 

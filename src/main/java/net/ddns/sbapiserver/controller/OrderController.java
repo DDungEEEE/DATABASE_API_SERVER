@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
+import net.ddns.sbapiserver.domain.dto.OrderPrintCkRequestDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderDto;
 import net.ddns.sbapiserver.service.authentication.AuthenticationService;
 import net.ddns.sbapiserver.service.common.OrderService;
@@ -38,6 +39,8 @@ public class OrderController {
                 .successCode(SuccessCode.INSERT_SUCCESS)
                 .build();
     }
+
+
     @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @ApiResponse(responseCode = "200")
     @Operation(summary = "관리자가 사용할 주문내역 조회")
@@ -51,6 +54,15 @@ public class OrderController {
                 .result(orderResultList)
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
+    }
+
+    @Operation(summary = "order_print_ck 수정", operationId = "받아온 order_id에 해당하는 주문 order_print_ck = 1로 수정")
+    @PutMapping("/setPrintCheck/{order_id}")
+    public ResultResponse<Void> setOrderPrintCheck(@PathVariable(value = "order_id") int orderId){
+            orderService.setOrderPrintCheck(orderId);
+            return ResultResponse.<Void>successResponse()
+                    .successCode(SuccessCode.UPDATE_SUCCESS)
+                    .build();
     }
 
 

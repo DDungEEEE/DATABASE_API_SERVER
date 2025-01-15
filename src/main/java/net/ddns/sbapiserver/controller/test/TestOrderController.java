@@ -45,6 +45,14 @@ public class TestOrderController {
                 .build();
     }
 
+    @Operation(summary = "order_print_ck 수정", operationId = "받아온 order_id에 해당하는 주문 order_print_ck = 1로 수정")
+    @PutMapping("/setPrintCheck/{order_id}")
+    public ResultResponse<Void> setOrderPrintCheck(@PathVariable(value = "order_id") int orderId){
+        orderService.setOrderPrintCheck(orderId);
+        return ResultResponse.<Void>successResponse()
+                .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
 
     @ApiResponse(responseCode = "200")
     @Operation(summary = "주문내역 조회")

@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.service.common;
 
 import lombok.RequiredArgsConstructor;
+import net.ddns.sbapiserver.domain.dto.OrderPrintCkRequestDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderContentDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
@@ -96,6 +97,11 @@ public class OrderService {
 
         return adminResultOrders;
 
+    }
+    public void setOrderPrintCheck(int orderId){
+        Orders findOrder = serviceErrorHelper.findOrderOrElseThrow404(orderId);
+        findOrder.setOrderPrintCk(1);
+        orderRepository.save(findOrder);
     }
 
     // 결과 Order List를 ResultDto 로 바꾸는 method

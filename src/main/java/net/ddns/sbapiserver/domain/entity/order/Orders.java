@@ -39,6 +39,10 @@ public class Orders {
     @ManyToOne
     private Clients clients;
 
+    public void setOrderPrintCk(int orderPrintCk) {
+        this.orderPrintCk = orderPrintCk;
+    }
+
     @PrePersist
     protected void checkOrderEntity(){
         orderDate = LocalDateTime.now().withSecond(0).withNano(0);

@@ -50,6 +50,7 @@ public class JwtUtil {
         }catch (SecurityException | MalformedJwtException e){
             log.error("Invalid Jwt Signature, 유효허지 않은 Jwt 서명입니다.");
         }catch (ExpiredJwtException e){
+            log.error(e.getMessage());
             log.error("유효기간이 만료된 Jwt Token 입니다.");
         }catch (UnsupportedJwtException e){
             log.error("지원하지 않는 Jwt Token 입니다.");
