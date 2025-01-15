@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
-import net.ddns.sbapiserver.domain.dto.OrderPrintCkRequestDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderDto;
 import net.ddns.sbapiserver.service.authentication.AuthenticationService;
 import net.ddns.sbapiserver.service.common.OrderService;

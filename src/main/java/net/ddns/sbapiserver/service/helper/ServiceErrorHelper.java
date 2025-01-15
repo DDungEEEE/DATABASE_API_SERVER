@@ -3,6 +3,7 @@ package net.ddns.sbapiserver.service.helper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
+import net.ddns.sbapiserver.domain.entity.client.Feedback;
 import net.ddns.sbapiserver.domain.entity.client.QClients;
 import net.ddns.sbapiserver.domain.entity.common.ManufacturerSort;
 import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
@@ -14,10 +15,7 @@ import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.exception.error.custom.BusinessException;
 import net.ddns.sbapiserver.common.code.ErrorCode;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
-import net.ddns.sbapiserver.repository.common.ManufacturerSortRepository;
-import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
-import net.ddns.sbapiserver.repository.common.OrderRepository;
-import net.ddns.sbapiserver.repository.common.ProductsRepository;
+import net.ddns.sbapiserver.repository.common.*;
 import net.ddns.sbapiserver.repository.staff.NoticeRepository;
 import net.ddns.sbapiserver.repository.staff.StaffRepository;
 import org.springframework.stereotype.Component;
@@ -35,6 +33,7 @@ public class ServiceErrorHelper {
     private final ManufacturersRepository manufacturersRepository;
     private final JPAQueryFactory jpaQueryFactory;
     private final ManufacturerSortRepository manufacturerSortRepository;
+    private final FeedbackRepository feedbackRepository;
 
     public Clients findClientsOrElseThrow404(int clientId){
         ErrorCode clientNotFoundError = ErrorCode.CLIENT_NOT_FOUND_ERROR;
@@ -85,12 +84,9 @@ public class ServiceErrorHelper {
         );
     }
 
-    public boolean isClientPhoneNumDuplicated(String clientPhoneNumber){
-        QClients qClients = QClients.clients;
-        Optional<Clients> clients = Optional.ofNullable(jpaQueryFactory.selectFrom(qClients)
-                .where(qClients.clientPhNum.eq(clientPhoneNumber))
-                .fetchOne());
-        return !clients.isEmpty();
+    public Feedback findFeedbackOrElseThrow404(int feedbackId){
+        ErrorCode feedbackNotFoundError = ErrorCode.FEEDBACK_NOT_FOUND_ERROR;
+        return feedbackRepository.findById(feedbackId).orElseThrow(() -> new BusinessException(feedbackNotFoundError, feedbackNotFoundError.getReason()));
     }
 
     public boolean isUserIdDuplicated(String userId){

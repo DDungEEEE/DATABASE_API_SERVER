@@ -21,7 +21,8 @@ public class JwtUtil {
     private static final String authorizationHeader = "Authorization";
     private static final String authorizationKey = "auth";
     private static final  String BEARER = "Bearer ";
-
+    private static final long ACCESS_TOKEN_EXPIRED = 30 * 60 * 1000L;
+    private static final long REFRESH_TOKEN_EXPIRED = 24 * 60 * 60 * 1000L;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -62,13 +63,12 @@ public class JwtUtil {
 
     public String generateAccessToken(String userId, String role){
         log.info("{} ------------ AccessToken Generation", userId);
-
-        Date accessTokenExpired = new Date(System.currentTimeMillis() + 30 * 60 * 1000);
+        Date date = new Date();
         return Jwts.builder()
                 .setSubject(userId)
                 .claim(authorizationKey, role)
                 .setIssuedAt(new Date())
-                .setExpiration(accessTokenExpired)
+                .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_EXPIRED))
                 .signWith(key, signatureAlgorithm)
                 .compact();
     }
@@ -76,11 +76,11 @@ public class JwtUtil {
     // userId로 RefreshToken 생성
     public String generateRefreshToken(String userId){
         log.info("{} ------------ Generated New RefreshToken", userId);
-        Date refreshTokenExpired = new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
+        Date date = new Date();
         return Jwts.builder()
                 .setSubject(userId)
                 .setIssuedAt(new Date())
-                .setExpiration(refreshTokenExpired)
+                .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_EXPIRED))
                 .signWith(key, signatureAlgorithm)
                 .compact();
     }

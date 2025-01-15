@@ -1,27 +1,20 @@
 package net.ddns.sbapiserver.service.common;
 
 import lombok.RequiredArgsConstructor;
-import net.ddns.sbapiserver.domain.dto.OrderPrintCkRequestDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderContentDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
-import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.domain.entity.order.OrderContents;
 import net.ddns.sbapiserver.domain.entity.order.Orders;
-import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.common.*;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service

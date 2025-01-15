@@ -42,6 +42,8 @@ public enum ErrorCode {
 
     MANUFACTURER_NOT_FOUND_ERROR(404, "MANUFACTURER_001", "제조사를 찾을 수 없습니다."),
 
+    FEEDBACK_NOT_FOUND_ERROR(404, "FEEDBACK_001", "피드백을 찾을 수 없습니다."),
+
     ROLE_NOT_AUTHORIZED(403, "ACCOUNT_001", "접근할 권한이 존재하지 않습니다."),
 
     ACCESS_DENIED(403, "ACCOUNT_002", "접근이 거부되었습니다."),
