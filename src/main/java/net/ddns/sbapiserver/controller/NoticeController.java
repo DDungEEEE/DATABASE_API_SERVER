@@ -67,7 +67,7 @@ public class NoticeController {
                 .build();
     }
 
-    @PreAuthorize(value = "'ROLE_STAFF'")
+    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @Operation(summary = "공지사항 등록")
     @PostMapping
     public ResultResponse<NoticeDto.Result> add(@RequestBody NoticeDto.Create create){
@@ -79,7 +79,7 @@ public class NoticeController {
                 .build();
     }
 
-    @PreAuthorize(value = "'ROLE_STAFF'")
+    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @Operation(summary = "공지사항 수정")
     @PutMapping
     public ResultResponse<NoticeDto.Result> updateNotice(@RequestBody NoticeDto.Put put){
@@ -90,7 +90,7 @@ public class NoticeController {
                 .build();
     }
 
-    @PreAuthorize(value = "'ROLE_STAFF'")
+    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
     @Operation(summary = "공지사항 삭제")
     @DeleteMapping("{notice_id}")
     public ResultResponse<Void> deleteNotice(@PathVariable("notice_id") int noticeId){
