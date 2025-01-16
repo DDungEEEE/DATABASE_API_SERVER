@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import net.ddns.sbapiserver.domain.entity.client.Feedback;
@@ -56,6 +57,7 @@ public interface FeedbackDto {
         }
     }
     @Builder
+    @Data
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Schema(name = "FeedbackResult")
@@ -72,9 +74,11 @@ public interface FeedbackDto {
         @Schema(name = "is_check")
         private int isCheck;
 
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "created_at")
         private Timestamp createdAt;
 
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "updated_at")
         private Timestamp updatedAt;
 
