@@ -44,6 +44,8 @@ public enum ErrorCode {
 
     FEEDBACK_NOT_FOUND_ERROR(404, "FEEDBACK_001", "피드백을 찾을 수 없습니다."),
 
+    ALERT_NOT_FOUND_ERROR(404, "ALERT_001", "알림을 찾을 수 없습니다."),
+
     ROLE_NOT_AUTHORIZED(403, "ACCOUNT_001", "접근할 권한이 존재하지 않습니다."),
 
     ACCESS_DENIED(403, "ACCOUNT_002", "접근이 거부되었습니다."),

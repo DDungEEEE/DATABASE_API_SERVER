@@ -37,7 +37,7 @@ public class ClientController {
 
     @ApiErrorCodeExamples(value = {ErrorCode.ACCESS_DENIED, ErrorCode.ROLE_NOT_AUTHORIZED})
     @PreAuthorize("hasRole('ROLE_STAFF')")
-    @Operation(summary = "거채거 목록 조회", description = "거래처 목록들을 조회합니다.")
+    @Operation(summary = "거래처 목록 조회", description = "거래처 목록들을 조회합니다.")
     @ApiResponse(responseCode = "200")
     @GetMapping
     public ResultResponse<List<ClientsDto.Result>> getClientList(){
@@ -68,6 +68,7 @@ public class ClientController {
                 .build();
     }
 
+    @PreAuthorize("permitAll()")
     @ApiErrorCodeExample(ErrorCode.DUPLICATE_USER_ID_ERROR)
     @Operation(summary = "클라이언트 회원 가입")
     @PostMapping

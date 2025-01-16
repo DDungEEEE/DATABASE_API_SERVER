@@ -13,6 +13,7 @@ import net.ddns.sbapiserver.service.login.LoginService;
 import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -73,8 +74,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/v1/client").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/staff").permitAll()
                                 .requestMatchers("/api/v1/**").authenticated()
-                                .requestMatchers("/api/v1/client").permitAll()
                                 .requestMatchers("/api/user/login").permitAll()
                                 .requestMatchers("/api/user/getAccessToken").permitAll()
                                 .requestMatchers("/api/**").permitAll()

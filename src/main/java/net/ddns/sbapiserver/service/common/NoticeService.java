@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,9 @@ public class NoticeService {
 
     @Transactional(readOnly = true)
     public List<NoticeDto.Result> getNoticeList(){
-        return NoticeDto.Result.of(noticeRepository.findAll());
+        List<Notice> allNoticeList = noticeRepository.findAll();
+        List<Notice> sortedByNoticeDate = sortedByNoticeDate(allNoticeList);
+        return NoticeDto.Result.of(sortedByNoticeDate);
     }
 
     @Transactional
@@ -66,7 +69,8 @@ public class NoticeService {
                 .where(notice.noticeDate.between(startDateTime, endDateTime))
                 .fetch();
 
-        return NoticeDto.Result.of(searchNoticeList);
+        List<Notice> sortedByNoticeDate = sortedByNoticeDate(searchNoticeList);
+        return NoticeDto.Result.of(sortedByNoticeDate);
     }
 
     @Transactional(readOnly = true)
@@ -77,8 +81,9 @@ public class NoticeService {
         }else{
             Pageable pageable = PageRequest.of(page-1, 10, Sort.by("noticeId").ascending());
             Page<Notice> findNotices = noticeRepository.findNoticesByAfterId(noticeId, pageable);
+            List<Notice> sortedByNoticeDate = sortedByNoticeDate(findNotices.getContent());
 
-            return findNotices.stream().map(NoticeDto.Result::of).collect(Collectors.toList());
+            return NoticeDto.Result.of(sortedByNoticeDate);
         }
     }
 
@@ -86,5 +91,10 @@ public class NoticeService {
     public void deleteNotice(int noticeId){
         serviceErrorHelper.findNoticeOrElseThrow404(noticeId);
         noticeRepository.deleteById(noticeId);
+    }
+
+    protected List<Notice> sortedByNoticeDate(List<Notice> noticeList){
+       noticeList.sort(Comparator.comparing(Notice::getNoticeDate).reversed());
+       return noticeList;
     }
 }

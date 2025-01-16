@@ -9,6 +9,7 @@ import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.staff.StaffDto;
 import net.ddns.sbapiserver.service.common.StaffService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "직원 컨트롤러")
@@ -19,6 +20,7 @@ public class StaffController {
 
     private final StaffService staffService;
 
+    @PreAuthorize("permitAll()")
     @Operation(summary = "관리자 회원가입")
     @ApiResponse(responseCode = "200")
     @PostMapping

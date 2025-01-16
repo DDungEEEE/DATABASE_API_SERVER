@@ -2,6 +2,8 @@ package net.ddns.sbapiserver.service.helper;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.ddns.sbapiserver.domain.entity.client.Alert;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.domain.entity.client.Feedback;
 import net.ddns.sbapiserver.domain.entity.client.QClients;
@@ -34,6 +36,7 @@ public class ServiceErrorHelper {
     private final JPAQueryFactory jpaQueryFactory;
     private final ManufacturerSortRepository manufacturerSortRepository;
     private final FeedbackRepository feedbackRepository;
+    private final AlertRepository alertRepository;
 
     public Clients findClientsOrElseThrow404(int clientId){
         ErrorCode clientNotFoundError = ErrorCode.CLIENT_NOT_FOUND_ERROR;
@@ -87,6 +90,11 @@ public class ServiceErrorHelper {
     public Feedback findFeedbackOrElseThrow404(int feedbackId){
         ErrorCode feedbackNotFoundError = ErrorCode.FEEDBACK_NOT_FOUND_ERROR;
         return feedbackRepository.findById(feedbackId).orElseThrow(() -> new BusinessException(feedbackNotFoundError, feedbackNotFoundError.getReason()));
+    }
+
+    public Alert findAlertOrElseThrow404(int alertId){
+        ErrorCode alertNotFoundError = ErrorCode.ALERT_NOT_FOUND_ERROR;
+        return alertRepository.findById(alertId).orElseThrow(() -> new BusinessException(alertNotFoundError, alertNotFoundError.getReason()));
     }
 
     public boolean isUserIdDuplicated(String userId){
