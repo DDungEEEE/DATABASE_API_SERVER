@@ -21,7 +21,7 @@ public class JwtUtil {
     private static final String authorizationHeader = "Authorization";
     private static final String authorizationKey = "auth";
     private static final  String BEARER = "Bearer ";
-    private static final long ACCESS_TOKEN_EXPIRED = 30 * 60 * 1000L;
+    private static final long ACCESS_TOKEN_EXPIRED =  1 * 60 * 1000L;
     private static final long REFRESH_TOKEN_EXPIRED = 24 * 60 * 60 * 1000L;
 
     @Value("${jwt.secret}")
@@ -95,7 +95,12 @@ public class JwtUtil {
    }
 
    public Claims getClaims(String token){
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        try{
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        }catch (ExpiredJwtException e){
+            log.info("token 재발급 요청");
+            return e.getClaims();
+        }
    }
 
    public String extractRole(String token){

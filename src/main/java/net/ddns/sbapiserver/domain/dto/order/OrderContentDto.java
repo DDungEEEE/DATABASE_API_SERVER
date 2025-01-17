@@ -52,6 +52,12 @@ public interface OrderContentDto {
         @Schema(name = "product_id")
         private int productId;
 
+        @Schema(name = "manufacturer_name")
+        private String manufacturerName;
+
+        @Schema(name = "sort_name")
+        private String sortName;
+
         /**
          * ClientId로 Orders를 조회할 때의 OrderContent 데이터
          */
@@ -59,8 +65,10 @@ public interface OrderContentDto {
             return Result.builder()
                     .orderContentId(orderContents.getOrderContentId())
                     .productName(orderContents.getProducts().getProductName())
-                    .productId(orderContents.getOrderContentId())
+                    .productId(orderContents.getProducts().getProductId())
                     .productCnt(orderContents.getProductCnt())
+                    .manufacturerName(orderContents.getProducts().getManufacturers().getManufacturerName())
+                    .sortName(orderContents.getProducts().getManufacturerSort().getSortName())
                     .build();
         }
 
