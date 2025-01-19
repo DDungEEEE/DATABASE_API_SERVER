@@ -7,7 +7,6 @@ import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
 import net.ddns.sbapiserver.domain.dto.AlertDto;
 import net.ddns.sbapiserver.service.alert.AlertService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 @Tag(name = "알림 저장 api")
 @RequiredArgsConstructor
 @RequestMapping( "/api/v1/alert")
-@Controller
+@RestController
 public class AlertController {
     private final AlertService alertService;
 
