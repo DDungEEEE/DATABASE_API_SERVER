@@ -6,7 +6,9 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import net.ddns.sbapiserver.security.UserType;
 import net.ddns.sbapiserver.security.dto.JwtToken;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -37,10 +39,19 @@ public class JwtUtil {
 
     //Client에게 전송할 JwtToken 객체 생성
     public JwtToken generateToken(String userId, String role){
-        return JwtToken.builder()
-                .accessToken(generateAccessToken(userId, role))
-                .role(role)
-                .build();
+        if(role.equals(UserType.STAFF.getRole())){
+            return JwtToken.builder()
+                    .accessToken(generateStaffAccessToken(userId, role))
+                    .role(role)
+                    .build();
+        }else if(role.equals(UserType.CLIENT.getRole())){
+            return JwtToken.builder()
+                    .accessToken(generateAccessToken(userId, role))
+                    .role(role)
+                    .build();
+        }else{
+            return null;
+        }
     }
 
     public boolean validToken(String token){
@@ -60,9 +71,17 @@ public class JwtUtil {
         return false;
     }
 
-
+    public String generateStaffAccessToken(String userId, String role){
+        log.info("{} --------------------- Staff AccessToken generated", userId);
+        return Jwts.builder()
+                .setSubject(userId)
+                .claim(authorizationKey, role)
+                .setIssuedAt(new Date())
+                .signWith(key, signatureAlgorithm)
+                .compact();
+    }
     public String generateAccessToken(String userId, String role){
-        log.info("{} ------------ AccessToken Generation", userId);
+        log.info("{} ------------ Client AccessToken Generation", userId);
         Date date = new Date();
         return Jwts.builder()
                 .setSubject(userId)
