@@ -64,7 +64,7 @@ public class ClientService {
         Clients findClients = serviceErrorHelper.findClientsOrElseThrow404(put.getClientId());
 
         Clients putClients = put.asPutEntity(findClients);
-        putClients.setClientPassword(passwordEncoder.encode(putClients.getClientPassword()));
+//        putClients.setClientPassword(passwordEncoder.encode(putClients.getClientPassword()));
 
         Clients saveClients = clientRepository.save(putClients);
 

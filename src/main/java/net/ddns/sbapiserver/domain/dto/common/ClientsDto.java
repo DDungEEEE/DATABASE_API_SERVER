@@ -77,9 +77,9 @@ public interface ClientsDto {
         @Schema(name = "client_id")
         private int clientId;
 
-        @NotBlank(message = "비밀번호는 공백일 수 없습니다.")
-        @Schema(name = "client_password")
-        private String clientPassword;
+//        @NotBlank(message = "비밀번호는 공백일 수 없습니다.")
+//        @Schema(name = "client_password")
+//        private String clientPassword;
 
         @Schema(name = "client_store_name")
         private String clientStoreName;
