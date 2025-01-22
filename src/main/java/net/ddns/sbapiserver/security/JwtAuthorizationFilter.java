@@ -59,20 +59,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                 Claims claims = jwtUtil.getClaims(token);
                 String userId = claims.getSubject();
+
                 boolean userLoginValid = loginService.isUserLoginValid(userId, token);
 
-                if(!loginService.isUserLoggedIn(userId)){
-                    ErrorResponse errorResponse = new ErrorResponse(ErrorCode.USER_NOT_LOGGED_ERROR);
-                    responseWrapper.convertObjectToResponse(response, errorResponse);
-                    return;
-                }
-
-                // Redis의 저장되어있는 accessToken = 입력받은 accessToken
-                if (!userLoginValid) {
+                if(!loginService.isUserLoggedIn(userId) || !userLoginValid){
                     ErrorResponse errorResponse = new ErrorResponse(ErrorCode.TOKEN_EXPIRED_ERROR);
                     responseWrapper.convertObjectToResponse(response, errorResponse);
                     return;
                 }
+
                 setAuthentication(claims.getSubject());
             }
             filterChain.doFilter(request, response);
