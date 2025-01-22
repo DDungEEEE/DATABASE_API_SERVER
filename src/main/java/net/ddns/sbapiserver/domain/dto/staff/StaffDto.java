@@ -70,10 +70,6 @@ public interface StaffDto {
         @Schema(name = "staff_id")
         private int staffId;
 
-        @NotBlank(message = "비밀번호는 공백일 수 없습니다.")
-        @Schema(name = "staff_password")
-        @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?\":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?\":{}|<>]{1,16}$", message = "15자 이하의 영 대문자, 특수문자를 조합해주세요")
-        private String staffPassword;
 
         @Schema(name = "staff_name")
         private String staffName;
@@ -92,7 +88,6 @@ public interface StaffDto {
 
         public Staffs asPutEntity(Staffs staffs){
             staffs.setStaffId(staffId);
-            staffs.setStaffPassword(staffPassword);
             staffs.setStaffName(staffName);
             staffs.setStaffPosition(staffPosition);
             staffs.setStaffDepartment(staffDepartment);

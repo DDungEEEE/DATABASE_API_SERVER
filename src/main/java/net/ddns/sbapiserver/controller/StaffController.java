@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
+import net.ddns.sbapiserver.domain.dto.StaffPasswordEditDto;
 import net.ddns.sbapiserver.domain.dto.staff.StaffDto;
 import net.ddns.sbapiserver.service.common.StaffService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,6 +41,16 @@ public class StaffController {
         StaffDto.Result result = staffService.updateStaff(put);
         return ResultResponse.<StaffDto.Result>successResponse()
                 .result(result)
+                .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "관리자 비밀번호 수정")
+    @PostMapping("/editStaffPassowrd")
+    ResultResponse<StaffDto.Result> editStaffPassword(@RequestBody StaffPasswordEditDto staffPasswordEditDto){
+        StaffDto.Result resultStaff = staffService.editStaffPassword(staffPasswordEditDto);
+        return ResultResponse.<StaffDto.Result>successResponse()
+                .result(resultStaff)
                 .successCode(SuccessCode.UPDATE_SUCCESS)
                 .build();
     }

@@ -27,7 +27,6 @@ public class ProductsService {
     private final ProductsRepository productsRepository;
     private final ServiceErrorHelper serviceErrorHelper;
     private final JPAQueryFactory jpaQueryFactory;
-    private final StarBasketService starBasketService;
 
     @Transactional
     public ProductDto.Result addProduct(ProductDto.Create create){
@@ -95,11 +94,7 @@ public class ProductsService {
                         qProducts.manufacturerSort.manufacturerSortId.eq(manufacturerSortId))
                 .fetch();
 
-//        Collections.sort(findProducts, (product1, product2) -> {
-//            int num1 = extractNumber(product1.getProductName());
-//            int num2 = extractNumber(product2.getProductName());
-//            return Integer.compare(num1, num2);
-//        });
+
         sortProductsByName(findProducts);
         return ProductDto.Result.of(findProducts);
     }

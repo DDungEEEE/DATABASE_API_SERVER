@@ -1,4 +1,4 @@
-package net.ddns.sbapiserver.domain.dto;
+package net.ddns.sbapiserver.domain.dto.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

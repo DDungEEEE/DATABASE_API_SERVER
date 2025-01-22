@@ -44,7 +44,9 @@ public class ProductsController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     ResultResponse<ProductDto.Result> create(@RequestBody @Valid Create create){
+
         ProductDto.Result product = productsService.addProduct(create);
+
         return ResultResponse.<ProductDto.Result>successResponse()
                 .result(product)
                 .successCode(SuccessCode.INSERT_SUCCESS)

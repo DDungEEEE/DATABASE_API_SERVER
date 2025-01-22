@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.SuccessCode;
 import net.ddns.sbapiserver.common.response.ResultResponse;
+import net.ddns.sbapiserver.domain.dto.EditOrderStatusDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderDto;
 import net.ddns.sbapiserver.service.authentication.AuthenticationService;
 import net.ddns.sbapiserver.service.common.OrderService;
@@ -36,6 +37,16 @@ public class OrderController {
         return ResultResponse.<OrderDto.Result>successResponse()
                 .result(orderResult)
                 .successCode(SuccessCode.INSERT_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "주문 배송 상태 변경")
+    @PostMapping("/editOrderStatus")
+    public ResultResponse<OrderDto.Result> updateOrderStatus(@RequestBody EditOrderStatusDto editOrderStatusDto){
+        OrderDto.Result resultOrder = orderService.updateOrderStatus(editOrderStatusDto);
+        return ResultResponse.<OrderDto.Result>successResponse()
+                .result(resultOrder)
+                .successCode(SuccessCode.UPDATE_SUCCESS)
                 .build();
     }
 

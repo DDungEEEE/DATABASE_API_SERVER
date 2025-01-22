@@ -2,10 +2,7 @@ package net.ddns.sbapiserver.domain.dto.alert;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.ddns.sbapiserver.domain.entity.client.ClientAlertToken;
 
 import java.util.List;
@@ -38,6 +35,8 @@ public interface ClientAlertTokenDto {
         }
     }
 
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Schema(name = "DeleteClientAlertToken")
     @Data
     class Delete{

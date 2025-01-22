@@ -1,8 +1,7 @@
 package net.ddns.sbapiserver.domain.dto.basket;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import net.ddns.sbapiserver.domain.dto.common.ManufacturerDto;
 import net.ddns.sbapiserver.domain.dto.common.ManufacturerSortDto;
 import net.ddns.sbapiserver.domain.entity.basket.StarBasket;
@@ -12,6 +11,8 @@ import java.util.stream.Collectors;
 
 public interface StarBasketDto {
 
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Schema(name = "starBasketCreate")
     @Data
     class Create{

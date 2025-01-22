@@ -1,7 +1,7 @@
 package net.ddns.sbapiserver.service.alert;
 
 import lombok.RequiredArgsConstructor;
-import net.ddns.sbapiserver.domain.dto.AlertDto;
+import net.ddns.sbapiserver.domain.dto.common.AlertDto;
 import net.ddns.sbapiserver.domain.entity.client.Alert;
 import net.ddns.sbapiserver.repository.common.AlertRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;

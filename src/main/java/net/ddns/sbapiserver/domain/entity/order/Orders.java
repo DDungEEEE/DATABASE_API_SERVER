@@ -43,6 +43,10 @@ public class Orders {
         this.orderPrintCk = orderPrintCk;
     }
 
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     @PrePersist
     protected void checkOrderEntity(){
         this.orderDate = LocalDateTime.now();

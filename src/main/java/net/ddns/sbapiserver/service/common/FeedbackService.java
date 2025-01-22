@@ -1,7 +1,7 @@
 package net.ddns.sbapiserver.service.common;
 
 import lombok.RequiredArgsConstructor;
-import net.ddns.sbapiserver.domain.dto.FeedbackDto;
+import net.ddns.sbapiserver.domain.dto.common.FeedbackDto;
 import net.ddns.sbapiserver.domain.entity.client.Feedback;
 import net.ddns.sbapiserver.repository.common.FeedbackRepository;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;

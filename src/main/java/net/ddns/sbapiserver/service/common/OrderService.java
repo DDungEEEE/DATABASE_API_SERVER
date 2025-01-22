@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.service.common;
 
 import lombok.RequiredArgsConstructor;
+import net.ddns.sbapiserver.domain.dto.EditOrderStatusDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderContentDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
@@ -91,10 +92,21 @@ public class OrderService {
         return adminResultOrders;
 
     }
+
+    @Transactional
     public void setOrderPrintCheck(int orderId){
         Orders findOrder = serviceErrorHelper.findOrderOrElseThrow404(orderId);
         findOrder.setOrderPrintCk(1);
         orderRepository.save(findOrder);
+    }
+
+    @Transactional
+    public OrderDto.Result updateOrderStatus(EditOrderStatusDto editOrderStatusDto){
+        Orders findOrder = serviceErrorHelper.findOrderOrElseThrow404(editOrderStatusDto.getOrderId());
+        findOrder.setOrderStatus(editOrderStatusDto.getOrderStatus());
+        Orders saveOrder = orderRepository.save(findOrder);
+
+        return parsingToOneOrderDtoResult(saveOrder);
     }
 
     // 결과 Order List를 ResultDto 로 바꾸는 method

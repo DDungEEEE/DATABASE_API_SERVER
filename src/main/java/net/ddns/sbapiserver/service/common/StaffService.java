@@ -2,6 +2,7 @@ package net.ddns.sbapiserver.service.common;
 
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.common.code.ErrorCode;
+import net.ddns.sbapiserver.domain.dto.StaffPasswordEditDto;
 import net.ddns.sbapiserver.domain.dto.staff.StaffDto;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.exception.error.custom.BusinessException;
@@ -49,6 +50,14 @@ public class StaffService {
         Staffs saveEntity = staffRepository.save(putEntity);
 
         return StaffDto.Result.of(saveEntity);
+    }
+
+    @Transactional
+    public StaffDto.Result editStaffPassword(StaffPasswordEditDto passwordEditDto){
+        Staffs findStaffs = serviceErrorHelper.findStaffOrElseThrow404(passwordEditDto.getStaffId());
+        findStaffs.setStaffPassword(passwordEncoder.encode(passwordEditDto.getStaffPassword()));
+        Staffs saveStaffs = staffRepository.save(findStaffs);
+        return StaffDto.Result.of(saveStaffs);
     }
 
     @Transactional
