@@ -1,5 +1,6 @@
 package net.ddns.sbapiserver.domain.dto.staff;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.ddns.sbapiserver.domain.entity.staff.StaffGender;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
 import java.util.function.Function;
@@ -59,6 +61,8 @@ public interface StaffDto {
                     .build();
         }
     }
+    @NoArgsConstructor
+    @AllArgsConstructor
     @Data
     @Builder
     @Schema(name = "StaffUpdate")
@@ -87,6 +91,7 @@ public interface StaffDto {
         private StaffGender staffGender;
 
         public Staffs asPutEntity(Staffs staffs){
+            staffs.setStaffId(staffId);
             staffs.setStaffPassword(staffPassword);
             staffs.setStaffName(staffName);
             staffs.setStaffPosition(staffPosition);
@@ -125,9 +130,11 @@ public interface StaffDto {
         @Schema(name = "staff_gender")
         private StaffGender staffGender;
 
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "created_at")
         private Timestamp createdAt;
 
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "updated_at")
         private Timestamp updatedAt;
 

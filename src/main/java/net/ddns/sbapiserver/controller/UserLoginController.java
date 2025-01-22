@@ -44,7 +44,7 @@ public class UserLoginController {
         String userId = claims.getSubject();
         JwtToken jwtToken = jwtUtil.generateToken(userId, role);
         loginService.deleteAccessToken(userId);
-        loginService.storeAccessToken(userId, jwtToken.getAccessToken());
+        loginService.storeAccessToken(userId, jwtToken.getAccessToken(), role);
         return ResultResponse.<JwtToken>successResponse()
                 .result(jwtToken)
                 .successCode(SuccessCode.SELECT_SUCCESS)

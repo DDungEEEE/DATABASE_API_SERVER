@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.ddns.sbapiserver.common.code.ErrorCode;
 import net.ddns.sbapiserver.exception.error.custom.BusinessException;
+import net.ddns.sbapiserver.security.UserType;
 import net.ddns.sbapiserver.util.JwtUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,16 @@ import java.util.concurrent.TimeUnit;
 public class LoginService {
 
     private final RedisTemplate<String, String> redisTemplate;
-    private static final int ACCESS_TOKEN_EXPIRATION_TIME = 30 * 60;
+    private static final int ACCESS_TOKEN_EXPIRATION_TIME = 1 * 60;
 
     // Redis에 AccessToken 저장
-    public void storeAccessToken(String userId, String token){
-        log.info("User : [{}] Login", userId);
-        redisTemplate.opsForValue().set(userId, token, ACCESS_TOKEN_EXPIRATION_TIME, TimeUnit.SECONDS);
+    public void storeAccessToken(String userId, String token, String role){
+        log.info("User : [{}], Role : [{}] Login", role, userId);
+        if(role.equals(UserType.CLIENT.getRole())){
+            redisTemplate.opsForValue().set(userId, token, ACCESS_TOKEN_EXPIRATION_TIME, TimeUnit.SECONDS);
+        }else if(role.equals(UserType.STAFF.getRole())){
+            redisTemplate.opsForValue().set(userId, token);
+        }
     }
 
     // AccessToken 삭제
@@ -33,6 +38,9 @@ public class LoginService {
     public boolean isUserLoginValid(String userid, String accessToken){
         String findToken = redisTemplate.opsForValue().get(userid);
         log.error("찾은 Token : {} 입력한 Token : {}", findToken, accessToken);
+        if(findToken == null){
+            return false;
+        }
         return findToken.equals(accessToken);
     }
 

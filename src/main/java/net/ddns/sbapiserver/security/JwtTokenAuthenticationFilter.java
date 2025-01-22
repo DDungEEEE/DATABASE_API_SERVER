@@ -105,7 +105,7 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
             }
             JwtToken jwtToken = generateTokenByIdAndRole(username, role);
             //Redis 에 username , AccessToken 저장
-            loginService.storeAccessToken(username, jwtToken.getAccessToken());
+            loginService.storeAccessToken(username, jwtToken.getAccessToken(), role);
 
         ResultResponse<Object> tokenResponse = ResultResponse.<Object>successResponse()
                 .successCode(SuccessCode.LOGIN_SUCCESS)
