@@ -24,6 +24,7 @@ public class ErrorResponse {
     public static ErrorResponse from(ErrorCode errorCode){
         return new ErrorResponse(errorCode);
     }
+
     @Builder
     public ErrorResponse(List<ValidationError> errors) {
         this.errors = errors;

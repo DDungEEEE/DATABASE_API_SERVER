@@ -160,6 +160,9 @@ public interface ProductDto {
         @Schema(name = "staff_id")
         private Integer staffId;
 
+        @Schema(name = "staff_name")
+        private String staffName;
+
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "product_enroll_date")
         private Timestamp productEnrollDate;
@@ -181,6 +184,7 @@ public interface ProductDto {
                     .productManufacturerId(checkManufacturerIsNull(products.getManufacturers()))
                     .manufacturerName(getManufacturerName(products.getManufacturers()))
                     .staffId(checkStaffIsNull(products.getStaffs()))
+                    .staffName(products.getStaffs().getStaffName())
                     .productEnrollDate(products.getProductEnrollDate())
                     .productModifyDate(products.getProductModifyDate())
                     .build();
