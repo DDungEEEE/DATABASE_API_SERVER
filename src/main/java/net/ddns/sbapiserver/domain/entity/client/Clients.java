@@ -56,6 +56,15 @@ public class Clients {
     @Column(name = "client_updated_at", nullable = false)
     private Timestamp clientUpdatedAt;
 
+    @Column(name = "client_lag")
+    private String clientLag;
+
+    @Column(name = "client_long")
+    private String clientLong;
+
+    @Column(name = "client_login_time")
+    private Timestamp clientLoginTime;
+
     @PrePersist
     private void setClintTime(){
         this.clientCreatedAt = new Timestamp(System.currentTimeMillis());

@@ -164,6 +164,12 @@ public interface ClientsDto {
         @Schema(name = "client_updated_at")
         private Timestamp clientUpdatedAt;
 
+        @Schema(name = "client_lag")
+        private String clientLag;
+
+        @Schema(name = "client_long")
+        private String clientLong;
+
         public static Result of(Clients clients){
             return Result.builder()
                     .clientId(clients.getClientId())
@@ -177,6 +183,8 @@ public interface ClientsDto {
                     .clientPhNum(clients.getClientPhNum())
                     .clientStatus(clients.getClientStatus())
                     .clientRefreshToken(clients.getClientRefreshToken())
+                    .clientLag(clients.getClientLag())
+                    .clientLong(clients.getClientLong())
                     .clientCreatedAt(clients.getClientCreatedAt())
                     .clientUpdatedAt(clients.getClientUpdatedAt())
                     .build();
