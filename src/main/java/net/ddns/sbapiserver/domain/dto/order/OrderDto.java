@@ -75,6 +75,9 @@ public interface OrderDto {
         @Schema(name = "client_ceo_name")
         private String clientCeoName;
 
+        @Schema(name = "client_addr")
+        private String clientAddr;
+
         @Schema(name = "client_lag")
         private String clientLag;
 
@@ -96,6 +99,8 @@ public interface OrderDto {
                     .orderContents(orderContents)
                     .clientLag(order.getClients().getClientLag())
                     .clientLong(order.getClients().getClientLong())
+                    .clientAddr(order.getClients().getClientAddr()
+                    )
                     .build();
         }
 
