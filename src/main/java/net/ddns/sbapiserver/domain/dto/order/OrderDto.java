@@ -75,6 +75,12 @@ public interface OrderDto {
         @Schema(name = "client_ceo_name")
         private String clientCeoName;
 
+        @Schema(name = "client_lag")
+        private String clientLag;
+
+        @Schema(name = "client_long")
+        private String clientLong;
+
         @Schema(name = "order_contents")
         private List<OrderContentDto.Result> orderContents;
 
@@ -88,6 +94,8 @@ public interface OrderDto {
                     .orderRequest(order.getOrderRequest())
                     .orderStatus(order.getOrderStatus())
                     .orderContents(orderContents)
+                    .clientLag(order.getClients().getClientLag())
+                    .clientLong(order.getClients().getClientLong())
                     .build();
         }
 
