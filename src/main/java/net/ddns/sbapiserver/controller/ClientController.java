@@ -59,7 +59,7 @@ public class ClientController {
     }
 
     @Operation(summary = "비밀번호 변경", description = "사용자의 비밀번호만 변경하는 api")
-    @PostMapping("/editPassowrd")
+    @PostMapping("/editPassword")
     public ResultResponse<ClientsDto.Result> editClientPassword(@RequestBody ClientPasswordEditDto clientPasswordEditDto){
         ClientsDto.Result resultClients = clientService.editClientPassword(clientPasswordEditDto);
         return ResultResponse.<ClientsDto.Result>successResponse()
