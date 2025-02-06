@@ -38,10 +38,8 @@ public class StaffService {
         Staffs saveStaff = staffRepository.save(createStaff);
         return StaffDto.Result.of(saveStaff);
     }
-    @Transactional(readOnly = true)
-    public List<StaffDto.Result> getAllStaffs(){
-        return staffRepository.findAll().stream().map(StaffDto.Result::of).collect(Collectors.toList());
-    }
+
+
 
     @Transactional
     public StaffDto.Result updateStaff(StaffDto.Put put){

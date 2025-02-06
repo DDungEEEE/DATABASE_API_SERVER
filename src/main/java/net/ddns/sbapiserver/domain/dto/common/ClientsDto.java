@@ -198,6 +198,7 @@ public interface ClientsDto {
                     .clientRefreshToken(clients.getClientRefreshToken())
                     .clientLag(clients.getClientLag())
                     .clientLong(clients.getClientLong())
+                    .clientLoginTime(clients.getClientLoginTime())
                     .clientCreatedAt(clients.getClientCreatedAt())
                     .clientUpdatedAt(clients.getClientUpdatedAt())
                     .build();
