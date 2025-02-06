@@ -157,12 +157,22 @@ public interface ClientsDto {
         private String clientRefreshToken;
 
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @Schema(name = "client_login_time")
+        private Timestamp clientLoginTime;
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "client_created_at")
         private Timestamp clientCreatedAt;
 
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "client_updated_at")
         private Timestamp clientUpdatedAt;
+
+        @Schema(name = "client_do")
+        private String clientDo;
+
+        @Schema(name = "client_si")
+        private String clientSi;
 
         @Schema(name = "client_lag")
         private String clientLag;
@@ -182,6 +192,9 @@ public interface ClientsDto {
                     .clientMarginRatio(clients.getClientMarginRatio())
                     .clientPhNum(clients.getClientPhNum())
                     .clientStatus(clients.getClientStatus())
+                    .clientSi(clients.getClientSi())
+                    .clientDo(clients.getClientDo())
+                    .clientLoginTime(clients.getClientLoginTime())
                     .clientRefreshToken(clients.getClientRefreshToken())
                     .clientLag(clients.getClientLag())
                     .clientLong(clients.getClientLong())

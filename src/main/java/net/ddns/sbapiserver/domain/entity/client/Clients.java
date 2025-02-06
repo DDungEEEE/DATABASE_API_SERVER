@@ -50,6 +50,12 @@ public class Clients {
     @Column(name = "client_refresh_token")
     private String clientRefreshToken;
 
+    @Column(name = "client_do")
+    private String clientDo;
+
+    @Column(name = "client_si")
+    private String clientSi;
+
     @Column(name = "client_created_at",updatable = false, nullable = false)
     private Timestamp clientCreatedAt;
 
