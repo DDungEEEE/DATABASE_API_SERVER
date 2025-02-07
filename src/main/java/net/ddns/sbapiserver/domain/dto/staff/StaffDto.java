@@ -13,7 +13,9 @@ import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 public interface StaffDto {
@@ -136,7 +138,7 @@ public interface StaffDto {
         @Schema(name = "staff_refresh_token")
         private String staffRefreshToken;
 
-        public static Result of(Staffs staffs){
+        public static Result of(Staffs staffs) {
             return Result.builder()
                     .staffUserId(staffs.getStaffUserId())
                     .staffId(staffs.getStaffId())
@@ -151,5 +153,9 @@ public interface StaffDto {
                     .staffRefreshToken(staffs.getStaffRefreshToken())
                     .build();
         }
+        public static List<Result> of(List<Staffs> staffs){
+            return staffs.stream().map(Result::of).collect(Collectors.toList());
+        }
     }
+
 }

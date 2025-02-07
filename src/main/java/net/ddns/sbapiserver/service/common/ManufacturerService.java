@@ -3,9 +3,11 @@ package net.ddns.sbapiserver.service.common;
 import lombok.RequiredArgsConstructor;
 import net.ddns.sbapiserver.domain.dto.common.ManufacturerDto;
 import net.ddns.sbapiserver.domain.entity.common.Manufacturers;
+import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.repository.common.ManufacturerSortRepository;
 import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
+import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,16 +23,19 @@ public class ManufacturerService {
     private final ManufacturersRepository manufacturersRepository;
     private final ProductsRepository productsRepository;
     private final ManufacturerSortRepository manufacturerSortRepository;
+    private final ServiceErrorHelper serviceErrorHelper;
 
     @Transactional
     public ManufacturerDto.Result CreateManufacturer(ManufacturerDto.Create create){
         Integer manufacturerOrder = create.getManufacturerOrder() == null ? 1 : create.getManufacturerOrder();
+        Staffs findStaffs = serviceErrorHelper.findStaffOrElseThrow404(create.getStaffId());
 
         Manufacturers createManufacturer = Manufacturers.builder()
                 .manufacturerImg(create.getManufacturerImg())
                 .manufacturerName(create.getManufacturerName())
                 .manufacturerStatus(create.getManufacturerStatus())
                 .manufacturerOrder(manufacturerOrder)
+                .staffs(findStaffs)
                 .build();
 
         Manufacturers saveManufacturer = manufacturersRepository.save(createManufacturer);
@@ -43,6 +48,8 @@ public class ManufacturerService {
     @Transactional
     public ManufacturerDto.Result updateManufacturer(ManufacturerDto.Put put){
         Manufacturers putManufacturer = put.asPutEntity();
+        Staffs findStaffs = serviceErrorHelper.findStaffOrElseThrow404(put.getStaffId());
+        putManufacturer.setStaffs(findStaffs);
         Manufacturers saveManufacturer = manufacturersRepository.save(putManufacturer);
         return ManufacturerDto.Result.of(saveManufacturer);
     }

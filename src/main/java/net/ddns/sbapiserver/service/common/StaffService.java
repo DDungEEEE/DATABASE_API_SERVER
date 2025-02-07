@@ -39,6 +39,10 @@ public class StaffService {
         return StaffDto.Result.of(saveStaff);
     }
 
+    @Transactional(readOnly = true)
+    public List<StaffDto.Result> getAllStaffs(){
+        return StaffDto.Result.of(staffRepository.findAll());
+    }
 
 
     @Transactional

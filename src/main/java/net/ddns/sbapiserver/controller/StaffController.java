@@ -13,6 +13,8 @@ import net.ddns.sbapiserver.service.common.StaffService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "직원 컨트롤러")
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +33,16 @@ public class StaffController {
         return ResultResponse.<StaffDto.Result>successResponse()
                 .successCode(SuccessCode.INSERT_SUCCESS)
                 .result(staff)
+                .build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_STAFF')")
+    @Operation(summary = "관리자 목록 불러오기")
+    @GetMapping
+    ResultResponse<List<StaffDto.Result>> getStaffs(){
+        return ResultResponse.<List<StaffDto.Result>>successResponse()
+                .result(staffService.getAllStaffs())
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 

@@ -37,6 +37,9 @@ public interface ManufacturerDto {
         @Schema(name = "manufacturer_order")
         private Integer manufacturerOrder;
 
+        @Schema(name = "staff_id")
+        private int staffId;
+
     }
     @Data
     @NoArgsConstructor
@@ -60,6 +63,9 @@ public interface ManufacturerDto {
 
         @Schema(name = "manufacturer_order")
         private int manufacturerOrder;
+
+        @Schema(name = "staff_id")
+        private int staffId;
 
         public Manufacturers asPutEntity(){
             return Manufacturers.builder()
@@ -95,6 +101,12 @@ public interface ManufacturerDto {
         @Schema(name = "created_at")
         private Timestamp createdAt;
 
+        @Schema(name = "staff_id")
+        private int staffId;
+
+        @Schema(name = "staff_name")
+        private String staffName;
+
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @Schema(name = "updated_at")
         private Timestamp updatedAt;
@@ -108,6 +120,8 @@ public interface ManufacturerDto {
                     .createdAt(manufacturers.getCreatedAt())
                     .updatedAt(manufacturers.getUpdatedAt())
                     .manufacturerOrder(manufacturers.getManufacturerOrder())
+                    .staffId(manufacturers.getStaffs().getStaffId())
+                    .staffName(manufacturers.getStaffs().getStaffName())
                     .build();
         }
 

@@ -2,6 +2,7 @@ package net.ddns.sbapiserver.domain.entity.common;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Timestamp;
 
@@ -27,6 +28,10 @@ public class Manufacturers {
 
     @Column(name = "manufacturer_order", nullable = false)
     private int manufacturerOrder;
+
+    @JoinColumn(name = "staff_id")
+    @ManyToOne
+    private Staffs staffs;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
