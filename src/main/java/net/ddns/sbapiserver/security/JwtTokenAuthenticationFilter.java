@@ -83,7 +83,7 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
 
         /**
          * 사용자의 Id 로 생성된 토큰이 레디스에 존재 --> 이미 로그인 중인 사용자
-         * checkSum --> 1 : 이미 로그인중인 사용자의 accessToken을 삭제하고 업데이트
+         * checkSum --> 1 : 이미 로그인중인 사용자의 accessToken 삭제하고 업데이트
          * checkSum --> 0 : 로그인 거부
          */
         int checksum = (int)request.getAttribute("checkSum");
@@ -107,21 +107,31 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
             //Redis 에 username , AccessToken 저장
             loginService.storeAccessToken(username, jwtToken.getAccessToken(), role);
 
-        ResultResponse<Object> tokenResponse = ResultResponse.<Object>successResponse()
+        ResultResponse<Object> tokenResponse = ResultResponse.successResponse()
                 .successCode(SuccessCode.LOGIN_SUCCESS)
                 .result(jwtToken)
                 .build();
         responseWrapper.convertObjectToResponse(response, tokenResponse);
     }
 
+
+    // Id, Password 불일치
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.USER_NOT_FOUND_ERROR);
         responseWrapper.convertObjectToResponse(response, errorResponse);
     }
 
+    /**
+     * JwtToken에 Staffs or Clients 객체를 set -> accessToken 발급
+     * @param username userId
+     * @param role authority
+     * @return JwtToken 객체
+     */
     protected JwtToken generateTokenByIdAndRole(String username, String role){
+        // username ,role accessToken 발급
         JwtToken jwtToken = jwtUtil.generateToken(username, role);
+
         if(role.equals(UserType.CLIENT.getRole())){
             Clients clients = clientRepository.findClientsByClientName(username);
             jwtToken.setUser(ClientsDto.Result.of(clients));

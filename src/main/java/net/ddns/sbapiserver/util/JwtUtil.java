@@ -122,12 +122,15 @@ public class JwtUtil {
         }
    }
 
+   public JwtToken generateAcTokenByReToken(String refreshToken){
+       Claims claims = getClaims(refreshToken);
+       String clientUserName = claims.getSubject();
+       return generateToken(clientUserName, UserType.CLIENT.getRole());
+   }
+
    public String extractRole(String token){
        Claims claims = getClaims(token);
        return claims.get(authorizationKey, String.class);
    }
-
-
-
 
 }

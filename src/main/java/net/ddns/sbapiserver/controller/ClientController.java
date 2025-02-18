@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "클라이언트 컨트롤러")
 @RequiredArgsConstructor
@@ -65,6 +66,17 @@ public class ClientController {
         return ResultResponse.<ClientsDto.Result>successResponse()
                 .result(resultClients)
                 .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
+
+    @Operation(summary = "주소를 위도, 경도로 변환")
+    @GetMapping("/getLocation/{client_address}")
+    public ResultResponse<Map<String, String>> getClientLocation(@PathVariable(value = "client_address") String clientAddress){
+        Map<String, String> locationByClientAd = clientService.getLocationByClientAd(clientAddress);
+        System.out.println(clientAddress);
+        return ResultResponse.<Map<String, String>>successResponse()
+                .result(locationByClientAd)
+                .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
 

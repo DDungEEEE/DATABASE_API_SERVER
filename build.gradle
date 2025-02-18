@@ -23,6 +23,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	implementation 'me.paulschwarz:spring-dotenv:3.0.0'
+
+	implementation 'com.google.code.gson:gson:2.8.6'
+	implementation 'org.json:json:20240303'
+
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2"
 
 	compileOnly 'org.projectlombok:lombok'

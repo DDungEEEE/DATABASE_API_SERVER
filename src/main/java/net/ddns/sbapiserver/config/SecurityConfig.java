@@ -79,6 +79,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/**").authenticated()
                                 .requestMatchers("/api/user/login").permitAll()
                                 .requestMatchers("/api/user/getAccessToken").permitAll()
+                                .requestMatchers("/api/user/getAccessTokenByRe").permitAll()
                                 .requestMatchers("/api/**").permitAll()
                                 .anyRequest().authenticated());
 
