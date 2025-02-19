@@ -108,8 +108,8 @@ public class ClientService {
 
             String surl = "https://maps.googleapis.com/maps/api/geocode/json?address="
                     + encodedAddress + "&key=" + googleApiKey;
-            log.error("googleApiKey : {}", googleApiKey);
-            log.info("Requesting URL: {}", surl);
+//            log.error("googleApiKey : {}", googleApiKey);
+//            log.info("Requesting URL: {}", surl);
 
             URL url = new URL(surl);
             InputStream is = url.openConnection().getInputStream();
@@ -124,7 +124,7 @@ public class ClientService {
             }
 
             JSONObject jsonObject = new JSONObject(responseStrBuilder.toString());
-            log.info("API Response : {}" , jsonObject.toString());
+//            log.info("API Response : {}" , jsonObject.toString());
 
             if (!jsonObject.getString("status").equals("OK")) {
                 log.error("Google API Error: " + jsonObject.toString());
@@ -137,33 +137,51 @@ public class ClientService {
             if(!results.isEmpty()){
                 JSONObject jo = results.getJSONObject(0);
 
+                // 위도 & 경도 추출
                 Double lat = jo.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
                 Double lng = jo.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
-                ret.put("lat", lat.toString());
-                ret.put("lng", lng.toString());
-                System.out.println("LAT : \t \t" + lat);
-                System.out.println("LNG : \t \t" + lng);
 
+                // 우편번호 추출
                 JSONArray ja = jo.getJSONArray("address_components");
+                String zip = "";
+
+//                System.out.println("LAT : \t \t" + lat);
+//                System.out.println("LNG : \t \t" + lng);
+
+
+//                for (int l = 0; l < ja.length(); l++) {
+//                    JSONObject curjo = ja.getJSONObject(l);
+//                    String type = curjo.getJSONArray("types").getString(0);
+//                    String short_name = curjo.getString("short_name");
+//                    if (type.equals("postal_code")) {
+//                        System.out.println("POSTAL_CODE: " + short_name);
+//                        ret.put("zip", short_name);
+//                    } else if (type.equals("administrative_area_level_3")) {
+//                        System.out.println("CITY: " + short_name);
+//                        ret.put("city", short_name);
+//                    } else if (type.equals("administrative_area_level_2")) {
+//                        System.out.println("PROVINCE: " + short_name);
+//                        ret.put("province", short_name);
+//                    } else if (type.equals("administrative_area_level_1")) {
+//                        System.out.println("REGION: " + short_name);
+//                        ret.put("region", short_name);
+//                    }
+//                }
+
 
                 for (int l = 0; l < ja.length(); l++) {
                     JSONObject curjo = ja.getJSONObject(l);
                     String type = curjo.getJSONArray("types").getString(0);
-                    String short_name = curjo.getString("short_name");
                     if (type.equals("postal_code")) {
-                        System.out.println("POSTAL_CODE: " + short_name);
-                        ret.put("zip", short_name);
-                    } else if (type.equals("administrative_area_level_3")) {
-                        System.out.println("CITY: " + short_name);
-                        ret.put("city", short_name);
-                    } else if (type.equals("administrative_area_level_2")) {
-                        System.out.println("PROVINCE: " + short_name);
-                        ret.put("province", short_name);
-                    } else if (type.equals("administrative_area_level_1")) {
-                        System.out.println("REGION: " + short_name);
-                        ret.put("region", short_name);
+                        zip = curjo.getString("short_name");
+                        break; // 우편번호 찾으면 반복 종료
                     }
                 }
+
+                ret.put("주소" , clientAddress);
+                ret.put("우편 번호", zip);
+                ret.put("위도", lat.toString());
+                ret.put("경도", lng.toString());
 
                 return ret;
             }

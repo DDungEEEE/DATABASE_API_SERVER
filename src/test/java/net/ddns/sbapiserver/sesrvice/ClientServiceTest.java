@@ -1,19 +1,23 @@
-//package net.ddns.sbapiserver.sesrvice;
-//
-//
-//import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
-//import net.ddns.sbapiserver.service.common.ClientService;
-//import org.junit.jupiter.api.*;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//@SpringBootTest
-//@Transactional
-//public class ClientServiceTest{
-//    @Autowired
-//    private ClientService clientService;
-//
+package net.ddns.sbapiserver.sesrvice;
+
+
+import net.ddns.sbapiserver.domain.dto.common.ClientsDto;
+import net.ddns.sbapiserver.service.common.ClientService;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@SpringBootTest
+@Transactional
+public class ClientServiceTest{
+    @Autowired
+    private ClientService clientService;
+
 //    @BeforeEach
 //    public void signUpDefaultClient(){
 //        ClientsDto.Create newClients = ClientsDto.Create
@@ -69,5 +73,16 @@
 //
 //        clientService.addClients(duplicatePhoneNumClient);
 //    }
-//
-//}
+
+    @Test
+    @DisplayName("주소로 위도 경도 추출 테스트")
+    public void allUserGeoCodingTest(){
+        List<ClientsDto.Result> allClient = clientService.getClientList();
+
+        List<String> clientAddr = allClient.stream().map(ClientsDto.Result::getClientAddr).toList();
+        for(String addr : clientAddr){
+            Map<String, String> locationByClientAd = clientService.getLocationByClientAd(addr);
+            System.out.println(locationByClientAd.toString());
+        }
+    }
+}
