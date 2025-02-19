@@ -40,8 +40,15 @@ public interface StarBasketDto {
         @Schema(name = "product_name")
         private String productName;
 
+        @Schema(name = "product_status")
+        private String productStatus;
+
+        @Schema(name = "product_img")
+        private String productImg;
+
         @Schema(name = "manufacturer_sort_name")
         private String manufacturerSortName;
+
         @Schema(name = "manufacturer_name")
         private String manufacturerName;
 
@@ -52,6 +59,8 @@ public interface StarBasketDto {
                     .clientId(starBasket.getClients().getClientId())
                     .productId(starBasket.getProducts().getProductId())
                     .productName(starBasket.getProducts().getProductName())
+                    .productStatus(starBasket.getProducts().getProductStatus())
+                    .productImg(starBasket.getProducts().getProductImg())
                     .manufacturerSortName(starBasket.getProducts().getManufacturerSort().getSortName())
                     .manufacturerName(starBasket.getProducts().getManufacturers().getManufacturerName())
                     .build();

@@ -38,6 +38,8 @@ public enum ErrorCode {
 
     ORDER_NOT_FOUND_ERROR(404, "ORDER_001", "주문내역을 찾을 수 없습니다."),
 
+    MARKET_BASKET_NOT_FOUND_ERROR(404, "MARKET_BASKET_001", "장바구니 내역을 찾을 수 없습니다."),
+
     MANUFACTURER_SORT_NOT_FOUND_ERROR(404, "MANUFACTURER_SORT_001", "제품군을 찾을 수 없습니다."),
 
     MANUFACTURER_NOT_FOUND_ERROR(404, "MANUFACTURER_001", "제조사를 찾을 수 없습니다."),

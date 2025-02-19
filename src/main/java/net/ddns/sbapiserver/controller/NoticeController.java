@@ -24,7 +24,7 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
-    @Operation(summary = "공지사항 조회")
+    @Operation(summary = "공지사항 전체 조회", description = "공지사항을 날짜 기반으로 정렬")
     @GetMapping
     public ResultResponse<List<NoticeDto.Result>> get(){
         List<NoticeDto.Result> noticeList = noticeService.getNoticeList();
@@ -44,6 +44,8 @@ public class NoticeController {
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
+
+
 
     @Operation(summary = "공지사항 단일건 검색", description = "notice_id로 단일 공지사항 조회")
     @GetMapping("/find/{notice_id}")

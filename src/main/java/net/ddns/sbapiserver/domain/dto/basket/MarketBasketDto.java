@@ -25,6 +25,7 @@ public interface MarketBasketDto {
         @Schema(name = "market_basket_items")
         private List<MarketBasketItem> marketBasketItems;
 
+
         @Data
         @Schema(name = "MarketBasketItem")
         public static class MarketBasketItem{
@@ -34,7 +35,22 @@ public interface MarketBasketDto {
             @Schema(name = "product_cnt")
             private int productCnt;
 
+            @Schema(name = "product_img")
+            private String productImg;
+
         }
+    }
+    @Data
+    @Schema(name = "MarketBasketPut")
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    class Put{
+        @Schema(name = "market_basket_id")
+        private int marketBasketId;
+
+        @Schema(name = "product_cnt")
+        private int productCnt;
+
     }
 
     @Data
@@ -54,6 +70,9 @@ public interface MarketBasketDto {
         @Schema(name = "product_id")
         private int productId;
 
+        @Schema(name = "product_img")
+        private String productImg;
+
         @Schema(name = "manufacturer_sort_name")
         private String manufacturerSortName;
         @Schema(name = "manufacturer_name")
@@ -65,6 +84,7 @@ public interface MarketBasketDto {
                     .productName(marketBasket.getProducts().getProductName())
                     .productCnt(marketBasket.getProductCnt())
                     .productId(marketBasket.getProducts().getProductId())
+                    .productImg(marketBasket.getProducts().getProductImg())
                     .manufacturerName(marketBasket.getProducts().getManufacturers().getManufacturerName())
                     .manufacturerSortName(marketBasket.getProducts().getManufacturerSort().getSortName())
                     .build();

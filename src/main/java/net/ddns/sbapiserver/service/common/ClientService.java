@@ -58,7 +58,11 @@ public class ClientService {
 
         Clients createClients = create.asEntity();
         createClients.setClientPassword(passwordEncoder.encode(create.getClientPassword()));
+        createClients = setClientLocation(createClients);
+
         Clients saveClients = clientRepository.save(createClients);
+
+
         return ClientsDto.Result.of(saveClients);
     }
 
@@ -93,6 +97,7 @@ public class ClientService {
         Clients putClients = put.asPutEntity(findClients);
 //        putClients.setClientPassword(passwordEncoder.encode(putClients.getClientPassword()));
 
+        putClients = setClientLocation(putClients);
         Clients saveClients = clientRepository.save(putClients);
 
         return saveClients;
@@ -108,8 +113,6 @@ public class ClientService {
 
             String surl = "https://maps.googleapis.com/maps/api/geocode/json?address="
                     + encodedAddress + "&key=" + googleApiKey;
-//            log.error("googleApiKey : {}", googleApiKey);
-//            log.info("Requesting URL: {}", surl);
 
             URL url = new URL(surl);
             InputStream is = url.openConnection().getInputStream();
@@ -124,7 +127,6 @@ public class ClientService {
             }
 
             JSONObject jsonObject = new JSONObject(responseStrBuilder.toString());
-//            log.info("API Response : {}" , jsonObject.toString());
 
             if (!jsonObject.getString("status").equals("OK")) {
                 log.error("Google API Error: " + jsonObject.toString());
@@ -141,47 +143,8 @@ public class ClientService {
                 Double lat = jo.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
                 Double lng = jo.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
 
-                // 우편번호 추출
-                JSONArray ja = jo.getJSONArray("address_components");
-                String zip = "";
-
-//                System.out.println("LAT : \t \t" + lat);
-//                System.out.println("LNG : \t \t" + lng);
-
-
-//                for (int l = 0; l < ja.length(); l++) {
-//                    JSONObject curjo = ja.getJSONObject(l);
-//                    String type = curjo.getJSONArray("types").getString(0);
-//                    String short_name = curjo.getString("short_name");
-//                    if (type.equals("postal_code")) {
-//                        System.out.println("POSTAL_CODE: " + short_name);
-//                        ret.put("zip", short_name);
-//                    } else if (type.equals("administrative_area_level_3")) {
-//                        System.out.println("CITY: " + short_name);
-//                        ret.put("city", short_name);
-//                    } else if (type.equals("administrative_area_level_2")) {
-//                        System.out.println("PROVINCE: " + short_name);
-//                        ret.put("province", short_name);
-//                    } else if (type.equals("administrative_area_level_1")) {
-//                        System.out.println("REGION: " + short_name);
-//                        ret.put("region", short_name);
-//                    }
-//                }
-
-
-                for (int l = 0; l < ja.length(); l++) {
-                    JSONObject curjo = ja.getJSONObject(l);
-                    String type = curjo.getJSONArray("types").getString(0);
-                    if (type.equals("postal_code")) {
-                        zip = curjo.getString("short_name");
-                        break; // 우편번호 찾으면 반복 종료
-                    }
-                }
-
-                ret.put("주소" , clientAddress);
-                ret.put("우편 번호", zip);
-                ret.put("위도", lat.toString());
-                ret.put("경도", lng.toString());
+                ret.put("lat", lat.toString());
+                ret.put("lng", lng.toString());
 
                 return ret;
             }
@@ -196,6 +159,19 @@ public class ClientService {
     public ClientsDto.Result findClientById(int clientId){
         return ClientsDto.Result.of(serviceErrorHelper.findClientsOrElseThrow404(clientId));
 
+    }
+
+    @Transactional
+    protected Clients setClientLocation(Clients clients){
+        Map<String, String> locationByClientAd = getLocationByClientAd(clients.getClientAddr());
+
+        String lat = locationByClientAd.get("lat");
+        String lag = locationByClientAd.get("lng");
+
+        clients.setClientLag(lat);
+        clients.setClientLag(lag);
+
+        return clients;
     }
 
     @Transactional

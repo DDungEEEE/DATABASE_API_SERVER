@@ -3,6 +3,7 @@ package net.ddns.sbapiserver.service.helper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.ddns.sbapiserver.domain.entity.basket.MarketBasket;
 import net.ddns.sbapiserver.domain.entity.client.Alert;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.domain.entity.client.Feedback;
@@ -16,6 +17,7 @@ import net.ddns.sbapiserver.domain.entity.staff.QStaffs;
 import net.ddns.sbapiserver.domain.entity.staff.Staffs;
 import net.ddns.sbapiserver.exception.error.custom.BusinessException;
 import net.ddns.sbapiserver.common.code.ErrorCode;
+import net.ddns.sbapiserver.repository.bakset.MarketBasketRepository;
 import net.ddns.sbapiserver.repository.client.ClientRepository;
 import net.ddns.sbapiserver.repository.common.*;
 import net.ddns.sbapiserver.repository.staff.NoticeRepository;
@@ -37,6 +39,7 @@ public class ServiceErrorHelper {
     private final ManufacturerSortRepository manufacturerSortRepository;
     private final FeedbackRepository feedbackRepository;
     private final AlertRepository alertRepository;
+    private final MarketBasketRepository marketBasketRepository;
 
     public Clients findClientsOrElseThrow404(int clientId){
         ErrorCode clientNotFoundError = ErrorCode.CLIENT_NOT_FOUND_ERROR;
@@ -85,6 +88,12 @@ public class ServiceErrorHelper {
         return manufacturerSortRepository.findById(manufacturerSortId).orElseThrow(
                 () -> new BusinessException(manufacturerSortNotFoundError, manufacturerSortNotFoundError.getReason())
         );
+    }
+
+    public MarketBasket findMarketBasketOrElseThrow404(int marketBasketId){
+        ErrorCode marketBasketNotFoundError = ErrorCode.MARKET_BASKET_NOT_FOUND_ERROR;
+        return marketBasketRepository.findById(marketBasketId).orElseThrow(
+                () -> new BusinessException(marketBasketNotFoundError, marketBasketNotFoundError.getReason()));
     }
 
     public Feedback findFeedbackOrElseThrow404(int feedbackId){

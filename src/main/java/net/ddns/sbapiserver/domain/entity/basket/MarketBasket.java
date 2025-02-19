@@ -28,4 +28,8 @@ public class MarketBasket {
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Products products;
+
+    public void setProductCnt(int productCnt) {
+        this.productCnt = productCnt;
+    }
 }
