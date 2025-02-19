@@ -52,6 +52,9 @@ public interface OrderContentDto {
         @Schema(name = "product_id")
         private int productId;
 
+        @Schema(name = "product_img")
+        private String productImg;
+
         @Schema(name = "manufacturer_name")
         private String manufacturerName;
 
@@ -67,6 +70,7 @@ public interface OrderContentDto {
                     .productName(orderContents.getProducts().getProductName())
                     .productId(orderContents.getProducts().getProductId())
                     .productCnt(orderContents.getProductCnt())
+                    .productImg(orderContents.getProducts().getProductImg())
                     .manufacturerName(orderContents.getProducts().getManufacturers().getManufacturerName())
                     .sortName(orderContents.getProducts().getManufacturerSort().getSortName())
                     .build();
