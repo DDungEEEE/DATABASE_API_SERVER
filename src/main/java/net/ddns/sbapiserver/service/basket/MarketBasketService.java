@@ -44,8 +44,10 @@ public class MarketBasketService {
 
     @Transactional
     public MarketBasketDto.Result editMarketBasket(MarketBasketDto.Put put){
+        System.out.println("marketBasketId : " + put.getMarketBasketId());
         MarketBasket findMarketBasket = serviceErrorHelper.findMarketBasketOrElseThrow404(put.getMarketBasketId());
         findMarketBasket.setProductCnt(put.getProductCnt());
+
         MarketBasket saveMarketBasket = marketBasketRepository.save(findMarketBasket);
         return MarketBasketDto.Result.of(saveMarketBasket);
     }

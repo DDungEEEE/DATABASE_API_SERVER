@@ -55,6 +55,16 @@ public class MarketBasketController {
                 .build();
     }
 
+    @Operation(summary = "장바구니 단일건 수정", description = "장바구니 상품 개수 수정")
+    @PutMapping
+    public ResultResponse<MarketBasketDto.Result> updateMarketBasket(@RequestBody MarketBasketDto.Put put){
+        MarketBasketDto.Result result = marketBasketService.editMarketBasket(put);
+        return ResultResponse.<MarketBasketDto.Result>successResponse()
+                .result(result)
+                .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_STAFF', 'ROLE_CLIENT')")
     @Operation(summary = "장바구니 단일건 삭제")
     @ApiResponse(responseCode = "200")

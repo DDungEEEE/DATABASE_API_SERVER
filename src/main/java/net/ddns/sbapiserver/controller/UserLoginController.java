@@ -63,6 +63,7 @@ public class UserLoginController {
                 .build();
     }
 
+    @Operation(summary = "새로운 액세스 토큰 발급 api", description = "리프레시 토큰, clientId로 새로운 액세스토큰을 발급하는 새로운 api")
     @PostMapping("/getAccessTokenByRe")
     public ResultResponse<JwtToken> createNewAcTokenByReToken(@RequestBody RefreshTokenReq req){
         Clients findClients = clientService.findClientByUserName(req.getClientUsername());

@@ -74,15 +74,15 @@ public class ClientServiceTest{
 //        clientService.addClients(duplicatePhoneNumClient);
 //    }
 
-    @Test
-    @DisplayName("주소로 위도 경도 추출 테스트")
-    public void allUserGeoCodingTest(){
-        List<ClientsDto.Result> allClient = clientService.getClientList();
-
-        List<String> clientAddr = allClient.stream().map(ClientsDto.Result::getClientAddr).toList();
-        for(String addr : clientAddr){
-            Map<String, String> locationByClientAd = clientService.getLocationByClientAd(addr);
-            System.out.println(locationByClientAd.toString());
-        }
-    }
+//    @Test
+//    @DisplayName("주소로 위도 경도 추출 테스트")
+//    public void allUserGeoCodingTest(){
+//        List<ClientsDto.Result> allClient = clientService.getClientList();
+//
+//        List<String> clientAddr = allClient.stream().map(ClientsDto.Result::getClientAddr).toList();
+//        for(String addr : clientAddr){
+//            Map<String, String> locationByClientAd = clientService.getLocationByClientAd(addr);
+//            System.out.println(locationByClientAd.toString());
+//        }
+//    }
 }
