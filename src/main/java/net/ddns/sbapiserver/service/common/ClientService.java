@@ -35,6 +35,7 @@ public class ClientService {
     private final ClientRepository clientRepository;
     private final ServiceErrorHelper serviceErrorHelper;
     private final PasswordEncoder passwordEncoder;
+
     @Value("${GOOGLE_API_KEY}")
     private String googleApiKey;
 
@@ -166,10 +167,10 @@ public class ClientService {
         Map<String, String> locationByClientAd = getLocationByClientAd(clients.getClientAddr());
 
         String lat = locationByClientAd.get("lat");
-        String lag = locationByClientAd.get("lng");
+        String lng = locationByClientAd.get("lng");
 
         clients.setClientLag(lat);
-        clients.setClientLag(lag);
+        clients.setClientLong(lng);
 
         return clients;
     }
