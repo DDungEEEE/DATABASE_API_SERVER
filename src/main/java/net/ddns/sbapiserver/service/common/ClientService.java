@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -174,6 +175,27 @@ public class ClientService {
 
         return clients;
     }
+
+    public List<ClientsDto.Result> updateClientLocation(){
+        List<ClientsDto.Result> clientList = getClientList();
+        return clientList.stream().map(client -> {
+            ClientsDto.Put putClient = ClientsDto.Put.builder()
+                    .clientAddr(client.getClientAddr())
+                    .clientStatus(client.getClientStatus())
+                    .clientPhNum(client.getClientPhNum())
+                    .clientBusinessNumber(client.getClientBusinessNumber())
+                    .clientCeoName(client.getClientCeoName())
+                    .clientMarginRatio(client.getClientMarginRatio())
+                    .clientStoreName(client.getClientStoreName())
+                    .build();
+
+            Clients clients = updateClients(putClient);
+            return ClientsDto.Result.of(clients);
+        }).collect(Collectors.toList());
+
+
+    }
+
 
     @Transactional
     public void deleteClientsById(int clientId){

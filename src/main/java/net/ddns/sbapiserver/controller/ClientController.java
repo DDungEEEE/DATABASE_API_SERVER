@@ -119,6 +119,16 @@ public class ClientController {
                 .build();
     }
 
+    @Operation(summary = "거래처 업데이트")
+    @GetMapping("update")
+    public ResultResponse<List<ClientsDto.Result>>update(){
+        List<ClientsDto.Result> results = clientService.updateClientLocation();
+        return ResultResponse.<List<ClientsDto.Result>>successResponse()
+                .result(results)
+                .successCode(SuccessCode.UPDATE_SUCCESS)
+                .build();
+    }
+
     @ApiErrorCodeExamples(value ={ ErrorCode.CLIENT_NOT_FOUND_ERROR, ErrorCode.ROLE_NOT_AUTHORIZED})
     @Operation(summary = "클라이언트 삭제", description = "client_id로 거래처 아이디를 삭제합니다.")
     @DeleteMapping("/{client_id}")

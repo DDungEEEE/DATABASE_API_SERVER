@@ -71,7 +71,7 @@ public interface ClientsDto {
     }
 
     @Schema(name = "ClientPut")
-    @Data
+    @Data @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     class Put{
