@@ -47,7 +47,6 @@ public class LoginService {
     // 사용자가 요청할 시 로그인이 유효한지 검증하는 method
     public boolean isUserLoginValid(String userid, String accessToken){
         String findToken = redisTemplate.opsForValue().get(userid);
-        log.error("찾은 Token : {} 입력한 Token : {}", findToken, accessToken);
         if(findToken == null){
             return false;
         }

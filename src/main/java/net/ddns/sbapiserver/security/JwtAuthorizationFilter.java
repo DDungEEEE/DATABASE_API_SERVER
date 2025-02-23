@@ -48,7 +48,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
         String token = jwtUtil.getJwtToken(request);
         try {
-            log.error("token 값 : {}", token);
             if (token != null) {
                 // 토큰 유효성 검증
                 if(!jwtUtil.validToken(token)){

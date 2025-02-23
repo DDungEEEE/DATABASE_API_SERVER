@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -94,6 +96,7 @@ public class ClientService {
     @Transactional
     public Clients updateClients(ClientsDto.Put put){
 
+        log.error("find client : updateClientId: {} ", put.getClientId());
         Clients findClients = serviceErrorHelper.findClientsOrElseThrow404(put.getClientId());
 
         Clients putClients = put.asPutEntity(findClients);
@@ -106,7 +109,6 @@ public class ClientService {
 
     }
 
-    @Transactional
     public Map<String, String> getLocationByClientAd(String clientAddress){
         try{
 
@@ -145,8 +147,26 @@ public class ClientService {
                 Double lat = jo.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
                 Double lng = jo.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
 
+                JSONArray addressComponents = jo.getJSONArray("address_components");
+                String province = "";
+                String city = "";
+
+                for(int i=0; i < addressComponents.length(); i++){
+                    JSONObject component = addressComponents.getJSONObject(i);
+                    JSONArray types = component.getJSONArray("types");
+                    String longName = component.getString("long_name");
+                    if(types.toString().contains("administrative_area_level_1")){
+                        province = longName; // 도
+                    }else if(types.toString().contains("administrative_area_level_2")){
+                        System.out.println("시는 : " + longName);
+                        city = longName; // 시
+                    }
+                }
+
                 ret.put("lat", lat.toString());
                 ret.put("lng", lng.toString());
+                ret.put("do", province);
+                ret.put("si", city);
 
                 return ret;
             }
@@ -163,21 +183,31 @@ public class ClientService {
 
     }
 
-    @Transactional
     protected Clients setClientLocation(Clients clients){
         Map<String, String> locationByClientAd = getLocationByClientAd(clients.getClientAddr());
 
         String lat = locationByClientAd.get("lat");
         String lng = locationByClientAd.get("lng");
+        String clientDo = locationByClientAd.get("do");
+        String clientSi = locationByClientAd.get("si");
 
-        clients.setClientLag(lat);
-        clients.setClientLong(lng);
+        if (lat != null && lng != null && clientDo != null && clientSi != null) {
+            double latDouble = Double.parseDouble(lat);
+            double lngDouble = Double.parseDouble(lng);
 
+            clients.setClientLag(roundToDecimalPlaces(latDouble));
+            clients.setClientLong(roundToDecimalPlaces(lngDouble));
+            clients.setClientDo(clientDo);
+            clients.setClientSi(clientSi);
+
+        }
         return clients;
     }
 
+    // 클라이언트 전체 데이터 업데이트를 위한 임시 메서드
+    @Transactional
     public List<ClientsDto.Result> updateClientLocation(){
-        List<ClientsDto.Result> clientList = getClientList();
+        List<ClientsDto.Result> clientList = getClientList().subList(0, 13);
         return clientList.stream().map(client -> {
             ClientsDto.Put putClient = ClientsDto.Put.builder()
                     .clientAddr(client.getClientAddr())
@@ -185,6 +215,7 @@ public class ClientService {
                     .clientPhNum(client.getClientPhNum())
                     .clientBusinessNumber(client.getClientBusinessNumber())
                     .clientCeoName(client.getClientCeoName())
+                    .clientId(client.getClientId())
                     .clientMarginRatio(client.getClientMarginRatio())
                     .clientStoreName(client.getClientStoreName())
                     .build();
@@ -200,6 +231,10 @@ public class ClientService {
     @Transactional
     public void deleteClientsById(int clientId){
         clientRepository.deleteById(clientId);
+    }
+    protected String roundToDecimalPlaces(double value){
+        double doubleValue = new BigDecimal(value).setScale(6, RoundingMode.HALF_UP).doubleValue();
+        return Double.toString(doubleValue);
     }
 
 }

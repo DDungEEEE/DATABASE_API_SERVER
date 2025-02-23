@@ -50,9 +50,11 @@ public class Clients {
     @Column(name = "client_refresh_token")
     private String clientRefreshToken;
 
+    // 도
     @Column(name = "client_do")
     private String clientDo;
 
+    // 시
     @Column(name = "client_si")
     private String clientSi;
 
@@ -62,9 +64,12 @@ public class Clients {
     @Column(name = "client_updated_at", nullable = false)
     private Timestamp clientUpdatedAt;
 
+    // 위도
     @Column(name = "client_lag")
     private String clientLag;
 
+
+    // 경도
     @Column(name = "client_long")
     private String clientLong;
 
