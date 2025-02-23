@@ -96,7 +96,6 @@ public class ClientService {
     @Transactional
     public Clients updateClients(ClientsDto.Put put){
 
-        log.error("find client : updateClientId: {} ", put.getClientId());
         Clients findClients = serviceErrorHelper.findClientsOrElseThrow404(put.getClientId());
 
         Clients putClients = put.asPutEntity(findClients);
@@ -109,6 +108,33 @@ public class ClientService {
 
     }
 
+    // Clients -> setClientLocation -> getLocationByClientAd 로 위도, 경도, 도, 시 추출 후 Client로 set 해주는 method
+    protected Clients setClientLocation(Clients clients){
+        Map<String, String> locationByClientAd = getLocationByClientAd(clients.getClientAddr());
+
+        String lat = locationByClientAd.get("lat");
+        String lng = locationByClientAd.get("lng");
+        String clientDo = locationByClientAd.get("do");
+        String clientSi = locationByClientAd.get("si");
+
+        if (lat != null && lng != null && clientDo != null && clientSi != null) {
+            double latDouble = Double.parseDouble(lat);
+            double lngDouble = Double.parseDouble(lng);
+
+            clients.setClientLag(roundToDecimalPlaces(latDouble));
+            clients.setClientLong(roundToDecimalPlaces(lngDouble));
+            clients.setClientDo(clientDo);
+            clients.setClientSi(clientSi);
+
+        }
+        return clients;
+    }
+
+    /**
+     * clientAddress -> Geocoding API 로 위도, 경도, 시, 도 추출 -> Map으로 된 데이터 반환
+     * @param clientAddress
+     * @return Map<String, String>
+     */
     public Map<String, String> getLocationByClientAd(String clientAddress){
         try{
 
@@ -116,7 +142,7 @@ public class ClientService {
                     .replace("+", "%20");
 
             String surl = "https://maps.googleapis.com/maps/api/geocode/json?address="
-                    + encodedAddress + "&key=" + googleApiKey;
+                    + encodedAddress + "&key=" + googleApiKey + "&language=ko";
 
             URL url = new URL(surl);
             InputStream is = url.openConnection().getInputStream();
@@ -157,8 +183,7 @@ public class ClientService {
                     String longName = component.getString("long_name");
                     if(types.toString().contains("administrative_area_level_1")){
                         province = longName; // 도
-                    }else if(types.toString().contains("administrative_area_level_2")){
-                        System.out.println("시는 : " + longName);
+                    }else if(types.toString().contains("locality")){
                         city = longName; // 시
                     }
                 }
@@ -183,49 +208,30 @@ public class ClientService {
 
     }
 
-    protected Clients setClientLocation(Clients clients){
-        Map<String, String> locationByClientAd = getLocationByClientAd(clients.getClientAddr());
-
-        String lat = locationByClientAd.get("lat");
-        String lng = locationByClientAd.get("lng");
-        String clientDo = locationByClientAd.get("do");
-        String clientSi = locationByClientAd.get("si");
-
-        if (lat != null && lng != null && clientDo != null && clientSi != null) {
-            double latDouble = Double.parseDouble(lat);
-            double lngDouble = Double.parseDouble(lng);
-
-            clients.setClientLag(roundToDecimalPlaces(latDouble));
-            clients.setClientLong(roundToDecimalPlaces(lngDouble));
-            clients.setClientDo(clientDo);
-            clients.setClientSi(clientSi);
-
-        }
-        return clients;
-    }
 
     // 클라이언트 전체 데이터 업데이트를 위한 임시 메서드
-    @Transactional
-    public List<ClientsDto.Result> updateClientLocation(){
-        List<ClientsDto.Result> clientList = getClientList().subList(0, 13);
-        return clientList.stream().map(client -> {
-            ClientsDto.Put putClient = ClientsDto.Put.builder()
-                    .clientAddr(client.getClientAddr())
-                    .clientStatus(client.getClientStatus())
-                    .clientPhNum(client.getClientPhNum())
-                    .clientBusinessNumber(client.getClientBusinessNumber())
-                    .clientCeoName(client.getClientCeoName())
-                    .clientId(client.getClientId())
-                    .clientMarginRatio(client.getClientMarginRatio())
-                    .clientStoreName(client.getClientStoreName())
-                    .build();
-
-            Clients clients = updateClients(putClient);
-            return ClientsDto.Result.of(clients);
-        }).collect(Collectors.toList());
-
-
-    }
+//    @Transactional
+//    public List<ClientsDto.Result> updateClientLocation(){
+//        List<ClientsDto.Result> clientList = getClientList();
+//
+//        return clientList.stream().map(client -> {
+//            ClientsDto.Put putClient = ClientsDto.Put.builder()
+//                    .clientAddr(client.getClientAddr())
+//                    .clientStatus(client.getClientStatus())
+//                    .clientPhNum(client.getClientPhNum())
+//                    .clientBusinessNumber(client.getClientBusinessNumber())
+//                    .clientCeoName(client.getClientCeoName())
+//                    .clientId(client.getClientId())
+//                    .clientMarginRatio(client.getClientMarginRatio())
+//                    .clientStoreName(client.getClientStoreName())
+//                    .build();
+//            Clients clients = updateClients(putClient);
+//
+//            return ClientsDto.Result.of(clients);
+//        }).collect(Collectors.toList());
+//
+//
+//    }
 
 
     @Transactional
