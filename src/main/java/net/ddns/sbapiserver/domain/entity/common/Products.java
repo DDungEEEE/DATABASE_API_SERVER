@@ -37,6 +37,10 @@ public class Products {
     @Column(name="product_type")
     private String productType;
 
+    @Lob
+    @Column(name = "product_description")
+    private String productDescription;
+
     //상품의 제조사
     @With
     @JoinColumn(name = "product_manufacturer_id", referencedColumnName = "manufacturer_id")

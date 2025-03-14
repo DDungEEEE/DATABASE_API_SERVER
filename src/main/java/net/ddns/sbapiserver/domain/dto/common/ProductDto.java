@@ -47,6 +47,9 @@ public interface ProductDto {
         @Schema(name="product_img")
         private String productImg;
 
+        @Schema(name = "product_description")
+        private String productDescription;
+
         @Schema(name="product_type")
         private String productType;
 
@@ -64,6 +67,7 @@ public interface ProductDto {
             return init.apply(
                     Products.builder()
                             .productName(productName)
+                            .productDescription(productDescription)
                             .productPrice(productPrice)
                             .productStatus(productStatus)
                             .productImg(productImg)
@@ -97,6 +101,9 @@ public interface ProductDto {
         @Schema(name = "product_status")
         private String productStatus;
 
+        @Schema(name = "product_description")
+        private String productDescription;
+
         @Schema(name="product_img")
         private String productImg;
 
@@ -118,6 +125,7 @@ public interface ProductDto {
             products.setProductStatus(productStatus);
             products.setProductImg(productImg);
             products.setProductType(productType);
+            products.setProductDescription(productDescription);
             return products;
         }
     }
@@ -151,6 +159,9 @@ public interface ProductDto {
         @Schema(name = "manufacturer_name")
         private String manufacturerName;
 
+        @Schema(name = "product_description")
+        private String productDescription;
+
         @Schema(name = "manufacturer_sort_id")
         private Integer manufacturerSortId;
 
@@ -179,6 +190,7 @@ public interface ProductDto {
                     .productPrice(products.getProductPrice())
                     .productStatus(products.getProductStatus())
                     .productType(products.getProductType())
+                    .productDescription(products.getProductDescription())
                     .manufacturerSortId(checkManufacturerSortIsNull(products.getManufacturerSort()))
                     .manufacturerSortOrder(getManufacturerSortOrder(products.getManufacturerSort()))
                     .productManufacturerId(checkManufacturerIsNull(products.getManufacturers()))

@@ -6,12 +6,15 @@ import net.ddns.sbapiserver.domain.dto.order.OrderContentDto;
 import net.ddns.sbapiserver.domain.dto.order.OrderDto;
 import net.ddns.sbapiserver.domain.entity.client.Clients;
 import net.ddns.sbapiserver.domain.entity.order.OrderContents;
+import net.ddns.sbapiserver.domain.entity.order.OrderStatus;
 import net.ddns.sbapiserver.domain.entity.order.Orders;
 import net.ddns.sbapiserver.repository.common.*;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,6 +28,7 @@ public class OrderService {
     private final OrderContentsRepository orderContentsRepository;
     private final CustomOrderRepository customOrderRepository;
     private final ServiceErrorHelper serviceErrorHelper;
+    private final TaskScheduler taskScheduler;
 
     @Transactional
     public OrderDto.Result saveOrder(OrderDto.Create orderCreate){
@@ -40,6 +44,7 @@ public class OrderService {
         List<OrderContentDto.Create> orderItemCreateList = orderCreate.getOrderItemCreateList();
         List<OrderContentDto.Result> orderContents = saveOrderContent(orderItemCreateList, order);
 
+        scheduledOrderStatusUpdate(saveOrder);
         return OrderDto.Result.of(saveOrder, orderContents);
     }
 
@@ -47,6 +52,12 @@ public class OrderService {
     public OrderDto.Result findOrder(int orderId){
         Orders findOrder = serviceErrorHelper.findOrderOrElseThrow404(orderId);
         return parsingToOneOrderDtoResult(findOrder);
+    }
+
+    protected void scheduledOrderStatusUpdate(Orders orders){
+        taskScheduler.schedule(() -> orderRepository.updateOrderStatus(orders.getOrderId(), "출고 준비중"), Instant.now().plusSeconds(10));
+
+        taskScheduler.schedule(() -> orderRepository.updateOrderStatus(orders.getOrderId(), "배송 중"), Instant.now().plusSeconds(10));
     }
 
     @Transactional
