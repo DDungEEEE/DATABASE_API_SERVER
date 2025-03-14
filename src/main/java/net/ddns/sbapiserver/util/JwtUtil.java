@@ -21,7 +21,7 @@ import java.util.Date;
 @Slf4j
 public class JwtUtil {
     private static final String authorizationHeader = "Authorization";
-    private static final String authorizationKey = "auth";
+    private static final String authorizationK2ey = "auth";
     private static final  String BEARER = "Bearer ";
     private static final long ACCESS_TOKEN_EXPIRED =  30 * 60 * 1000L;
     private static final long REFRESH_TOKEN_EXPIRED = 24 * 60 * 60 * 1000L;
