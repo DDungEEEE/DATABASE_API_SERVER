@@ -14,8 +14,10 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,6 +41,8 @@ public class OrderService {
                 orders -> orders.withClients(clients)
         );
 
+        System.out.println("시작 시간 : " + LocalDateTime.now());
+
         Orders saveOrder = orderRepository.save(order);
 
         List<OrderContentDto.Create> orderItemCreateList = orderCreate.getOrderItemCreateList();
@@ -55,9 +59,17 @@ public class OrderService {
     }
 
     protected void scheduledOrderStatusUpdate(Orders orders){
-        taskScheduler.schedule(() -> orderRepository.updateOrderStatus(orders.getOrderId(), "출고 준비중"), Instant.now().plusSeconds(10));
+       taskScheduler.schedule(() -> {
+           orderRepository.updateOrderStatus(orders.getOrderId(), "출고 준비중");
+           System.out.println("출고 준비 중 시간 : " + LocalDateTime.now());
 
-        taskScheduler.schedule(() -> orderRepository.updateOrderStatus(orders.getOrderId(), "배송 중"), Instant.now().plusSeconds(10));
+
+           taskScheduler.schedule(() -> {
+               orderRepository.updateOrderStatus(orders.getOrderId(), "배송 중");
+               System.out.println("배송 중 시간 : " + LocalDateTime.now());
+           }, Instant.now().plusSeconds(30 * 60));
+       }, Instant.now().plusSeconds(30 * 60));
+
     }
 
     @Transactional
