@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -59,17 +60,20 @@ public class OrderService {
     }
 
     protected void scheduledOrderStatusUpdate(Orders orders){
-       taskScheduler.schedule(() -> {
-           orderRepository.updateOrderStatus(orders.getOrderId(), "출고 준비중");
-           System.out.println("출고 준비 중 시간 : " + LocalDateTime.now());
+        LocalTime now = LocalTime.now();
+        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime endTime = LocalTime.of(18, 0);
+        if(now.isAfter(startTime) && now.isBefore(endTime)){
+            taskScheduler.schedule(() -> {
+                orderRepository.updateOrderStatus(orders.getOrderId(), "출고 준비중");
+                System.out.println("출고 준비 중 시간 : " + LocalDateTime.now());
 
-
-           taskScheduler.schedule(() -> {
-               orderRepository.updateOrderStatus(orders.getOrderId(), "배송 중");
-               System.out.println("배송 중 시간 : " + LocalDateTime.now());
-           }, Instant.now().plusSeconds(30 * 60));
-       }, Instant.now().plusSeconds(30 * 60));
-
+                taskScheduler.schedule(() -> {
+                    orderRepository.updateOrderStatus(orders.getOrderId(), "배송중");
+                    System.out.println("배송 중 시간 : " + LocalDateTime.now());
+                }, Instant.now().plusSeconds(30 * 60));
+            }, Instant.now().plusSeconds(30 * 60));
+        }
     }
 
     @Transactional
