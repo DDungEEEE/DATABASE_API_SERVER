@@ -123,7 +123,7 @@ public class OrderService {
     @Transactional
     public void setOrderPrintCheck(int orderId){
         Orders findOrder = serviceErrorHelper.findOrderOrElseThrow404(orderId);
-        findOrder.setOrderPrintCk(1);
+        findOrder.makePrinted();
         orderRepository.save(findOrder);
     }
 
