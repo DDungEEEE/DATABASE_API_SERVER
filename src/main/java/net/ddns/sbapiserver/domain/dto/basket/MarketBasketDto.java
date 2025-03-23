@@ -73,6 +73,9 @@ public interface MarketBasketDto {
         @Schema(name = "product_img")
         private String productImg;
 
+        @Schema(name = "product_description")
+        private String productDescription;
+
         @Schema(name = "manufacturer_sort_name")
         private String manufacturerSortName;
         @Schema(name = "manufacturer_name")
@@ -85,6 +88,7 @@ public interface MarketBasketDto {
                     .productCnt(marketBasket.getProductCnt())
                     .productId(marketBasket.getProducts().getProductId())
                     .productImg(marketBasket.getProducts().getProductImg())
+                    .productDescription(marketBasket.getProducts().getProductDescription())
                     .manufacturerName(marketBasket.getProducts().getManufacturers().getManufacturerName())
                     .manufacturerSortName(marketBasket.getProducts().getManufacturerSort().getSortName())
                     .build();

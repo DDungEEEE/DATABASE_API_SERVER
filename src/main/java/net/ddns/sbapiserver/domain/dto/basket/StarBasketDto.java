@@ -46,6 +46,9 @@ public interface StarBasketDto {
         @Schema(name = "product_img")
         private String productImg;
 
+        @Schema(name = "product_description")
+        private String productDescription;
+
         @Schema(name = "manufacturer_sort_name")
         private String manufacturerSortName;
 
@@ -61,6 +64,7 @@ public interface StarBasketDto {
                     .productName(starBasket.getProducts().getProductName())
                     .productStatus(starBasket.getProducts().getProductStatus())
                     .productImg(starBasket.getProducts().getProductImg())
+                    .productDescription(starBasket.getProducts().getProductDescription())
                     .manufacturerSortName(starBasket.getProducts().getManufacturerSort().getSortName())
                     .manufacturerName(starBasket.getProducts().getManufacturers().getManufacturerName())
                     .build();
