@@ -39,9 +39,6 @@ public class Orders {
     @ManyToOne
     private Clients clients;
 
-    public void setOrderPrintCk(int orderPrintCk) {
-        this.orderPrintCk = orderPrintCk;
-    }
 
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
@@ -52,5 +49,9 @@ public class Orders {
         this.orderDate = LocalDateTime.now();
         this.orderPrintCk = 0;
         this.orderStatus = "관리자 승인 대기중";
+    }
+
+    public void makePrinted(){
+        this.orderPrintCk = 1;
     }
 }
