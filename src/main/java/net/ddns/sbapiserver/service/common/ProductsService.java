@@ -12,6 +12,8 @@ import net.ddns.sbapiserver.repository.common.ManufacturersRepository;
 import net.ddns.sbapiserver.repository.common.ProductsRepository;
 import net.ddns.sbapiserver.service.basket.StarBasketService;
 import net.ddns.sbapiserver.service.helper.ServiceErrorHelper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +51,19 @@ public class ProductsService {
         List<Products> allProducts = productsRepository.findAll();
 
         return ProductDto.Result.of(allProducts);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDto.Result> getPagingProducts(int page, int pageSize){
+        QProducts qProducts = QProducts.products;
+        Pageable pageable = PageRequest.of(page-1, pageSize);
+
+        List<Products> productResult = jpaQueryFactory.selectFrom(qProducts)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return ProductDto.Result.of(productResult);
     }
 
     @Transactional

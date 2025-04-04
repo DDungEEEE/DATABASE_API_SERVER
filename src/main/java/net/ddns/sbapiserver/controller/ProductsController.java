@@ -1,6 +1,7 @@
 package net.ddns.sbapiserver.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import net.ddns.sbapiserver.domain.dto.common.ProductDto.Create;
 import net.ddns.sbapiserver.domain.dto.common.ProductDto.Put;
 import net.ddns.sbapiserver.domain.entity.common.Products;
 import net.ddns.sbapiserver.service.common.ProductsService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,14 @@ public class ProductsController {
 
         return ResultResponse.<List<ProductDto.Result>>successResponse()
                 .result(allProducts)
+                .successCode(SuccessCode.SELECT_SUCCESS)
+                .build();
+    }
+
+    @GetMapping("/paging")
+    ResultResponse<List<ProductDto.Result>> getProductsUsedByStaff(@RequestParam Integer page, @RequestParam int pageSize){
+        return ResultResponse.<List<ProductDto.Result>>successResponse()
+                .result(productsService.getPagingProducts(page, pageSize))
                 .successCode(SuccessCode.SELECT_SUCCESS)
                 .build();
     }
